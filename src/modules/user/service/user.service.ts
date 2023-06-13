@@ -1,7 +1,7 @@
 import { IUser } from "../model/user.schema";
 import { IUserRepository } from "../repository/user.repository";
 
-interface IUserService {
+export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
   getUser(id: string): IUser;
   allUsers(): IUser[];
@@ -10,13 +10,15 @@ interface IUserService {
 }
 
 export class UserService implements IUserService {
-  private userRepository: IUserRepository;
+
+  constructor(private userRepository: IUserRepository) {}
   
-  constructor(userRepository: IUserRepository) {
-    this.userRepository = userRepository;
-  }
-  createUser(user: IUser): IUser | Promise<IUser> {
-    throw new Error("not implemented yet");
+  async createUser(user: IUser): Promise<IUser> {
+    try {
+      return await this.userRepository.create(user)
+    } catch (error) {
+      throw error
+    }
   }
   getUser(id: string): IUser {
     throw new Error("not implemented yet");

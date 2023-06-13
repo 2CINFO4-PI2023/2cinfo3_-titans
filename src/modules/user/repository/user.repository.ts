@@ -1,7 +1,7 @@
-import { IUser } from "../model/user.schema";
+import { IUser, User } from "../model/user.schema";
 
-interface IUserRepository {
-  create(user: IUser): void;
+export interface IUserRepository {
+  create(user: IUser): IUser | Promise<IUser>;
   get(id: string): IUser;
   all(): IUser[];
   delete(id: string): void;
@@ -9,8 +9,16 @@ interface IUserRepository {
 }
 
 export class UserRepository implements IUserRepository {
-  create(user: IUser): void {
-    throw new Error("not implemented yet");
+  constructor(){}
+  async create(user: IUser): Promise<IUser> {
+    try {
+      const doc = await User.create(user);
+      return doc;
+    } catch (error) {
+      console.log("error: ", error);
+      // check if is duplicated
+      throw error;
+    }
   }
   get(id: string): IUser {
     throw new Error("not implemented yet");
