@@ -1,8 +1,4 @@
 import { Router, Express } from "express";
-import {
-  IUserController,
-  UserController,
-} from "../modules/user/controller/user.controller";
 import { UserRouter } from "../modules/user/router/user.router";
 
 export class Routes {
