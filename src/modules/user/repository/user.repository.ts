@@ -1,3 +1,4 @@
+import { DuplicatedError } from "../../../errors/DuplicatedError";
 import { IUser, User } from "../model/user.schema";
 
 export interface IUserRepository {
@@ -9,14 +10,15 @@ export interface IUserRepository {
 }
 
 export class UserRepository implements IUserRepository {
-  constructor(){}
+  constructor() {}
   async create(user: IUser): Promise<IUser> {
     try {
       const doc = await User.create(user);
       return doc;
-    } catch (error) {
-      console.log("error: ", error);
-      // check if is duplicated
+    } catch (error: any) {
+      if (error.code == 11000) {
+        throw new DuplicatedError("Email is already used")
+      }
       throw error;
     }
   }
