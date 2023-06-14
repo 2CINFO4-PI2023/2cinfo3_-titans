@@ -6,6 +6,10 @@ import { ReclamationService } from './modules/reclamation/service/reclamation.se
 import { ReclamationController } from './modules/reclamation/controller/reclamation.controller';
 import { ReclamationRouter } from './modules/reclamation/router/reclamation.router';
 import { Routes } from './routes/routes';
+import swaggerUi from 'swagger-ui-express';
+import * as fs from 'fs';
+import path from 'path';
+
 
 dotenv.config();
 
@@ -21,6 +25,12 @@ const reclamationController = new ReclamationController(reclamationService)
 const reclamationRouter = new ReclamationRouter(reclamationController)
 
 app.use(express.json());
+
+
+// Serve Swagger documentation
+const swaggerDocument = JSON.parse(fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf-8'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // global router
 new Routes(app,reclamationRouter).init()
