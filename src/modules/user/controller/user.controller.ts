@@ -1,20 +1,78 @@
 import { Request, Response } from "express";
 import { IUserService } from "../service/user.service";
-import { DuplicatedError } from "../../../errors/DuplicatedError";
+import { HTTPError } from "../../../errors/HTTPError";
 
 export interface IUserController {
   create(req: Request, res: Response): void;
+  getAll(req: Request, res: Response): void;
+  get(req: Request, res: Response): void;
+  delete(req: Request, res: Response): void;
+  update(req: Request, res: Response): void;
 }
 export class UserController {
   constructor(private userService: IUserService) {}
+
   async create(req: Request, res: Response) {
     try {
       const user = req.body;
       const data = await this.userService.createUser(user);
       res.status(201).json(data);
-    } catch (error:any) {
-      if (error instanceof DuplicatedError){
-        return res.status(error.http_code).json({message:error.message,description:error.description})
+    } catch (error: any) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+
+  async getAll(req: Request, res: Response) {
+    try {
+      const data = await this.userService.allUsers();
+      res.status(200).json(data);
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
+  async get(req: Request, res: Response) {
+    try {
+      const data = await this.userService.getUser(req.params.id);
+      res.status(200).json(data);
+    } catch (error: any) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      await this.userService.deleteUser(req.params.id);
+      return res.status(204).send();
+    } catch (error: any) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const user = await this.userService.updateUser(req.params.id, req.body);
+      return res.status(200).send(user);
+    } catch (error: any) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
       }
       res.status(500).send(error);
     }
