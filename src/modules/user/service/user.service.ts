@@ -3,33 +3,50 @@ import { IUserRepository } from "../repository/user.repository";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
-  getUser(id: string): IUser;
-  allUsers(): IUser[];
+  getUser(id: string): IUser | Promise<IUser>;
+  allUsers(): IUser[] | Promise<IUser[]>;
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
 }
 
 export class UserService implements IUserService {
-
   constructor(private userRepository: IUserRepository) {}
-  
+
   async createUser(user: IUser): Promise<IUser> {
     try {
-      return await this.userRepository.create(user)
+      return await this.userRepository.create(user);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-  getUser(id: string): IUser {
-    throw new Error("not implemented yet");
+  async getUser(id: string): Promise<IUser> {
+    try {
+      const user = await this.userRepository.get(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
-  allUsers(): IUser[] {
-    throw new Error("not implemented yet");
+  async allUsers(): Promise<IUser[]> {
+    try {
+      const users = await this.userRepository.all();
+      return users;
+    } catch (error) {
+      throw error;
+    }
   }
-  deleteUser(id: string): void {
-    throw new Error("not implemented yet");
+  async deleteUser(id: string) {
+    try {
+      await this.userRepository.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
-  updateUser(id: string, user: IUser): void {
-    throw new Error("not implemented yet");
+  async updateUser(id: string, user: IUser) {
+    try {
+      return await this.userRepository.update(id, user);
+    } catch (error) {
+      throw error;
+    }
   }
 }
