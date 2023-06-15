@@ -23,6 +23,11 @@ import { AuthRouter } from "./modules/user/router/auth.router";
 import { AuthService } from "./modules/user/service/auth.service";
 import { Mailer } from "./notifiers/mail/mail.service";
 
+import { IngredientRepository } from './modules/stock/repository/ingredient.repository';
+import { IngredientService } from './modules/stock/service/ingredient.service';
+import { IngredientController } from './modules/stock/controller/ingredient.controller';
+import { IngredientRouter } from './modules/stock/router/ingredient.router';
+
 dotenv.config();
 
 const app: Express = express();
@@ -52,9 +57,14 @@ const init = async (app: Express) => {
 
   // init
   app.use(express.json());
+const ingredientRepo = new IngredientRepository()
+const ingredientService = new IngredientService(ingredientRepo) 
+const ingredientController = new IngredientController(ingredientService)
+const ingredientRouter = new IngredientRouter(ingredientController)
+app.use(express.json());
 
   // global router
-  new Routes(app, reclamationRouter, userRouter, authRouter).init();
+  new Routes(app, reclamationRouter, userRouter, authRouter,ingredientRouter).init();
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(
