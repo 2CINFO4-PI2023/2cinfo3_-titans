@@ -51,7 +51,7 @@ app.use(express.json());
 
 // global router
 
-new Routes(app,reclamationRouter,userRouter).init()
+new Routes(app,reclamationRouter,userRouter,authRouter).init()
 
 
 // Serve Swagger documentation
