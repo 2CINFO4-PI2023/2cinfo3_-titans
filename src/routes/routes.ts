@@ -4,13 +4,15 @@ import { ReclamationRouter } from "../modules/reclamation/router/reclamation.rou
 import { AuthRouter } from "../modules/user/router/auth.router";
 import { UserRouter } from "../modules/user/router/user.router";
 import { IngredientRouter } from "../modules/stock/router/ingredient.router";
+import { PlatRouter } from "../modules/stock/router/plat.router";
 
 export class Routes {
   constructor(private app: Express,
     private reclamationRouter:ReclamationRouter,
     private userRouter:UserRouter
-    ,private authRouter:AuthRouter,
-    ,private ingredientRouter:IngredientRouter) {}
+    ,private authRouter:AuthRouter
+    ,private ingredientRouter:IngredientRouter
+    ,private platRouter:PlatRouter) {}
 
   init() {
       // Serve static files from the 'dist' directory
@@ -19,5 +21,6 @@ export class Routes {
     this.app.use(validateJwtToken).use("/users",this.userRouter.userRoutes)
     this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);
     this.app.use("/ingredient",this.ingredientRouter.ingredientRoutes)
+    this.app.use("/plats",this.platRouter.platRoutes)
   }
 }

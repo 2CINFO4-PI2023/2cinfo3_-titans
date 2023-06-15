@@ -29,7 +29,7 @@ export class IngredientRepository implements IIngredientRepository{
         try{
             if (!isValidObjectId(id)) {
                 throw new InvalidObjectIdError();
-              }
+            }
             const ing = await Ingredient.findById(id);
             if(ing == null){
                 throw new NotFoundError("Ingredient is not found");
@@ -52,7 +52,7 @@ export class IngredientRepository implements IIngredientRepository{
             if (!isValidObjectId(id)) {
                 throw new InvalidObjectIdError();
             }
-            const ing = await Ingredient.findByIdAndUpdate(id,Ingredient);
+            const ing = await Ingredient.findByIdAndUpdate(id,ingredient);
             if(ing == null){
                 throw new NotFoundError("Ingredient is not found");
             }

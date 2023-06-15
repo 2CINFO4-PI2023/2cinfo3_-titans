@@ -17,7 +17,12 @@ export class PlatRepository implements IPlatRepository{
      */
     constructor() {}
     async create(plat: IPlat): Promise<IPlat> {
-        throw new Error("Method not implemented.");
+        try{
+            const plate = await Plat.create(plat)
+            return plate;
+        }catch(err: any){
+            throw err;
+        }
     }
     async get(id: string): Promise<IPlat> {
         try {
@@ -38,7 +43,18 @@ export class PlatRepository implements IPlatRepository{
         }
     }
     async update(id: string, plat: IPlat): Promise<IPlat> {
-        throw new Error("Method not implemented.");
+        try {
+            if (!isValidObjectId(id)) {
+                throw new InvalidObjectIdError();
+            }
+            const plate = await Plat.findByIdAndUpdate(id,plat);
+            if(plate == null){
+                throw new NotFoundError("Ingredient is not found");
+            }
+            return plate;
+        } catch (err) {
+            throw err;
+        }
     }
     async delete(id: string){
         try {
