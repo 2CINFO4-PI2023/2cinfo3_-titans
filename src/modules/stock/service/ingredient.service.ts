@@ -50,5 +50,4 @@ export class IngredientService implements IIngredientService {
             throw error;
         }
     }
-
 }
