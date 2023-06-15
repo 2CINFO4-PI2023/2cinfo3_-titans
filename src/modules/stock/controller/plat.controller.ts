@@ -3,7 +3,11 @@ import { HTTPError } from "../../../errors/HTTPError";
 import { Request, Response } from "express";
 
 
+<<<<<<< HEAD
 export interface IPlatController {
+=======
+export interface IPlatController{
+>>>>>>> e3990a2 (try to implement plats, error in ingredients schema ref in the plat schema)
     create(req: Request, res: Response): void;
     get(req: Request, res: Response): void;
     getAll(req: Request, res: Response): void;
