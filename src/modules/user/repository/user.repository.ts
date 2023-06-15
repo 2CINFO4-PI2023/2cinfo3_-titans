@@ -10,6 +10,7 @@ export interface IUserRepository {
   all(): IUser[] | Promise<IUser[]>;
   delete(id: string): void;
   update(id: string, user: IUser): void;
+  findByEmail(email: string): IUser | Promise<IUser>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -17,7 +18,8 @@ export class UserRepository implements IUserRepository {
   async create(user: IUser): Promise<IUser> {
     try {
       const doc = await User.create(user);
-      return doc;
+      const { password, ...userWithoutPassword } = doc.toObject();
+      return userWithoutPassword;
     } catch (error: any) {
       if (error.code == 11000) {
         throw new DuplicatedError("Email is already used");
@@ -30,7 +32,7 @@ export class UserRepository implements IUserRepository {
       if (!isValidObjectId(id)) {
         throw new InvalidObjectIdError();
       }
-      const user = await User.findById(id);
+      const user = await User.findById(id).select('-password');
       if (user == null) {
         throw new NotFoundError("user not found");
       }
@@ -41,7 +43,7 @@ export class UserRepository implements IUserRepository {
   }
   async all(): Promise<IUser[]> {
     try {
-      const users = await User.find();
+      const users = await User.find().select('-password');
       return users;
     } catch (error) {
       throw error;
@@ -74,6 +76,18 @@ export class UserRepository implements IUserRepository {
       if (error.code == 11000) {
         throw new DuplicatedError("Email is already used");
       }
+      throw error;
+    }
+  }
+
+  async findByEmail(email: string): Promise<IUser> {
+    try {
+      const doc = await User.findOne({ email });
+      if (doc == null) {
+        throw new NotFoundError("user not found");
+      }
+      return doc;
+    } catch (error) {
       throw error;
     }
   }

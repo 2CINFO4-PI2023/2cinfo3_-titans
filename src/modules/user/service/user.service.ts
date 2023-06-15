@@ -7,6 +7,7 @@ export interface IUserService {
   allUsers(): IUser[] | Promise<IUser[]>;
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
+  findByEmail(email:string): IUser | Promise<IUser>;
 }
 
 export class UserService implements IUserService {
@@ -47,6 +48,13 @@ export class UserService implements IUserService {
       return await this.userRepository.update(id, user);
     } catch (error) {
       throw error;
+    }
+  }
+  async findByEmail(email:string): Promise<IUser>{
+    try {
+      return await this.userRepository.findByEmail(email)
+    } catch (error) {
+      throw error
     }
   }
 }

@@ -17,6 +17,10 @@ import swaggerUi from 'swagger-ui-express';
 import * as fs from 'fs';
 import path from 'path';
 
+import { AuthController } from './modules/user/controller/auth.controller';
+import { AuthRouter } from './modules/user/router/auth.router';
+import { AuthService } from './modules/user/service/auth.service';
+import { Mailer } from './notifiers/mail/mail.service';
 
 dotenv.config();
 
@@ -25,6 +29,8 @@ const port = process.env.SERVER_PORT || 8081;
 
 connectDB()
 
+// init util modules
+const mailer = new Mailer()
 // init user module
 const userRepository = new UserRepository()
 const userService = new UserService(userRepository)
@@ -37,6 +43,9 @@ const reclamationService = new ReclamationService(reclamationRepository)
 const reclamationController = new ReclamationController(reclamationService)
 const reclamationRouter = new ReclamationRouter(reclamationController)
 
+const authService = new AuthService(userService,mailer)
+const authController = new AuthController(authService)
+const authRouter = new AuthRouter(authController)
 
 app.use(express.json());
 
