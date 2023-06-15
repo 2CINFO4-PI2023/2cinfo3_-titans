@@ -75,7 +75,15 @@ export class UserController implements IUserController {
 
   async update(req: Request, res: Response) {
     try {
-      const user = await this.userService.updateUser(req.params.id, req.body);
+      const body = req.body;
+      if (Object.keys(body).length === 0) {
+        throw new InvalidBodyError('Empty body');
+      }
+      const { error } = createUserSchema.validate(body);
+      if (error) {
+        throw new InvalidBodyError(error.details[0].message);
+      }
+      const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);
     } catch (error: any) {
       if (error instanceof HTTPError) {
