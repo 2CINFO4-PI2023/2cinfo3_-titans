@@ -8,8 +8,8 @@ export interface IEvent {
 }
 
 const eventSchema = new Schema<IEvent>({
-  name: { type: String, required: true },
-  date: { type: String, required: true},
+  name: { type: String },
+  date: { type: String},
   description: String,
   address: String
 });
