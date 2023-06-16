@@ -1,8 +1,8 @@
-import { Router, Express } from "express";
-import { UserRouter } from "../modules/user/router/user.router";
-import { AuthRouter } from "../modules/user/router/auth.router";
+import { Express } from "express";
 import { validateJwtToken } from "../middlewares/authMiddleware";
 import { ReclamationRouter } from "../modules/reclamation/router/reclamation.router";
+import { AuthRouter } from "../modules/user/router/auth.router";
+import { UserRouter } from "../modules/user/router/user.router";
 
 export class Routes {
   constructor(private app: Express,

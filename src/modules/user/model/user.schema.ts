@@ -16,6 +16,8 @@ const userSchema = new Schema<IUser>({
   address: String,
   password: { type: String },
   isActive: { type: Boolean, default: false },
+},{
+  timestamps:true
 });
 
 export const User = model<IUser>("User", userSchema);

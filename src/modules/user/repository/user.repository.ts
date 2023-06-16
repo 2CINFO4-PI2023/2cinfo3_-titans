@@ -1,8 +1,8 @@
 import { isValidObjectId } from "mongoose";
 import { DuplicatedError } from "../../../errors/DuplicatedError";
+import { InvalidObjectIdError } from "../../../errors/InvalidObjectIdError";
 import { NotFoundError } from "../../../errors/NotFoundError";
 import { IUser, User } from "../model/user.schema";
-import { InvalidObjectIdError } from "../../../errors/InvalidObjectIdError";
 
 export interface IUserRepository {
   create(user: IUser): IUser | Promise<IUser>;
@@ -71,7 +71,8 @@ export class UserRepository implements IUserRepository {
       if (doc == null) {
         throw new NotFoundError("user not found");
       }
-      return doc;
+      const { password, ...userWithoutPassword } = doc.toObject();
+      return userWithoutPassword;
     } catch (error: any) {
       if (error.code == 11000) {
         throw new DuplicatedError("Email is already used");
