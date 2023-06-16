@@ -12,6 +12,12 @@ import { ReclamationRepository } from './modules/reclamation/repository/reclamat
 import { ReclamationService } from './modules/reclamation/service/reclamation.service';
 import { ReclamationController } from './modules/reclamation/controller/reclamation.controller';
 import { ReclamationRouter } from './modules/reclamation/router/reclamation.router';
+
+import { TypereclamationRepository } from './modules/typereclamation/repository/typereclamation.repository';
+import { TypereclamationService } from './modules/typereclamation/service/typereclamation.service';
+import { TypereclamationController } from './modules/typereclamation/controller/typereclamation.controller';
+import { TypereclamationRouter } from './modules/typereclamation/router/typereclamation.router';
+
 import { Routes } from './routes/routes';
 import swaggerUi from 'swagger-ui-express';
 import * as fs from 'fs';
@@ -43,6 +49,12 @@ const reclamationService = new ReclamationService(reclamationRepository)
 const reclamationController = new ReclamationController(reclamationService)
 const reclamationRouter = new ReclamationRouter(reclamationController)
 
+// init type  reclamation module
+const typereclamationRepository = new TypereclamationRepository()
+const typereclamationService = new TypereclamationService(typereclamationRepository)
+const typereclamationController = new TypereclamationController(typereclamationService)
+const typereclamationRouter = new TypereclamationRouter(typereclamationController)
+
 const authService = new AuthService(userService,mailer)
 const authController = new AuthController(authService)
 const authRouter = new AuthRouter(authController)
@@ -51,7 +63,7 @@ app.use(express.json());
 
 // global router
 
-new Routes(app,reclamationRouter,userRouter,authRouter).init()
+new Routes(app,reclamationRouter,typereclamationRouter,userRouter,authRouter).init()
 
 
 // Serve Swagger documentation
