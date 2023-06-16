@@ -21,6 +21,10 @@ import { AuthController } from './modules/user/controller/auth.controller';
 import { AuthRouter } from './modules/user/router/auth.router';
 import { AuthService } from './modules/user/service/auth.service';
 import { Mailer } from './notifiers/mail/mail.service';
+import { CommandeRepository } from './modules/commande/repository/commande.repository';
+import { CommandeService } from './modules/commande/service/commande.service';
+import { CommandeController } from './modules/commande/controller/commande.controller';
+import { CommandeRouter } from './modules/commande/router/commande.router';
 
 dotenv.config();
 
@@ -43,6 +47,12 @@ const reclamationService = new ReclamationService(reclamationRepository)
 const reclamationController = new ReclamationController(reclamationService)
 const reclamationRouter = new ReclamationRouter(reclamationController)
 
+// init commande module
+const commandeRepository = new CommandeRepository()
+const commandeService = new CommandeService(commandeRepository)
+const commandeController = new CommandeController(commandeService)
+const commandeRouter = new CommandeRouter(commandeController)
+
 const authService = new AuthService(userService,mailer)
 const authController = new AuthController(authService)
 const authRouter = new AuthRouter(authController)
@@ -51,7 +61,7 @@ app.use(express.json());
 
 // global router
 
-new Routes(app,reclamationRouter,userRouter,authRouter).init()
+new Routes(app,reclamationRouter,commandeRouter,userRouter,authRouter,).init()
 
 
 // Serve Swagger documentation
