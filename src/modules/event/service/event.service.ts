@@ -3,33 +3,52 @@ import { IEventRepository } from "../repository/event.repository";
 
 export interface IEventService {
   createEvent(event: IEvent): IEvent | Promise<IEvent>;
-  getEvent(id: string): IEvent;
-  allEvents(): IEvent[];
+  getEvent(id: string): Promise<IEvent | null>;
+  allEvents(): Promise<IEvent[]>;
   deleteEvent(id: string): void;
   updateEvent(id: string, event: IEvent): void;
 }
 
 export class EventService implements IEventService {
-
   constructor(private eventRepository: IEventRepository) {}
-  
+
   async createEvent(event: IEvent): Promise<IEvent> {
     try {
-      return await this.eventRepository.create(event)
+      return await this.eventRepository.create(event);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-  getEvent(id: string): IEvent {
-    throw new Error("not implemented yet");
+
+  async getEvent(id: string): Promise<IEvent | null> {
+    try {
+      return await this.eventRepository.get(id);
+    } catch (error) {
+      throw error;
+    }
   }
-  allEvents(): IEvent[] {
-    throw new Error("not implemented yet");
+
+  async allEvents(): Promise<IEvent[]> {
+    try {
+      return await this.eventRepository.all();
+    } catch (error) {
+      throw error;
+    }
   }
-  deleteEvent(id: string): void {
-    throw new Error("not implemented yet");
+
+  async deleteEvent(id: string): Promise<void> {
+    try {
+      await this.eventRepository.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
-  updateEvent(id: string, event: IEvent): void {
-    throw new Error("not implemented yet");
+
+  async updateEvent(id: string, event: IEvent): Promise<void> {
+    try {
+      await this.eventRepository.update(id, event);
+    } catch (error: any) {
+      throw error;
+    }
   }
 }

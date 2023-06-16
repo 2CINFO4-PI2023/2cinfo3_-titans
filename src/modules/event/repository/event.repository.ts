@@ -2,34 +2,60 @@ import { DuplicatedError } from "../../../errors/DuplicatedError";
 import { IEvent, Event } from "../model/event.schema";
 
 export interface IEventRepository {
-  create(event: IEvent): IEvent | Promise<IEvent>;
-  get(id: string): IEvent;
-  all(): IEvent[];
-  delete(id: string): void;
-  update(id: string, event: IEvent): void;
+  create(event: IEvent): Promise<IEvent>;
+  get(id: string): Promise<IEvent | null>;
+  all(): Promise<IEvent[]>;
+  delete(id: string): Promise<void>;
+  update(id: string, event: IEvent): Promise<void>;
 }
 
 export class EventRepository implements IEventRepository {
   constructor() {}
+
   async create(event: IEvent): Promise<IEvent> {
     try {
       const doc = await Event.create(event);
       return doc;
     } catch (error: any) {
-  
+      if (error.code === 11000) {
+        // Handle duplicate key error
+        throw new DuplicatedError("Event already exists");
+      }
       throw error;
     }
   }
-  get(id: string): IEvent {
-    throw new Error("not implemented yet");
+
+  async get(id: string): Promise<IEvent | null> {
+    try {
+      const doc = await Event.findById(id);
+      return doc;
+    } catch (error: any) {
+      throw error;
+    }
   }
-  all(): IEvent[] {
-    throw new Error("not implemented yet");
+
+  async all(): Promise<IEvent[]> {
+    try {
+      const docs = await Event.find();
+      return docs;
+    } catch (error: any) {
+      throw error;
+    }
   }
-  delete(id: string): void {
-    throw new Error("not implemented yet");
+
+  async delete(id: string): Promise<void> {
+    try {
+      await Event.findByIdAndDelete(id);
+    } catch (error: any) {
+      throw error;
+    }
   }
-  update(id: string, event: IEvent): void {
-    throw new Error("not implemented yet");
+
+  async update(id: string, event: IEvent): Promise<void> {
+    try {
+      await Event.findByIdAndUpdate(id, event);
+    } catch (error: any) {
+      throw error;
+    }
   }
 }
