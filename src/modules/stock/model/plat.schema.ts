@@ -10,7 +10,7 @@ export interface IPlat {
 const platSchema = new Schema<IPlat>({
     name: { type: String ,required:true},
     price: { type: Number ,required:true},
-    ingredients: [{ type: Ingredient, required:true}]
+    ingredients: [{ type: Schema.Types.ObjectId, ref: Ingredient, required:true}]
 
 });
 
