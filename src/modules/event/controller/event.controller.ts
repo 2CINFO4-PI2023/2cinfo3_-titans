@@ -41,7 +41,7 @@ export class EventController implements IEventController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const events = await this.eventService.allEvents();
+      const events = await this.eventService.getAllEvents();
       res.json(events);
     } catch (error: any) {
       res.status(500).send(error);

@@ -5,6 +5,10 @@ import { EventRepository } from './modules/event/repository/event.repository';
 import { EventService } from './modules/event/service/event.service';
 import { EventController } from './modules/event/controller/event.controller';
 import { EventRouter } from './modules/event/router/event.router';
+import { InscriptionRepository } from './modules/event/repository/inscription.repository';
+import { InscriptionService } from './modules/event/service/inscription.service';
+import { InscriptionController } from './modules/event/controller/inscription.controller';
+import { InscriptionRouter } from './modules/event/router/inscription.router';
 import { Routes } from './routes/routes';
 
 dotenv.config();
@@ -12,18 +16,25 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.SERVER_PORT || 8081;
 
-connectDB()
+connectDB();
 
-// init event module
-const eventRepository = new EventRepository()
-const eventService = new EventService(eventRepository)
-const eventController = new EventController(eventService)
-const eventRouter = new EventRouter(eventController)
+// Initialize the event module
+const eventRepository = new EventRepository();
+const eventService = new EventService(eventRepository);
+const eventController = new EventController(eventService);
+const eventRouter = new EventRouter(eventController);
+
+// Initialize the inscription module
+const inscriptionRepository = new InscriptionRepository();
+const inscriptionService = new InscriptionService(inscriptionRepository);
+const inscriptionController = new InscriptionController(inscriptionService);
+const inscriptionRouter = new InscriptionRouter(inscriptionController);
 
 app.use(express.json());
 
-// global router
-new Routes(app,eventRouter).init()
+// Set up the routes
+const routes = new Routes(app, eventRouter, inscriptionRouter);
+routes.init();
 
 app.get('/', (req: Request, res: Response) => {
   res.send('OK');

@@ -10,8 +10,8 @@ export class EventRouter {
     return this._eventRoutes;
   }
   private init() {
-    this._eventRoutes.route("").post((req,res)=>{
-      this.eventController.create(req,res)
+    this._eventRoutes.route("").post((req, res) => {
+      this.eventController.create(req, res);
     });
     this._eventRoutes.route("/:id").get((req, res) => {
       this.eventController.get(req, res);
