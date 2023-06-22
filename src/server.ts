@@ -62,12 +62,12 @@ const init = async (app: Express) => {
   // init
   app.use(express.json());
 const ingredientRepo = new IngredientRepository()
-const ingredientService = new IngredientService(ingredientRepo) 
+const ingredientService = new IngredientService(ingredientRepo)
 const ingredientController = new IngredientController(ingredientService)
 const ingredientRouter = new IngredientRouter(ingredientController)
 
-const platrepo = new PlatRepository()
-const platService = new PlatService(platrepo)
+const platRepo = new PlatRepository()
+const platService = new PlatService(platRepo, ingredientRepo)
 const platController = new PlatController(platService)
 const platRouter = new PlatRouter(platController)
 

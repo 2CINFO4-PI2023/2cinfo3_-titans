@@ -26,8 +26,8 @@ export class PlatRouter {
             .delete((req, res) => {
                 this.platController.delete(req, res);
             })
-            .put((req, res) =>{
-                this.platController.update(req,res);
+            .put((req, res) => {
+                this.platController.update(req, res);
             })
     }
 }
