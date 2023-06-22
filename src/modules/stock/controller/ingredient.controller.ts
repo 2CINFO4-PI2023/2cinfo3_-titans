@@ -49,8 +49,8 @@ export class IngredientController implements IIngredientController {
   }
   async update(req: Request, res: Response) {
     try {
-      const user = await this.ingredientService.updateIngredient(req.params.id, req.body);
-      return res.status(200).send(user);
+      const data = await this.ingredientService.updateIngredient(req.params.id, req.body);
+      return res.status(200).send(data);
     } catch (error: any) {
       if (error instanceof HTTPError) {
         return res

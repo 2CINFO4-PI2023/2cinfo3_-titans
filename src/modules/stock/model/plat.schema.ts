@@ -18,6 +18,9 @@ const platSchema = new Schema<IPlat>({
     price: { type: Number, required: true },
     image: { type: String, required: true }
 
+},
+{
+    timestamps: true
 });
 
 export const Plat = model<IPlat>("Plat", platSchema);

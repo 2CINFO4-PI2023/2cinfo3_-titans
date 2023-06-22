@@ -9,6 +9,7 @@ export interface IPlatController {
     getAll(req: Request, res: Response): void;
     update(req: Request, res: Response): void;
     delete(req: Request, res: Response): void;
+    platCommand(req: Request, res: Response): void;
 }
 
 export class PlatController implements IPlatController {
@@ -49,8 +50,8 @@ export class PlatController implements IPlatController {
     }
     async update(req: Request, res: Response) {
         try {
-            const user = await this.platService.updatePlat(req.params.id, req.body);
-            return res.status(200).send(user);
+            const data = await this.platService.updatePlat(req.params.id, req.body);
+            return res.status(200).send(data);
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res
@@ -64,6 +65,19 @@ export class PlatController implements IPlatController {
         try {
             await this.platService.deletePlat(req.params.id);
             return res.status(204).send();
+        } catch (error: any) {
+            if (error instanceof HTTPError) {
+                return res
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
+            }
+            res.status(500).send(error);
+        }
+    }
+    async platCommand(req: Request, res: Response){
+        try {
+            await this.platService.commandPlat(req.params.id);
+            return res.status(200).send();
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res
