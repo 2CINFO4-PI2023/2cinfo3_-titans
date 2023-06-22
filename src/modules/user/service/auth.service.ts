@@ -1,4 +1,5 @@
 import { compare } from "bcrypt";
+import { readFileSync } from "fs";
 import { NotFoundError } from "../../../errors/NotFoundError";
 import { UnauthorizedError } from "../../../errors/UnauthorizedError";
 import { generateAccessToken } from "../../../helpers/jwtHelper";
@@ -28,15 +29,14 @@ export class AuthService implements IAuthService {
 
   async signup(data: ISignupBody) {
     try {
+      const content = readFileSync("dist/confirmation.html",'utf8').toString();
       let userData = <IUser>data;
       userData.role = ROLES.CLIENT;
-
       const user = await this.userService.createUser(<IUser>userData);
       const token = generateRandomToken();
+      const modifiedContent = content.replace(/\[TOKEN\]/g, token);
       this.tokenRepositoy.set(token, user._id.toString(), 60 * 2);
-      // const content = readFileSync(path.join(__dirname, '../../../service/confirmation.html')).toString()
-      // content.replace("[TOKEN]","12345")
-      this.mailNotifier.sendMail(user.email, `http://localhost:9091/auth/activate?token=${token}`, "Email validation");
+      this.mailNotifier.sendMail(user.email, modifiedContent, "Account activation");
       return user;
     } catch (error) {
       throw error;

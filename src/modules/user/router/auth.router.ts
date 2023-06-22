@@ -16,7 +16,7 @@ export class AuthRouter {
     this.authRoutes.post("/login", (req, res) => {
       this.authController.login(req, res);
     });
-    this.authRoutes.get("/activate", (req, res) => {
+    this.authRoutes.get("/activate-account", (req, res) => {
       this.authController.activateAccount(req, res);
     });
   }
