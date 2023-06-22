@@ -1,12 +1,14 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface IUser {
   name: string;
   email: string;
   phone: string;
-  address?: string;
+  address: string;
   password?: string;
-  isActive:boolean;
+  confirmed:boolean;
+  role:number;
+  _id: Types.ObjectId
 }
 
 const userSchema = new Schema<IUser>({
@@ -15,7 +17,8 @@ const userSchema = new Schema<IUser>({
   phone: String,
   address: String,
   password: { type: String },
-  isActive: { type: Boolean, default: false },
+  confirmed: { type: Boolean, default: false },
+  role: Number
 },{
   timestamps:true
 });

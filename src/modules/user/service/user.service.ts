@@ -20,12 +20,12 @@ export class UserService implements IUserService {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;
       }
-      user.isActive = true;
       return await this.userRepository.create(user);
     } catch (error) {
       throw error;
     }
   }
+
   async getUser(id: string): Promise<IUser> {
     try {
       const user = await this.userRepository.get(id);
@@ -34,6 +34,7 @@ export class UserService implements IUserService {
       throw error;
     }
   }
+
   async allUsers(): Promise<IUser[]> {
     try {
       const users = await this.userRepository.all();
@@ -42,6 +43,7 @@ export class UserService implements IUserService {
       throw error;
     }
   }
+
   async deleteUser(id: string) {
     try {
       await this.userRepository.delete(id);
@@ -49,6 +51,7 @@ export class UserService implements IUserService {
       throw error;
     }
   }
+
   async updateUser(id: string, user: IUser) {
     try {
       if (user.password) {
@@ -60,6 +63,7 @@ export class UserService implements IUserService {
       throw error;
     }
   }
+
   async findByEmail(email: string): Promise<IUser> {
     try {
       return await this.userRepository.findByEmail(email);
