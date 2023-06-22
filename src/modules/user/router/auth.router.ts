@@ -19,5 +19,12 @@ export class AuthRouter {
     this.authRoutes.get("/activate-account", (req, res) => {
       this.authController.activateAccount(req, res);
     });
+    this.authRoutes.post("/request-reset-password", (req, res) => {
+      this.authController.sendPasswordResetEmail(req, res);
+    });
+    
+    this.authRoutes.post("/reset-password", (req, res) => {
+      this.authController.resetPassword(req, res);
+    });
   }
 }

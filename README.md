@@ -2,3 +2,11 @@
 
 1- npm run copy-assets  to copy assets to dist folder
 2- npm run dev to run the dev server on localhost
+
+SERVER_PORT=9090
+DATABASE_URI=mongodb://127.0.0.1:27017/pureplates
+TOKEN_SECRET=<RANDOM STRING>
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_PASSWORD= generate yout owen app passwords https://support.google.com/accounts/answer/185833?hl=en
+SMTP_USERNAME=<your_email@gmail.com>

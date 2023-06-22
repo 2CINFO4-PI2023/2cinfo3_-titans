@@ -9,6 +9,8 @@ export interface IAuthController {
   signup(req: Request, res: Response): void;
   login(req: Request, res: Response): void;
   activateAccount(req: Request, res: Response): void;
+  sendPasswordResetEmail(req: Request, res: Response): void;
+  resetPassword(req: Request, res: Response): void;
 }
 
 export class AuthController implements IAuthController {
@@ -58,7 +60,37 @@ export class AuthController implements IAuthController {
     try {
       const token = <string>req.query.token;
       this.authService.activateUser(token);
-      res.sendStatus(204)
+      res.sendStatus(204);
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+
+  sendPasswordResetEmail(req: Request, res: Response) {
+    try {
+      const email = req.body.email;
+      this.authService.sendPasswordResetEmail(email);
+      return res.sendStatus(204);
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+  resetPassword(req: Request, res: Response) {
+    try {
+      const token = req.body.token;
+      const newPassword = req.body.newPassword;
+      this.authService.resetPassword(token, newPassword);
+      return res.sendStatus(204);
     } catch (error) {
       if (error instanceof HTTPError) {
         return res
