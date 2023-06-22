@@ -28,14 +28,11 @@ export class PlatRouter {
             })
             .put((req, res) => {
                 this.platController.update(req, res);
-<<<<<<< HEAD
             });
             this._platRoutes
             .route("/commands/:id")
             .get((req, res) => {
                 this.platController.platCommand(req, res);
-=======
->>>>>>> 1b8c059 (add ingredient management through plate command)
             })
     }
 }
