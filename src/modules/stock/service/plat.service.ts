@@ -59,6 +59,7 @@ export class PlatService implements IPlatService {
             (await plat).ingredients.forEach(async (value, key) => {
                 const ingredient = await this.ingredientRepo.get(key);
                 ingredient.quantity -= value;
+                if(ingredient.quantity<0) throw "internal error insufficient stock"
                 await this.ingredientRepo.update(key, ingredient);
             })
         } catch (error) {

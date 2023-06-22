@@ -28,6 +28,11 @@ export class PlatRouter {
             })
             .put((req, res) => {
                 this.platController.update(req, res);
+            });
+            this._platRoutes
+            .route("/commands/:id")
+            .get((req, res) => {
+                this.platController.platCommand(req, res);
             })
     }
 }
