@@ -2,11 +2,11 @@ import { IEvent } from "../model/event.schema";
 import { IEventRepository } from "../repository/event.repository";
 
 export interface IEventService {
-  createEvent(event: IEvent): Promise<IEvent>;
+  createEvent(event: IEvent): IEvent | Promise<IEvent>;
   getEvent(id: string): Promise<IEvent | null>;
-  getAllEvents(): Promise<IEvent[]>;
-  deleteEvent(id: string): Promise<void>;
-  updateEvent(id: string, event: IEvent): Promise<void>;
+  allEvents(): Promise<IEvent[]>;
+  deleteEvent(id: string): void;
+  updateEvent(id: string, event: IEvent): void;
 }
 
 export class EventService implements IEventService {
@@ -28,7 +28,7 @@ export class EventService implements IEventService {
     }
   }
 
-  async getAllEvents(): Promise<IEvent[]> {
+  async allEvents(): Promise<IEvent[]> {
     try {
       return await this.eventRepository.all();
     } catch (error) {
