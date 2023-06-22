@@ -3,7 +3,7 @@ import { HTTPError } from "../../../errors/HTTPError";
 import { Request, Response } from "express";
 
 
-export interface IPlatController{
+export interface IPlatController {
     create(req: Request, res: Response): void;
     get(req: Request, res: Response): void;
     getAll(req: Request, res: Response): void;
@@ -11,18 +11,18 @@ export interface IPlatController{
     delete(req: Request, res: Response): void;
 }
 
-export class PlatController implements IPlatController{
-    
-    constructor(private platService: IPlatService){}
+export class PlatController implements IPlatController {
+
+    constructor(private platService: IPlatService) { }
     async create(req: Request, res: Response) {
         try {
             const plat = req.body;
-            const data = await this.platService.createPlat(plat); 
+            const data = await this.platService.createPlat(plat);
             res.status(201).json(data);
         } catch (error) {
-            if(error instanceof HTTPError)
+            if (error instanceof HTTPError)
                 return res.status(error.http_code)
-                    .json({message: error.message, description: error.description});
+                    .json({ message: error.message, description: error.description });
             res.status(500).send(error);
         }
     }
@@ -41,8 +41,8 @@ export class PlatController implements IPlatController{
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res
-                .status(error.http_code)
-                .json({ message: error.message, description: error.description });
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
             }
             res.status(500).send(error);
         }
@@ -54,8 +54,8 @@ export class PlatController implements IPlatController{
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res
-                .status(error.http_code)
-                .json({ message: error.message, description: error.description });
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
             }
             res.status(500).send(error);
         }
@@ -67,8 +67,8 @@ export class PlatController implements IPlatController{
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res
-                .status(error.http_code)
-                .json({ message: error.message, description: error.description });
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
             }
             res.status(500).send(error);
         }

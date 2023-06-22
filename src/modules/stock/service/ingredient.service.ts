@@ -2,7 +2,7 @@ import { IIngredient } from "../model/ingredient.schema";
 import { IIngredientRepository } from "../repository/ingredient.repository";
 
 
-export interface IIngredientService{
+export interface IIngredientService {
     createIngredient(ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     getIngredient(id: string): IIngredient | Promise<IIngredient>;
     getAllIngredient(): IIngredient[] | Promise<IIngredient[]>;
@@ -10,11 +10,11 @@ export interface IIngredientService{
     deleteIngredient(id: string): void;
 }
 
-export class IngredientService implements IIngredientService{
+export class IngredientService implements IIngredientService {
     /**
      *
      */
-    constructor(private ingredientRepo: IIngredientRepository) {}
+    constructor(private ingredientRepo: IIngredientRepository) { }
     async createIngredient(ingredient: IIngredient): Promise<IIngredient> {
         try {
             return await this.ingredientRepo.create(ingredient);
@@ -36,9 +36,9 @@ export class IngredientService implements IIngredientService{
             throw error;
         }
     }
-    async updateIngredient(id: string, ingredient: IIngredient):Promise<IIngredient> {
+    async updateIngredient(id: string, ingredient: IIngredient): Promise<IIngredient> {
         try {
-            return await this.ingredientRepo.update(id,ingredient);
+            return await this.ingredientRepo.update(id, ingredient);
         } catch (error) {
             throw error;
         }
@@ -50,5 +50,5 @@ export class IngredientService implements IIngredientService{
             throw error;
         }
     }
-    
+
 }

@@ -3,32 +3,32 @@ import { IPlat, Plat } from "../model/plat.schema";
 import { InvalidObjectIdError } from "../../../errors/InvalidObjectIdError";
 import { NotFoundError } from "../../../errors/NotFoundError";
 
-export interface IPlatRepository{
+export interface IPlatRepository {
     create(plat: IPlat): IPlat | Promise<IPlat>;
     get(id: string): IPlat | Promise<IPlat>;
     getAll(): IPlat[] | Promise<IPlat[]>;
     update(id: string, plat: IPlat): IPlat | Promise<IPlat>;
-    delete(id: string): void;    
+    delete(id: string): void;
 }
 
-export class PlatRepository implements IPlatRepository{
+export class PlatRepository implements IPlatRepository {
     /**
      *
      */
-    constructor() {}
+    constructor() { }
     async create(plat: IPlat): Promise<IPlat> {
-        try{
+        try {
             const plate = await Plat.create(plat)
             return plate;
-        }catch(err: any){
+        } catch (err: any) {
             throw err;
         }
     }
     async get(id: string): Promise<IPlat> {
         try {
-            if(!isValidObjectId(id)) throw new InvalidObjectIdError();
+            if (!isValidObjectId(id)) throw new InvalidObjectIdError();
             const plat = await Plat.findById(id);
-            if(plat == null) throw new NotFoundError("Plat is not found!");
+            if (plat == null) throw new NotFoundError("Plat is not found!");
             return plat;
         } catch (error) {
             throw error;
@@ -47,8 +47,8 @@ export class PlatRepository implements IPlatRepository{
             if (!isValidObjectId(id)) {
                 throw new InvalidObjectIdError();
             }
-            const plate = await Plat.findByIdAndUpdate(id,plat);
-            if(plate == null){
+            const plate = await Plat.findByIdAndUpdate(id, plat, { new: true });
+            if (plate == null) {
                 throw new NotFoundError("Ingredient is not found");
             }
             return plate;
@@ -56,11 +56,11 @@ export class PlatRepository implements IPlatRepository{
             throw err;
         }
     }
-    async delete(id: string){
+    async delete(id: string) {
         try {
-            if(!isValidObjectId(id)) throw new InvalidObjectIdError();
+            if (!isValidObjectId(id)) throw new InvalidObjectIdError();
             const plat = await Plat.findByIdAndDelete(id);
-            if(plat == null ) throw new NotFoundError("Plat is not found!");
+            if (plat == null) throw new NotFoundError("Plat is not found!");
         } catch (error) {
             throw error;
         }

@@ -4,46 +4,46 @@ import { InvalidObjectIdError } from "../../../errors/InvalidObjectIdError";
 import { NotFoundError } from "../../../errors/NotFoundError";
 
 
-export interface IIngredientRepository{
+export interface IIngredientRepository {
     create(ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     get(id: string): IIngredient | Promise<IIngredient>;
     getAll(): IIngredient[] | Promise<IIngredient[]>;
-    update(id: string,ingredient: IIngredient): IIngredient | Promise<IIngredient>;
+    update(id: string, ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     delete(id: string): void;
 }
 
-export class IngredientRepository implements IIngredientRepository{
+export class IngredientRepository implements IIngredientRepository {
     /**
      *
      */
-    constructor() {}
+    constructor() { }
     async create(ingredient: IIngredient): Promise<IIngredient> {
-        try{
+        try {
             const ing = await Ingredient.create(ingredient)
             return ing;
-        }catch(err: any){
+        } catch (err: any) {
             throw err;
         }
     }
     async get(id: string): Promise<IIngredient> {
-        try{
+        try {
             if (!isValidObjectId(id)) {
                 throw new InvalidObjectIdError();
             }
             const ing = await Ingredient.findById(id);
-            if(ing == null){
+            if (ing == null) {
                 throw new NotFoundError("Ingredient is not found");
             }
             return ing;
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
-    async  getAll(): Promise<IIngredient[]> {
-        try{
+    async getAll(): Promise<IIngredient[]> {
+        try {
             const ings = await Ingredient.find();
             return ings;
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
@@ -52,8 +52,8 @@ export class IngredientRepository implements IIngredientRepository{
             if (!isValidObjectId(id)) {
                 throw new InvalidObjectIdError();
             }
-            const ing = await Ingredient.findByIdAndUpdate(id,ingredient);
-            if(ing == null){
+            const ing = await Ingredient.findByIdAndUpdate(id, ingredient, { new: true });
+            if (ing == null) {
                 throw new NotFoundError("Ingredient is not found");
             }
             return ing;
@@ -67,7 +67,7 @@ export class IngredientRepository implements IIngredientRepository{
                 throw new InvalidObjectIdError();
             }
             const ing = await Ingredient.findByIdAndDelete(id);
-            if(ing == null){
+            if (ing == null) {
                 throw new NotFoundError("Ingredient is not found");
             }
         } catch (error) {

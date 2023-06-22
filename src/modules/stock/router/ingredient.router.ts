@@ -26,8 +26,8 @@ export class IngredientRouter {
             .delete((req, res) => {
                 this.ingredientController.delete(req, res);
             })
-            .put((req, res) =>{
-                this.ingredientController.update(req,res);
+            .put((req, res) => {
+                this.ingredientController.update(req, res);
             })
     }
 }
