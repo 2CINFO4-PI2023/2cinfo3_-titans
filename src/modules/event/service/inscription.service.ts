@@ -42,4 +42,5 @@ export class InscriptionService implements IInscriptionService {
       throw error;
     }
   }
+  
 }

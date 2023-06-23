@@ -9,7 +9,11 @@ import { InscriptionRepository } from './modules/event/repository/inscription.re
 import { InscriptionService } from './modules/event/service/inscription.service';
 import { InscriptionController } from './modules/event/controller/inscription.controller';
 import { InscriptionRouter } from './modules/event/router/inscription.router';
+import { EventTypeService } from './modules/event/service/eventType.service';
+import { EventTypeController } from './modules/event/controller/eventType.controller';
+import { EventTypeRouter } from './modules/event/router/eventType.router';
 import { Routes } from './routes/routes';
+import { EventTypeRepository } from './modules/event/repository/eventType.repository';
 
 dotenv.config();
 
@@ -30,10 +34,16 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
 const eventRepository = new EventRepository();
 const eventService = new EventService(eventRepository);
 const eventController = new EventController(eventService);
-const eventRouter = new EventRouter(eventController,inscriptionController);
+const eventRouter = new EventRouter(eventController, inscriptionController);
+
+// Initialize the eventType module
+const eventTypeRepository = new EventTypeRepository();
+const eventTypeService = new EventTypeService(eventTypeRepository);
+const eventTypeController = new EventTypeController(eventTypeService);
+const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
 // Set up the routes
-const routes = new Routes(app, eventRouter, inscriptionRouter);
+const routes = new Routes(app, eventRouter, inscriptionRouter, eventTypeRouter);
 routes.init();
 
 app.get('/', (req: Request, res: Response) => {
