@@ -12,16 +12,19 @@ export interface IEvent extends Document, SchemaTimestampsConfig {
   eventType: Types.ObjectId; // Add this field
 }
 
-const eventSchema = new Schema<IEvent>({
-  name: { type: String },
-  date: { type: Date },
-  description: String,
-  address: String,
-  inscriptions: [{ type: Schema.Types.ObjectId, ref: "Inscription" }], // Reference to Inscription model
-  event_capacity: { type: Number, required: true },
-  availablePlaces: { type: Number, required: true },
-  eventType: { type: Schema.Types.ObjectId, ref: "EventType", required: true }, // Add this field
-});
+const eventSchema = new Schema<IEvent>(
+  {
+    name: { type: String },
+    date: { type: Date },
+    description: String,
+    address: String,
+    inscriptions: [{ type: Schema.Types.ObjectId, ref: "Inscription" }], // Reference to Inscription model
+    event_capacity: { type: Number, required: true },
+    availablePlaces: { type: Number, required: true },
+    eventType: { type: Schema.Types.ObjectId, ref: "EventType", required: true }, // Add this field
+  },
+  { timestamps: true } // Add timestamps option for createdAt and updatedAt fields
+);
 
 // Pre-save hook to update the available places when an inscription is created
 eventSchema.pre<IEvent>("save", async function () {
