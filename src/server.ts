@@ -18,6 +18,13 @@ import { TypereclamationService } from './modules/typereclamation/service/typere
 import { TypereclamationController } from './modules/typereclamation/controller/typereclamation.controller';
 import { TypereclamationRouter } from './modules/typereclamation/router/typereclamation.router';
 
+
+import { MessageRepository } from './modules/message/repository/message.repository';
+import { MessageService } from './modules/message/service/message.service';
+import { MessageController } from './modules/message/controller/message.controller';
+import { MessageRouter } from './modules/message/router/message.router';
+
+
 import { Routes } from './routes/routes';
 import swaggerUi from 'swagger-ui-express';
 import * as fs from 'fs';
@@ -49,6 +56,13 @@ const reclamationService = new ReclamationService(reclamationRepository)
 const reclamationController = new ReclamationController(reclamationService)
 const reclamationRouter = new ReclamationRouter(reclamationController)
 
+// init mesage module
+const messageRepository = new MessageRepository()
+const mesageService = new MessageService(messageRepository)
+const mesageController = new MessageController(mesageService)
+const mesageRouter = new MessageRouter(mesageController)
+
+
 // init type  reclamation module
 const typereclamationRepository = new TypereclamationRepository()
 const typereclamationService = new TypereclamationService(typereclamationRepository)
@@ -67,7 +81,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // global router
 
-new Routes(app,reclamationRouter,typereclamationRouter,userRouter,authRouter).init()
+new Routes(app,reclamationRouter,typereclamationRouter,mesageRouter,userRouter,authRouter).init()
 
 
 
