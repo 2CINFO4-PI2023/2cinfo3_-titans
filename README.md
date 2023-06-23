@@ -1,8 +1,9 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11279931&assignment_repo_type=AssignmentRepo)
 
-1- npm run copy-assets  to copy assets to dist folder
-2- npm run dev to run the dev server on localhost
+run:
+docker-compose up
 
+dont forget to create .env file with the following content
 SERVER_PORT=9090
 DATABASE_URI=mongodb://127.0.0.1:27017/pureplates
 TOKEN_SECRET=<RANDOM STRING>
