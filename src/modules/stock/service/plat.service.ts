@@ -1,3 +1,4 @@
+import { InsufficientStockError } from "../../../errors/insufficientStockError";
 import { IPlat } from "../model/plat.schema";
 import { IIngredientRepository } from "../repository/ingredient.repository";
 import { IPlatRepository } from "../repository/plat.repository";
@@ -59,7 +60,7 @@ export class PlatService implements IPlatService {
             (await plat).ingredients.forEach(async (value, key) => {
                 const ingredient = await this.ingredientRepo.get(key);
                 ingredient.quantity -= value;
-                if(ingredient.quantity<0) throw "internal error insufficient stock"
+                if (ingredient.quantity < 0) throw new InsufficientStockError();
                 await this.ingredientRepo.update(key, ingredient);
             })
         } catch (error) {
