@@ -88,18 +88,20 @@ const eventTypeRepository = new EventTypeRepository();
 const eventTypeService = new EventTypeService(eventTypeRepository);
 const eventTypeController = new EventTypeController(eventTypeService);
 const eventTypeRouter = new EventTypeRouter(eventTypeController);
-  // init
-  app.use(express.json());
+
+// Initialize the ingredient module
 const ingredientRepo = new IngredientRepository()
 const ingredientService = new IngredientService(ingredientRepo)
 const ingredientController = new IngredientController(ingredientService)
 const ingredientRouter = new IngredientRouter(ingredientController)
 
+// Initialize the Plat module
 const platRepo = new PlatRepository()
 const platService = new PlatService(platRepo, ingredientRepo)
 const platController = new PlatController(platService)
 const platRouter = new PlatRouter(platController)
 
+// init
 app.use(express.json());
 
   // global router
