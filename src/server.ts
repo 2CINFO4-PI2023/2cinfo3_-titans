@@ -22,6 +22,18 @@ import { TokenRepositoy } from "./modules/user/repository/token.repository";
 import { AuthRouter } from "./modules/user/router/auth.router";
 import { AuthService } from "./modules/user/service/auth.service";
 import { Mailer } from "./notifiers/mail/mail.service";
+import { InscriptionRepository } from "./modules/event/repository/inscription.repository";
+import { InscriptionService } from "./modules/event/service/inscription.service";
+import { InscriptionController } from "./modules/event/controller/inscription.controller";
+import { InscriptionRouter } from "./modules/event/router/inscription.router";
+import { EventRepository } from "./modules/event/repository/event.repository";
+import { EventService } from "./modules/event/service/event.service";
+import { EventController } from "./modules/event/controller/event.controller";
+import { EventRouter } from "./modules/event/router/event.router";
+import { EventTypeController } from "./modules/event/controller/eventType.controller";
+import { EventTypeRepository } from "./modules/event/repository/eventType.repository";
+import { EventTypeRouter } from "./modules/event/router/eventType.router";
+import { EventTypeService } from "./modules/event/service/eventType.service";
 
 import { IngredientRepository } from './modules/stock/repository/ingredient.repository';
 import { IngredientService } from './modules/stock/service/ingredient.service';
@@ -59,6 +71,23 @@ const init = async (app: Express) => {
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
 
+  // Initialize the inscription module
+const inscriptionRepository = new InscriptionRepository();
+const inscriptionService = new InscriptionService(inscriptionRepository);
+const inscriptionController = new InscriptionController(inscriptionService);
+const inscriptionRouter = new InscriptionRouter(inscriptionController);
+
+// Initialize the event module
+const eventRepository = new EventRepository();
+const eventService = new EventService(eventRepository);
+const eventController = new EventController(eventService);
+const eventRouter = new EventRouter(eventController, inscriptionController);
+
+// Initialize the eventType module
+const eventTypeRepository = new EventTypeRepository();
+const eventTypeService = new EventTypeService(eventTypeRepository);
+const eventTypeController = new EventTypeController(eventTypeService);
+const eventTypeRouter = new EventTypeRouter(eventTypeController);
   // init
   app.use(express.json());
 const ingredientRepo = new IngredientRepository()
@@ -74,7 +103,8 @@ const platRouter = new PlatRouter(platController)
 app.use(express.json());
 
   // global router
-  new Routes(app, reclamationRouter, userRouter, authRouter,ingredientRouter,platRouter).init();
+  new Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter,ingredientRouter,platRouter).init();
+
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(
