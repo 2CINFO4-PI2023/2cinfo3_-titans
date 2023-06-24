@@ -9,6 +9,7 @@ export interface IPlatController {
     update(req: Request, res: Response): void;
     delete(req: Request, res: Response): void;
     platCommand(req: Request, res: Response): void;
+    calculCalories(req:Request, res: Response):void;
 }
 
 export class PlatController implements IPlatController {
@@ -77,6 +78,19 @@ export class PlatController implements IPlatController {
         try {
             await this.platService.commandPlat(req.params.id);
             return res.status(200).send();
+        } catch (error: any) {
+            if (error instanceof HTTPError) {
+                return res
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
+            }
+            res.status(500).send(error);
+        }
+    }
+    async calculCalories(req: Request, res:Response){
+        try {
+            const data = await this.platService.calculCalories(req.params.id);
+            return res.status(200).send(data);
         } catch (error: any) {
             if (error instanceof HTTPError) {
                 return res

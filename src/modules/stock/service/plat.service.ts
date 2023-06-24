@@ -2,6 +2,8 @@ import { InsufficientStockError } from "../../../errors/insufficientStockError";
 import { IPlat } from "../model/plat.schema";
 import { IIngredientRepository } from "../repository/ingredient.repository";
 import { IPlatRepository } from "../repository/plat.repository";
+import { fetchNutritionData } from "../../../utils/nutrition.apiUtils";
+import { INutritionBody } from "../Dto/INutritionBody";
 
 
 
@@ -12,6 +14,7 @@ export interface IPlatService {
     updatePlat(id: string, plat: IPlat): IPlat | Promise<IPlat>;
     deletePlat(id: string): void;
     commandPlat(id: string): void;
+    calculCalories(id: string): INutritionBody[] | Promise<INutritionBody[]>;
 }
 
 export class PlatService implements IPlatService {
@@ -68,4 +71,21 @@ export class PlatService implements IPlatService {
         }
     }
 
+    async calculCalories(id: string): Promise<INutritionBody[]>{
+        try {
+            const plat = await this.getPlat(id);
+            let query: string = "";
+    
+            for (const [key, value] of plat.ingredients) {
+                const ingredient = await this.ingredientRepo.get(key);
+                query += value + ' ' + ingredient.name + ' ';
+            }
+            const nutritionData = await fetchNutritionData(query);
+            return nutritionData;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    
 }

@@ -34,5 +34,10 @@ export class PlatRouter {
             .get((req, res) => {
                 this.platController.platCommand(req, res);
             })
+            this._platRoutes
+            .route("/calories/:id")
+            .get((req, res) => {
+                this.platController.calculCalories(req, res);
+            })
     }
 }
