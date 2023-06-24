@@ -35,6 +35,15 @@ import { EventTypeRepository } from "./modules/event/repository/eventType.reposi
 import { EventTypeRouter } from "./modules/event/router/eventType.router";
 import { EventTypeService } from "./modules/event/service/eventType.service";
 
+import { IngredientRepository } from './modules/stock/repository/ingredient.repository';
+import { IngredientService } from './modules/stock/service/ingredient.service';
+import { IngredientController } from './modules/stock/controller/ingredient.controller';
+import { IngredientRouter } from './modules/stock/router/ingredient.router';
+import { PlatRepository } from './modules/stock/repository/plat.repository';
+import { PlatService } from './modules/stock/service/plat.service';
+import { PlatController } from './modules/stock/controller/plat.controller';
+import { PlatRouter } from './modules/stock/router/plat.router';
+
 dotenv.config();
 
 const app: Express = express();
@@ -81,9 +90,21 @@ const eventTypeController = new EventTypeController(eventTypeService);
 const eventTypeRouter = new EventTypeRouter(eventTypeController);
   // init
   app.use(express.json());
+const ingredientRepo = new IngredientRepository()
+const ingredientService = new IngredientService(ingredientRepo)
+const ingredientController = new IngredientController(ingredientService)
+const ingredientRouter = new IngredientRouter(ingredientController)
+
+const platRepo = new PlatRepository()
+const platService = new PlatService(platRepo, ingredientRepo)
+const platController = new PlatController(platService)
+const platRouter = new PlatRouter(platController)
+
+app.use(express.json());
 
   // global router
-  new Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter).init();
+  new Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter,ingredientRouter,platRouter).init();
+
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(

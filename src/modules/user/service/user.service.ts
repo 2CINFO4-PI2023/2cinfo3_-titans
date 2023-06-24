@@ -25,7 +25,6 @@ export class UserService implements IUserService {
       throw error;
     }
   }
-
   async getUser(id: string): Promise<IUser> {
     try {
       const user = await this.userRepository.get(id);
@@ -34,7 +33,6 @@ export class UserService implements IUserService {
       throw error;
     }
   }
-
   async allUsers(): Promise<IUser[]> {
     try {
       const users = await this.userRepository.all();
@@ -43,7 +41,6 @@ export class UserService implements IUserService {
       throw error;
     }
   }
-
   async deleteUser(id: string) {
     try {
       await this.userRepository.delete(id);
