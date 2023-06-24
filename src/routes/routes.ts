@@ -21,11 +21,11 @@ export class Routes {
       // Serve static files from the 'dist' directory
     this.app.use("/assets",express.static('dist'));
     this.app.use("/auth",this.authRouter.userRoutes)
-    this.app.use(validateJwtToken).use("/users",this.userRouter.userRoutes)
-    this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);
     this.app.use("/events", this.eventRouter.eventRoutes);
     this.app.use("/inscriptions", this.inscriptionRouter.inscriptionRoutes);
     this.app.use("/types", this.eventTypeRouter.eventTypeRoutes);
+    this.app.use(validateJwtToken).use("/users",this.userRouter.userRoutes)
+    this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);
     this.app.use("/ingredient",this.ingredientRouter.ingredientRoutes)
     this.app.use("/plats",this.platRouter.platRoutes)
   }

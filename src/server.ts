@@ -73,7 +73,7 @@ const init = async (app: Express) => {
 
   // Initialize the inscription module
 const inscriptionRepository = new InscriptionRepository();
-const inscriptionService = new InscriptionService(inscriptionRepository);
+const inscriptionService = new InscriptionService(inscriptionRepository,mailer);
 const inscriptionController = new InscriptionController(inscriptionService);
 const inscriptionRouter = new InscriptionRouter(inscriptionController);
 

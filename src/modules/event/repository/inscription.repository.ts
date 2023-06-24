@@ -1,10 +1,12 @@
 import { IInscription, Inscription } from "../model/inscription.schema";
+import { IEvent, Event } from "../model/event.schema";
 
 export interface IInscriptionRepository {
   create(inscription: IInscription): Promise<IInscription>;
   get(id: string): Promise<IInscription | null>;
   getAll(): Promise<IInscription[]>;
   delete(id: string): Promise<void>;
+  getEventById(id: string): Promise<IEvent | null>; // Add the getEventById method
 }
 
 export class InscriptionRepository implements IInscriptionRepository {
@@ -40,6 +42,15 @@ export class InscriptionRepository implements IInscriptionRepository {
   async delete(id: string): Promise<void> {
     try {
       await Inscription.findByIdAndDelete(id);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async getEventById(id: string): Promise<IEvent | null> {
+    try {
+      const event = await Event.findById(id);
+      return event;
     } catch (error: any) {
       throw error;
     }
