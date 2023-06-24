@@ -87,10 +87,10 @@ const init = async (app: Express) => {
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
   // Initialize the inscription module
-  const inscriptionRepository = new InscriptionRepository();
-  const inscriptionService = new InscriptionService(inscriptionRepository);
-  const inscriptionController = new InscriptionController(inscriptionService);
-  const inscriptionRouter = new InscriptionRouter(inscriptionController);
+const inscriptionRepository = new InscriptionRepository();
+const inscriptionService = new InscriptionService(inscriptionRepository,mailer);
+const inscriptionController = new InscriptionController(inscriptionService);
+const inscriptionRouter = new InscriptionRouter(inscriptionController);
 
   // Initialize the event module
   const eventRepository = new EventRepository();
