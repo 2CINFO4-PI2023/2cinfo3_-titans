@@ -87,9 +87,9 @@ export class AuthController implements IAuthController {
   }
   resetPassword(req: Request, res: Response) {
     try {
-      const token = req.body.token;
+      const otp = req.body.otp;
       const newPassword = req.body.newPassword;
-      this.authService.resetPassword(token, newPassword);
+      this.authService.resetPassword(otp, newPassword);
       return res.sendStatus(204);
     } catch (error) {
       if (error instanceof HTTPError) {

@@ -35,14 +35,16 @@ import { EventTypeRepository } from "./modules/event/repository/eventType.reposi
 import { EventTypeRouter } from "./modules/event/router/eventType.router";
 import { EventTypeService } from "./modules/event/service/eventType.service";
 
-import { IngredientRepository } from './modules/stock/repository/ingredient.repository';
-import { IngredientService } from './modules/stock/service/ingredient.service';
-import { IngredientController } from './modules/stock/controller/ingredient.controller';
-import { IngredientRouter } from './modules/stock/router/ingredient.router';
-import { PlatRepository } from './modules/stock/repository/plat.repository';
-import { PlatService } from './modules/stock/service/plat.service';
-import { PlatController } from './modules/stock/controller/plat.controller';
-import { PlatRouter } from './modules/stock/router/plat.router';
+import { IngredientRepository } from "./modules/stock/repository/ingredient.repository";
+import { IngredientService } from "./modules/stock/service/ingredient.service";
+import { IngredientController } from "./modules/stock/controller/ingredient.controller";
+import { IngredientRouter } from "./modules/stock/router/ingredient.router";
+import { PlatRepository } from "./modules/stock/repository/plat.repository";
+import { PlatService } from "./modules/stock/service/plat.service";
+import { PlatController } from "./modules/stock/controller/plat.controller";
+import { PlatRouter } from "./modules/stock/router/plat.router";
+const session = require("express-session");
+const passport = require('passport');
 
 dotenv.config();
 
@@ -70,43 +72,61 @@ const init = async (app: Express) => {
   const authService = new AuthService(userService, mailer, tokenRepositoy);
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
-
+  authService.googleAuth();
   // Initialize the inscription module
-const inscriptionRepository = new InscriptionRepository();
-const inscriptionService = new InscriptionService(inscriptionRepository);
-const inscriptionController = new InscriptionController(inscriptionService);
-const inscriptionRouter = new InscriptionRouter(inscriptionController);
+  const inscriptionRepository = new InscriptionRepository();
+  const inscriptionService = new InscriptionService(inscriptionRepository);
+  const inscriptionController = new InscriptionController(inscriptionService);
+  const inscriptionRouter = new InscriptionRouter(inscriptionController);
 
-// Initialize the event module
-const eventRepository = new EventRepository();
-const eventService = new EventService(eventRepository);
-const eventController = new EventController(eventService);
-const eventRouter = new EventRouter(eventController, inscriptionController);
+  // Initialize the event module
+  const eventRepository = new EventRepository();
+  const eventService = new EventService(eventRepository);
+  const eventController = new EventController(eventService);
+  const eventRouter = new EventRouter(eventController, inscriptionController);
 
-// Initialize the eventType module
-const eventTypeRepository = new EventTypeRepository();
-const eventTypeService = new EventTypeService(eventTypeRepository);
-const eventTypeController = new EventTypeController(eventTypeService);
-const eventTypeRouter = new EventTypeRouter(eventTypeController);
+  // Initialize the eventType module
+  const eventTypeRepository = new EventTypeRepository();
+  const eventTypeService = new EventTypeService(eventTypeRepository);
+  const eventTypeController = new EventTypeController(eventTypeService);
+  const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
-// Initialize the ingredient module
-const ingredientRepo = new IngredientRepository()
-const ingredientService = new IngredientService(ingredientRepo)
-const ingredientController = new IngredientController(ingredientService)
-const ingredientRouter = new IngredientRouter(ingredientController)
+  // Initialize the ingredient module
+  const ingredientRepo = new IngredientRepository();
+  const ingredientService = new IngredientService(ingredientRepo);
+  const ingredientController = new IngredientController(ingredientService);
+  const ingredientRouter = new IngredientRouter(ingredientController);
 
-// Initialize the Plat module
-const platRepo = new PlatRepository()
-const platService = new PlatService(platRepo, ingredientRepo)
-const platController = new PlatController(platService)
-const platRouter = new PlatRouter(platController)
+  // Initialize the Plat module
+  const platRepo = new PlatRepository();
+  const platService = new PlatService(platRepo, ingredientRepo);
+  const platController = new PlatController(platService);
+  const platRouter = new PlatRouter(platController);
 
-// init
-app.use(express.json());
+  // init
+  app.use(express.json());
+  app.use(
+    session({
+      secret: "keyboard cat",
+      saveUninitialized: true,
+      resave: true,
+    })
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // global router
-  new Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter,ingredientRouter,platRouter).init();
-
+  new Routes(
+    app,
+    reclamationRouter,
+    userRouter,
+    authRouter,
+    eventRouter,
+    inscriptionRouter,
+    eventTypeRouter,
+    ingredientRouter,
+    platRouter
+  ).init();
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(
@@ -117,10 +137,9 @@ app.use(express.json());
   app.get("/", (req: Request, res: Response) => {
     res.send("OK");
   });
-  
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
   });
 };
 
-init(app)
+init(app);

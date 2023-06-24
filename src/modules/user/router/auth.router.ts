@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { IAuthController } from "../controller/auth.controller";
+import passport from "passport";
 
 export class AuthRouter {
   private authRoutes: Router = Router();
@@ -26,5 +27,6 @@ export class AuthRouter {
     this.authRoutes.post("/reset-password", (req, res) => {
       this.authController.resetPassword(req, res);
     });
+    this.authRoutes.get('/login/google', passport.authenticate('google'));
   }
 }

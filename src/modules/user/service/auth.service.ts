@@ -3,20 +3,22 @@ import { readFileSync } from "fs";
 import { NotFoundError } from "../../../errors/NotFoundError";
 import { UnauthorizedError } from "../../../errors/UnauthorizedError";
 import { generateAccessToken } from "../../../helpers/jwtHelper";
-import { generateRandomToken } from "../../../helpers/tokenHelper";
+import { generateOTP, generateRandomToken } from "../../../helpers/tokenHelper";
 import { IMailNotifier } from "../../../notifiers/mail/mail.service";
 import { ISignupBody } from "../dto/ISignupBody";
 import { IUser } from "../model/user.schema";
 import { ITokenRepository } from "../repository/token.repository";
 import { IUserService } from "./user.service";
-import { hash } from "bcrypt";
+
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oidc');
 
 export interface IAuthService {
   signup(user: any): any;
   login(credentials: any): any;
   activateUser(token: string): any;
   sendPasswordResetEmail(email: string): any;
-  resetPassword(token:string,newPassword:string): any;
+  resetPassword(otp:string,newPassword:string): any;
 }
 
 export enum ROLES {
@@ -61,7 +63,7 @@ export class AuthService implements IAuthService {
         throw new UnauthorizedError("invalid credentials");
       }
       if (!user.confirmed) {
-        throw new UnauthorizedError("invalid credentials");
+        throw new UnauthorizedError("Account not confirmed");
       }
 
       const jwt = generateAccessToken({ user });
@@ -90,27 +92,49 @@ export class AuthService implements IAuthService {
     try {
       // TODO set frontend url of reset password page
       const user = await <IUser>this.userService.findByEmail(email);
-      const resetToken = generateRandomToken();
+      const otp = generateOTP();
       const content = readFileSync("dist/reset_password.html", "utf8").toString();
-      const modifiedContent = content.replace(/\[TOKEN\]/g, resetToken);
-      this.tokenRepositoy.set(resetToken, user._id.toString(), 60 * 5);
-      this.mailNotifier.sendMail(user.email, modifiedContent, "Reset password");
+      // modifiedContent = content.replace(/\[TOKEN\]/g, resetToken);
+      this.tokenRepositoy.set(otp, user._id.toString(), 60 * 5);
+      this.mailNotifier.sendMail(user.email, otp, "Reset password");
     } catch (error) {
       throw error;
     }
   }
-  async resetPassword(token:string,newPassword:string){
+  async resetPassword(otp:string,newPassword:string){
     try {
-      const id = await this.tokenRepositoy.get(token);
+      const id = await this.tokenRepositoy.get(otp);
       if (!id) {
-        throw new NotFoundError("email not found");
+        throw new NotFoundError("otp expired");
       }
       const user = <IUser>this.userService.getUser(id);
-      const hashedPassword = await hash(<string>newPassword, 10);
-      user.password = hashedPassword;
+      user.password = newPassword;
       this.userService.updateUser(id, user);
     } catch (error) {
       throw error;
     }    
+  }
+  googleAuth(){
+    passport.use(new GoogleStrategy({
+      clientID: process.env['GOOGLE_CLIENT_ID'],
+      clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
+      callbackURL: '/auth/google/callback',
+      scope: [ 'profile' ]
+    }, function verify(issuer:any, profile:any, cb:any) {
+      console.log("issuer: ",issuer);
+      console.log("profile: ",profile);
+      console.log("cb: ",cb);
+    }))
+    passport.serializeUser(function(user:any, cb:any) {
+      process.nextTick(function() {
+        cb(null, { id: user.id, username: user.username, name: user.name });
+      });
+    });
+    
+    passport.deserializeUser(function(user:any, cb:any) {
+      process.nextTick(function() {
+        return cb(null, user);
+      });
+    });
   }
 }
