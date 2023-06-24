@@ -43,7 +43,7 @@ export class MessageController implements IMessageController {
   async askchatbot(req: Request, res: Response) {
     try {
       const messageprompt = req.body.message;
-     const id ="kkfkdfdofdokfdkfo";
+     const id =req.params.id;
       const message = await this.messageService.askchatbot(id,messageprompt);
       res.json(message);
     } catch (error: any) {

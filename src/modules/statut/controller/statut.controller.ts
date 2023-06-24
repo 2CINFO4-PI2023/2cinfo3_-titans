@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { ITypereclamationService } from "../service/typereclamation.service";
+import { IStatutService } from "../service/statut.service";
 import { DuplicatedError } from "../../../errors/DuplicatedError";
 
-export interface ITypereclamationController {
+export interface IStatutController {
   create(req: Request, res: Response): void;
   get(req: Request, res: Response): void;
   getAll(req: Request, res: Response): void;
@@ -10,13 +10,13 @@ export interface ITypereclamationController {
   delete(req: Request, res: Response): void;
 }
 
-export class TypereclamationController implements ITypereclamationController {
-  constructor(private typereclamationService: ITypereclamationService) {}
+export class StatutController implements IStatutController {
+  constructor(private statutService: IStatutService) {}
 
   async create(req: Request, res: Response) {
     try {
-      const typereclamation = req.body;
-      const data = await this.typereclamationService.createTypereclamation(typereclamation);
+      const statut = req.body;
+      const data = await this.statutService.createStatut(statut);
       res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof DuplicatedError) {
@@ -29,11 +29,11 @@ export class TypereclamationController implements ITypereclamationController {
   async get(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const typereclamation = await this.typereclamationService.getTypereclamation(id);
-      if (!typereclamation) {
-        return res.status(404).json({ message: "Typereclamation not found" });
+      const statut = await this.statutService.getStatut(id);
+      if (!statut) {
+        return res.status(404).json({ message: "Statut not found" });
       }
-      res.json(typereclamation);
+      res.json(statut);
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -41,8 +41,8 @@ export class TypereclamationController implements ITypereclamationController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const typereclamations = await this.typereclamationService.allTypereclamations();
-      res.json(typereclamations);
+      const statuts = await this.statutService.allStatuts();
+      res.json(statuts);
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -51,9 +51,9 @@ export class TypereclamationController implements ITypereclamationController {
   async update(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const typereclamation = req.body;
-      await this.typereclamationService.updateTypereclamation(id, typereclamation);
-      res.json({ message: "Typereclamation updated successfully" });
+      const statut = req.body;
+      await this.statutService.updateStatut(id, statut);
+      res.json({ message: "Statut updated successfully" });
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -62,8 +62,8 @@ export class TypereclamationController implements ITypereclamationController {
   async delete(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      await this.typereclamationService.deleteTypereclamation(id);
-      res.json({ message: "Typereclamation deleted successfully" });
+      await this.statutService.deleteStatut(id);
+      res.json({ message: "Statut deleted successfully" });
     } catch (error: any) {
       res.status(500).send(error);
     }

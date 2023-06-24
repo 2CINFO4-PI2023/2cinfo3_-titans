@@ -13,10 +13,10 @@ import { ReclamationService } from './modules/reclamation/service/reclamation.se
 import { ReclamationController } from './modules/reclamation/controller/reclamation.controller';
 import { ReclamationRouter } from './modules/reclamation/router/reclamation.router';
 
-import { TypereclamationRepository } from './modules/typereclamation/repository/typereclamation.repository';
-import { TypereclamationService } from './modules/typereclamation/service/typereclamation.service';
-import { TypereclamationController } from './modules/typereclamation/controller/typereclamation.controller';
-import { TypereclamationRouter } from './modules/typereclamation/router/typereclamation.router';
+import { StatutRepository } from './modules/statut/repository/statut.repository';
+import { StatutService } from './modules/statut/service/statut.service';
+import { StatutController } from './modules/statut/controller/statut.controller';
+import { StatutRouter } from './modules/statut/router/statut.router';
 
 
 import { MessageRepository } from './modules/message/repository/message.repository';
@@ -58,16 +58,16 @@ const reclamationRouter = new ReclamationRouter(reclamationController)
 
 // init mesage module
 const messageRepository = new MessageRepository()
-const mesageService = new MessageService(messageRepository)
+const mesageService = new MessageService(messageRepository,reclamationRepository)
 const mesageController = new MessageController(mesageService)
 const mesageRouter = new MessageRouter(mesageController)
 
 
 // init type  reclamation module
-const typereclamationRepository = new TypereclamationRepository()
-const typereclamationService = new TypereclamationService(typereclamationRepository)
-const typereclamationController = new TypereclamationController(typereclamationService)
-const typereclamationRouter = new TypereclamationRouter(typereclamationController)
+const statutRepository = new StatutRepository()
+const statutService = new StatutService(statutRepository)
+const statutController = new StatutController(statutService)
+const statutRouter = new StatutRouter(statutController)
 
 const authService = new AuthService(userService,mailer)
 const authController = new AuthController(authService)
@@ -81,7 +81,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // global router
 
-new Routes(app,reclamationRouter,typereclamationRouter,mesageRouter,userRouter,authRouter).init()
+new Routes(app,reclamationRouter,statutRouter,mesageRouter,userRouter,authRouter).init()
 
 
 

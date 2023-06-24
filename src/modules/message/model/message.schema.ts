@@ -1,17 +1,18 @@
 import { Schema, model } from "mongoose";
+import { IUser } from "../../user/model/user.schema";
 
 export interface IMessage {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
+  user : IUser;
+  description: string;
+  from:string;
+  date_creation:Date
 }
 
 const messageSchema = new Schema<IMessage>({
-  name: { type: String, required: true},
-  email: { type: String, required: true},
-  phone: String,
-  message:String
+  user: { type: Schema.Types.ObjectId, ref: 'User' }, 
+  description:String,
+  from:String,
+  date_creation:Date
 });
 
 export const Message = model<IMessage>("Message", messageSchema);

@@ -13,7 +13,7 @@ export class ReclamationRouter {
   }
 
   private init() {
-    this._reclamationRoutes.route("").post((req, res) => {
+    this._reclamationRoutes.route("/:id").post((req, res) => {
       this.reclamationController.create(req, res);
     });
 
