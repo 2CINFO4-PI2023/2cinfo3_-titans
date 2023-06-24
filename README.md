@@ -9,5 +9,7 @@ DATABASE_URI=mongodb://127.0.0.1:27017/pureplates
 TOKEN_SECRET=<RANDOM STRING>
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_PASSWORD= generate yout owen app passwords https://support.google.com/accounts/answer/185833?hl=en
+SMTP_PASSWORD= generate your own app passwords https://support.google.com/accounts/answer/185833?hl=en
 SMTP_USERNAME=<your_email@gmail.com>
+NUTRITION_API_URI=https://api.calorieninjas.com/v1/nutrition
+NUTRITION_API_KEY= generate your own key from here https://calorieninjas.com/register by registring then login then click show key more documentation is here https://calorieninjas.com/api
