@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { IUser } from "../model/user.schema";
 import { IUserRepository } from "../repository/user.repository";
 
@@ -7,6 +8,7 @@ export interface IUserService {
   allUsers(): IUser[] | Promise<IUser[]>;
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
+  findByEmail(email: string): IUser | Promise<IUser>;
 }
 
 export class UserService implements IUserService {
@@ -14,6 +16,10 @@ export class UserService implements IUserService {
 
   async createUser(user: IUser): Promise<IUser> {
     try {
+      if (user.password) {
+        const hashedPassword = await hash(<string>user.password, 10);
+        user.password = hashedPassword;
+      }
       return await this.userRepository.create(user);
     } catch (error) {
       throw error;
@@ -42,9 +48,22 @@ export class UserService implements IUserService {
       throw error;
     }
   }
+
   async updateUser(id: string, user: IUser) {
     try {
+      if (user.password) {
+        const hashedPassword = await hash(<string>user.password, 10);
+        user.password = hashedPassword;
+      }
       return await this.userRepository.update(id, user);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findByEmail(email: string): Promise<IUser> {
+    try {
+      return await this.userRepository.findByEmail(email);
     } catch (error) {
       throw error;
     }

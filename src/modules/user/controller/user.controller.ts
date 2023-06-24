@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { IUserService } from "../service/user.service";
 import { HTTPError } from "../../../errors/HTTPError";
+import { createUserSchema } from "./schema/createSchema";
+import { InvalidBodyError } from "../../../errors/InvalidBodyError";
 
 export interface IUserController {
   create(req: Request, res: Response): void;
@@ -9,12 +11,19 @@ export interface IUserController {
   delete(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
 }
-export class UserController {
+export class UserController implements IUserController {
   constructor(private userService: IUserService) {}
 
   async create(req: Request, res: Response) {
     try {
       const user = req.body;
+      if (Object.keys(user).length === 0) {
+        throw new InvalidBodyError('Empty body');
+      }
+      const { error } = createUserSchema.validate(req.body);
+      if (error) {
+        throw new InvalidBodyError(error.details[0].message);
+      }
       const data = await this.userService.createUser(user);
       res.status(201).json(data);
     } catch (error: any) {
@@ -66,7 +75,15 @@ export class UserController {
 
   async update(req: Request, res: Response) {
     try {
-      const user = await this.userService.updateUser(req.params.id, req.body);
+      const body = req.body;
+      if (Object.keys(body).length === 0) {
+        throw new InvalidBodyError('Empty body');
+      }
+      const { error } = createUserSchema.validate(body);
+      if (error) {
+        throw new InvalidBodyError(error.details[0].message);
+      }
+      const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);
     } catch (error: any) {
       if (error instanceof HTTPError) {
