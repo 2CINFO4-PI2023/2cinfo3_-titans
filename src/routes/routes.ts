@@ -24,7 +24,7 @@ export class Routes {
     this.app.use("/events", this.eventRouter.eventRoutes);
     this.app.use("/inscriptions", this.inscriptionRouter.inscriptionRoutes);
     this.app.use("/types", this.eventTypeRouter.eventTypeRoutes);
-    this.app.use("/ingredient",this.ingredientRouter.ingredientRoutes)
+    this.app.use("/ingredients",this.ingredientRouter.ingredientRoutes)
     this.app.use("/plats",this.platRouter.platRoutes)
     this.app.use(validateJwtToken).use("/users",this.userRouter.userRoutes)
     this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);

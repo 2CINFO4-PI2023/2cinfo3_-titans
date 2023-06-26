@@ -9,6 +9,7 @@ export interface IIngredientController {
   getAll(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
+  outOfStock(req: Request, res: Response): void;
 }
 
 export class IngredientController implements IIngredientController {
@@ -70,6 +71,14 @@ export class IngredientController implements IIngredientController {
           .status(error.http_code)
           .json({ message: error.message, description: error.description });
       }
+      res.status(500).send(error);
+    }
+  }
+  async outOfStock(req: Request, res: Response) {
+    try {
+      const data = await this.ingredientService.outOfStock();
+      res.status(200).json(data);
+    } catch (error: any) {
       res.status(500).send(error);
     }
   }

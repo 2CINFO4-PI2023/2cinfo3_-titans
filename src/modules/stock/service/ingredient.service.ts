@@ -8,6 +8,7 @@ export interface IIngredientService {
     getAllIngredient(): IIngredient[] | Promise<IIngredient[]>;
     updateIngredient(id: string, ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     deleteIngredient(id: string): void;
+    outOfStock(): IIngredient[] | Promise<IIngredient[]>
 }
 
 export class IngredientService implements IIngredientService {
@@ -56,6 +57,23 @@ export class IngredientService implements IIngredientService {
             console.info("IngredientService: deleting an ingredient");
             await this.ingredientRepo.delete(id);
             console.info("IngredientService: an ingredientis deleted");
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    async outOfStock(): Promise<IIngredient[]>{
+        try {
+            console.info("IngredientService:starting treatement ingredient out of stock");
+            const ingredients = await this.ingredientRepo.getAll();
+            let outOfStockIngredient:IIngredient[] = new Array;
+            for (const ingredient of ingredients) {
+                if(ingredient.quantity<10){
+                    outOfStockIngredient.push(ingredient);
+                }
+            }
+            console.info("IngredientService:treatement ingredient out of stock is done");
+            return outOfStockIngredient;
         } catch (error) {
             console.error(error);
             throw error;
