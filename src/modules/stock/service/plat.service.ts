@@ -15,6 +15,7 @@ export interface IPlatService {
     deletePlat(id: string): void;
     commandPlat(id: string): void;
     calculCalories(id: string): INutritionBody[] | Promise<INutritionBody[]>;
+    getlatestPlat(): IPlat[] | Promise<IPlat[]>;
 }
 
 export class PlatService implements IPlatService {
@@ -102,5 +103,14 @@ export class PlatService implements IPlatService {
             throw error;
         }
     }
-    
+
+    async getlatestPlat(): Promise<IPlat[]> {
+        try {
+            console.info("PlatService: getting the latest plat");
+            return await this.platRepo.getlatestPlat();
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }

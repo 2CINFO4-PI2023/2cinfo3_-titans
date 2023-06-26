@@ -10,6 +10,7 @@ export interface IPlatController {
     delete(req: Request, res: Response): void;
     platCommand(req: Request, res: Response): void;
     calculCalories(req:Request, res: Response):void;
+    getlatestPlat(req:Request, res: Response):void;
 }
 
 export class PlatController implements IPlatController {
@@ -101,4 +102,12 @@ export class PlatController implements IPlatController {
         }
     }
 
+    async getlatestPlat(req: Request, res: Response) {
+        try {
+            const data = await this.platService.getlatestPlat();
+            res.status(200).json(data);
+        } catch (error: any) {
+            res.status(500).send(error);
+        }
+    }
 }

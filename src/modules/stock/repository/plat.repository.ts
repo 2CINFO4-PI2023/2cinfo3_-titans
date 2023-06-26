@@ -9,6 +9,7 @@ export interface IPlatRepository {
     getAll(): IPlat[] | Promise<IPlat[]>;
     update(id: string, plat: IPlat): IPlat | Promise<IPlat>;
     delete(id: string): void;
+    getlatestPlat(): Promise<IPlat[]>;
 }
 
 export class PlatRepository implements IPlatRepository {
@@ -80,6 +81,17 @@ export class PlatRepository implements IPlatRepository {
             throw error;
         }
     }
-
+    async getlatestPlat(): Promise<IPlat[]> {
+        try {
+            console.info("PlatRepo: getting latest plat")
+            const plats = await Plat.find().sort({ updatedAt:-1}).limit(1).exec();
+            if (plats == null) throw new NotFoundError("Plat is not found!");
+            console.info("PlatRepo: latest plats is found");
+            return plats;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 
 }
