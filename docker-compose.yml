@@ -11,13 +11,16 @@ services:
       - mongodb
       - redis
     image: pureplats:latest
+    restart: unless-stopped
   mongodb:
     container_name: mongodb
     image: mongo
     ports:
       - '27017:27017'
+    restart: unless-stopped
   redis:
     container_name: redis
     image: redis
     ports:
       - '6379:6379'
+    restart: unless-stopped
