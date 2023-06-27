@@ -19,6 +19,11 @@ export class IngredientRouter {
                 this.ingredientController.getAll(req, res);
             });
         this._ingredientRoutes
+            .route("/outofstock")
+            .get((req, res) => {
+                this.ingredientController.outOfStock(req, res);
+            })
+        this._ingredientRoutes
             .route("/:id")
             .get((req, res) => {
                 this.ingredientController.get(req, res);

@@ -2,7 +2,6 @@ import { IPlatService } from "../service/plat.service";
 import { HTTPError } from "../../../errors/HTTPError";
 import { Request, Response } from "express";
 
-
 export interface IPlatController {
     create(req: Request, res: Response): void;
     get(req: Request, res: Response): void;
@@ -10,6 +9,8 @@ export interface IPlatController {
     update(req: Request, res: Response): void;
     delete(req: Request, res: Response): void;
     platCommand(req: Request, res: Response): void;
+    calculCalories(req:Request, res: Response):void;
+    getlatestPlat(req:Request, res: Response):void;
 }
 
 export class PlatController implements IPlatController {
@@ -87,5 +88,26 @@ export class PlatController implements IPlatController {
             res.status(500).send(error);
         }
     }
+    async calculCalories(req: Request, res:Response){
+        try {
+            const data = await this.platService.calculCalories(req.params.id);
+            return res.status(200).send(data);
+        } catch (error: any) {
+            if (error instanceof HTTPError) {
+                return res
+                    .status(error.http_code)
+                    .json({ message: error.message, description: error.description });
+            }
+            res.status(500).send(error);
+        }
+    }
 
+    async getlatestPlat(req: Request, res: Response) {
+        try {
+            const data = await this.platService.getlatestPlat();
+            res.status(200).json(data);
+        } catch (error: any) {
+            res.status(500).send(error);
+        }
+    }
 }
