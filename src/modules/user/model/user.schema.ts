@@ -8,6 +8,7 @@ export interface IUser {
   password?: string;
   confirmed:boolean;
   role:number;
+  favoritePlat: string[];
   _id: Types.ObjectId
 }
 
@@ -18,6 +19,7 @@ const userSchema = new Schema<IUser>({
   address: String,
   password: { type: String },
   confirmed: { type: Boolean, default: false },
+  favoritePlat:[{ type: Schema.Types.ObjectId, ref: 'Plat' }],
   role: Number
 },{
   timestamps:true

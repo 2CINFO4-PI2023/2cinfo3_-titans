@@ -1,6 +1,8 @@
 import { hash } from "bcrypt";
 import { IUser } from "../model/user.schema";
 import { IUserRepository } from "../repository/user.repository";
+import { IPlat } from "../../stock/model/plat.schema";
+import { IPlatRepository } from "../../stock/repository/plat.repository";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
@@ -9,10 +11,12 @@ export interface IUserService {
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
   findByEmail(email: string): IUser | Promise<IUser>;
+  favoritePlat(id: string): IPlat[] | Promise<IPlat[]>;
+  addPlatToFavorite(id: string, platId: string): void;
 }
 
 export class UserService implements IUserService {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(private userRepository: IUserRepository, private platRepo: IPlatRepository) { }
 
   async createUser(user: IUser): Promise<IUser> {
     try {
@@ -65,6 +69,47 @@ export class UserService implements IUserService {
     try {
       return await this.userRepository.findByEmail(email);
     } catch (error) {
+      throw error;
+    }
+  }
+  async favoritePlat(id: string): Promise<IPlat[]> {
+    try {
+      console.info("trying to get favorite plates");
+      const user = await this.userRepository.get(id);
+      let favPlats: IPlat[] = new Array;
+      for (const platid of user.favoritePlat) {
+        const plat = await this.platRepo.get(platid);
+        console.log(plat);
+        favPlats.push(plat);
+      }
+      console.log(favPlats);
+      console.info("returned favorite plates");
+      return favPlats;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  async addPlatToFavorite(userId: string, platId: string) {
+    
+    try {
+      console.info("trying to add to favorite plate");
+      const user = await this.userRepository.get(userId);
+      let duplicatedPlat:boolean = false;
+      for (const platid of user.favoritePlat) {
+        if(platid==platId){
+          duplicatedPlat = true;
+          console.info("favorite plate already exists in the list");
+          break;
+        }
+      }
+      if(!duplicatedPlat){
+        user.favoritePlat.push(platId);
+        this.userRepository.update(userId, user);
+        console.info("favorite plate added into the list");
+      }
+    } catch (error) {
+      console.error(error);
       throw error;
     }
   }

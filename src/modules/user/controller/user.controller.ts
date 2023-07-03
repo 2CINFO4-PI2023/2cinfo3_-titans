@@ -10,6 +10,8 @@ export interface IUserController {
   get(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
+  favoritePlat(req: Request, res: Response): void;
+  addPlatToFavorite(req: Request, res: Response): void;
 }
 export class UserController implements IUserController {
   constructor(private userService: IUserService) {}
@@ -86,6 +88,35 @@ export class UserController implements IUserController {
       const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);
     } catch (error: any) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+  async favoritePlat(req: Request, res: Response){
+    try {
+      const plats = await this.userService.favoritePlat(req.params.id);
+      res.status(200).json(plats);
+    } catch (error: any) {
+      console.log(error);
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+  async addPlatToFavorite(req: Request, res: Response) {
+    try {
+      this.userService.addPlatToFavorite(req.params.userId, req.params.platId);
+      const user = this.userService.getUser(req.params.userId);
+      return res.status(200).send(user);
+    } catch (error:any) {
+      console.log(error);
       if (error instanceof HTTPError) {
         return res
           .status(error.http_code)

@@ -29,5 +29,15 @@ export class UserRouter {
       .put((req, res) => {
         this.userController.update(req, res);
       });
+    this._userRoutes
+      .route("favoriteplate/:id")
+      .get((req, res) => {
+        this.userController.favoritePlat(req, res);
+      });
+      this._userRoutes
+      .route("favoriteplate/:userId/:platId")
+      .put((req, res) => {
+        this.userController.addPlatToFavorite(req, res);
+      });
   }
 }

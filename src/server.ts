@@ -56,10 +56,23 @@ const init = async (app: Express) => {
   let redisClient: any = await connectRedis();
   // init util modules
   const mailer = new Mailer();
+  
+  // Initialize the ingredient module
+  const ingredientRepo = new IngredientRepository();
+  const ingredientService = new IngredientService(ingredientRepo);
+  const ingredientController = new IngredientController(ingredientService);
+  const ingredientRouter = new IngredientRouter(ingredientController);
+
+  // Initialize the Plat module
+  const platRepo = new PlatRepository();
+  const platService = new PlatService(platRepo, ingredientRepo);
+  const platController = new PlatController(platService);
+  const platRouter = new PlatRouter(platController);
+
   // init user module
   const tokenRepositoy = new TokenRepositoy(redisClient);
   const userRepository = new UserRepository();
-  const userService = new UserService(userRepository);
+  const userService = new UserService(userRepository,platRepo);
   const userController = new UserController(userService);
   const userRouter = new UserRouter(userController);
 
@@ -90,18 +103,6 @@ const init = async (app: Express) => {
   const eventTypeService = new EventTypeService(eventTypeRepository);
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
-
-  // Initialize the ingredient module
-  const ingredientRepo = new IngredientRepository();
-  const ingredientService = new IngredientService(ingredientRepo);
-  const ingredientController = new IngredientController(ingredientService);
-  const ingredientRouter = new IngredientRouter(ingredientController);
-
-  // Initialize the Plat module
-  const platRepo = new PlatRepository();
-  const platService = new PlatService(platRepo, ingredientRepo);
-  const platController = new PlatController(platService);
-  const platRouter = new PlatRouter(platController);
 
   // init
   app.use(express.json());
