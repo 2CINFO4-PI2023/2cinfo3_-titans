@@ -19,7 +19,7 @@ export class UserController implements IUserController {
   async create(req: Request, res: Response) {
     try {
       const user = req.body;
-      let imageUrl:string
+      let imageUrl: string;
       if (Object.keys(user).length === 0) {
         throw new InvalidBodyError("Empty body");
       }
@@ -31,7 +31,7 @@ export class UserController implements IUserController {
         imageUrl = `${req.protocol}://${req.get("host")}/assets/${
           req.file.filename
         }`;
-        user.image = imageUrl
+        user.image = imageUrl;
       }
       const data = await this.userService.createUser(user);
       res.status(201).json(data);
@@ -92,12 +92,12 @@ export class UserController implements IUserController {
       if (error) {
         throw new InvalidBodyError(error.details[0].message);
       }
-      let imageUrl:string
+      let imageUrl: string;
       if (req.file) {
         imageUrl = `${req.protocol}://${req.get("host")}/assets/${
           req.file.filename
         }`;
-        body.image = imageUrl
+        body.image = imageUrl;
       }
       const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);

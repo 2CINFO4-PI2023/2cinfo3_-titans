@@ -11,3 +11,12 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_PASSWORD= generate yout owen app passwords https://support.google.com/accounts/answer/185833?hl=en
 SMTP_USERNAME=<your_email@gmail.com>
+FACEBOOK_APP_ID=
+FACEBOOK_APP_SECRET=
+FACEBOOK_APP_CALLBACK_URL=http://localhost:9090/auth/facebook/callback
+GOOGLE_APP_CALLBACK_URL=http://localhost:9090/auth/google/callback
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+SESSION_SECRET=
+ADMIN_PASSWORD=
+ADMIN_USERNAME=

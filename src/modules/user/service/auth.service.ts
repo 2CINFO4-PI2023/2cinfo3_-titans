@@ -22,6 +22,7 @@ export interface IAuthService {
   resetPassword(otp: string, newPassword: string): any;
   googleAuth(): any;
   facebookAuth(): any;
+  createAdmin(user: IUser): Promise<IUser>
 }
 
 export enum ROLES {
@@ -69,7 +70,7 @@ export class AuthService implements IAuthService {
         throw new UnauthorizedError("Account not confirmed");
       }
 
-      const jwt = generateAccessToken({ user });
+      const jwt = generateAccessToken({user});
       return jwt;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -223,5 +224,13 @@ export class AuthService implements IAuthService {
       });
     });
     return passport;
+  }
+
+  async createAdmin(user: IUser): Promise<IUser> {
+    try {
+      return await this.userService.createAdmin(user);
+    } catch (error) {
+      throw error;
+    }
   }
 }

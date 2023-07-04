@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthController, IAuthController } from "../controller/auth.controller";
 import passport from "passport";
+import { authenticateAdmin } from "../../../middlewares/authMiddleware";
 var GoogleStrategy = require("passport-google-oidc");
 
 export class AuthRouter {
@@ -106,5 +107,9 @@ export class AuthRouter {
 
     this.authRoutes.get("/login/google", passport.authenticate("google"));
     this.authRoutes.get("/login/facebook", passport.authenticate("facebook"));
+    
+    this.authRoutes.post('/create-admin',authenticateAdmin,(req,res)=>{
+      this.authController.createAdmin(req,res)
+    })
   }
 }

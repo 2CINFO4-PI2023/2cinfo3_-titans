@@ -13,6 +13,7 @@ export interface IAuthController {
   sendPasswordResetEmail(req: Request, res: Response): void;
   resetPassword(req: Request, res: Response): void;
   oAuthRedirection(req: Request, res: Response): void;
+  createAdmin(req: Request, res: Response): void;
 }
 
 export class AuthController implements IAuthController {
@@ -57,6 +58,7 @@ export class AuthController implements IAuthController {
           .status(error.http_code)
           .json({ message: error.message, description: error.description });
       }
+      console.log(error)
       res.status(500).send(error);
     }
   }
@@ -108,5 +110,20 @@ export class AuthController implements IAuthController {
   oAuthRedirection(req: Request, res: Response) {
     const status = req.query.state == "GOOD" ? 200 : 401
     res.status(status).send({message:status == 200 ? "OK":"Login failed"})
+  }
+
+  async createAdmin(req: Request, res: Response) {
+    try {
+      const data = req.body;
+      const user = await this.authService.createAdmin(data);
+      return res.status(200).send(user);
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
   }
 }

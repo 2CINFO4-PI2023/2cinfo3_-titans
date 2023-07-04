@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { IUserController } from "../controller/user.controller";
 import { multerConfig } from "../../../config/multer";
-const upload = multerConfig(); 
+import {
+  authenticateAdmin,
+  authorize,
+} from "../../../middlewares/authMiddleware";
+import { ROLES } from "../service/auth.service";
+const upload = multerConfig();
 
 export class UserRouter {
   private _userRoutes: Router = Router();
@@ -12,9 +17,10 @@ export class UserRouter {
     return this._userRoutes;
   }
   private init() {
+    //this._userRoutes.use(authorize([ROLES.ADMIN, ROLES.CLIENT]));
     this._userRoutes
       .route("")
-      .post(upload.single('photo'),(req, res) => {
+      .post(upload.single("photo"), (req, res) => {
         this.userController.create(req, res);
       })
       .get((req, res) => {
@@ -25,7 +31,7 @@ export class UserRouter {
       .get((req, res) => {
         this.userController.get(req, res);
       })
-      .delete((req, res) => {
+      .delete(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.delete(req, res);
       })
       .put((req, res) => {
