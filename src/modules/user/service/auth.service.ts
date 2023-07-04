@@ -10,16 +10,18 @@ import { IUser } from "../model/user.schema";
 import { ITokenRepository } from "../repository/token.repository";
 import { IUserService } from "./user.service";
 
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oidc');
+var passport = require("passport");
+var GoogleStrategy = require("passport-google-oidc");
+var FacebookStrategy = require("passport-facebook");
 
 export interface IAuthService {
   signup(user: any): any;
   login(credentials: any): any;
   activateUser(token: string): any;
   sendPasswordResetEmail(email: string): any;
-  resetPassword(otp:string,newPassword:string): any;
+  resetPassword(otp: string, newPassword: string): any;
   googleAuth(): any;
+  facebookAuth(): any;
 }
 
 export enum ROLES {
@@ -41,7 +43,7 @@ export class AuthService implements IAuthService {
       const token = generateRandomToken();
       const content = readFileSync("dist/confirmation.html", "utf8").toString();
       const modifiedContent = content.replace(/\[TOKEN\]/g, token);
-      this.tokenRepositoy.set(token, user._id.toString(), 60 * 2);
+      this.tokenRepositoy.set(token, user._id?.toString(), 60 * 2);
       this.mailNotifier.sendMail(
         user.email,
         modifiedContent,
@@ -92,17 +94,20 @@ export class AuthService implements IAuthService {
   async sendPasswordResetEmail(email: string) {
     try {
       // TODO set frontend url of reset password page
-      const user = await <IUser>this.userService.findByEmail(email);
+      const user = await (<IUser>this.userService.findByEmail(email));
       const otp = generateOTP();
-      const content = readFileSync("dist/reset_password.html", "utf8").toString();
+      const content = readFileSync(
+        "dist/reset_password.html",
+        "utf8"
+      ).toString();
       // modifiedContent = content.replace(/\[TOKEN\]/g, resetToken);
-      this.tokenRepositoy.set(otp, user._id.toString(), 60 * 5);
+      this.tokenRepositoy.set(otp, user._id?.toString(), 60 * 5);
       this.mailNotifier.sendMail(user.email, otp, "Reset password");
     } catch (error) {
       throw error;
     }
   }
-  async resetPassword(otp:string,newPassword:string){
+  async resetPassword(otp: string, newPassword: string) {
     try {
       const id = await this.tokenRepositoy.get(otp);
       if (!id) {
@@ -113,31 +118,110 @@ export class AuthService implements IAuthService {
       this.userService.updateUser(id, user);
     } catch (error) {
       throw error;
-    }    
+    }
   }
-  googleAuth(){
-    passport.use(new GoogleStrategy({
-      clientID: process.env['GOOGLE_CLIENT_ID'],
-      clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-      callbackURL: 'http://localhost:9090/auth/google/callback',
-      scope: [ 'profile',"email" ]
-    }, function verify(issuer:any, profile:any, cb:any) {
-      console.log("issuer: ",issuer);
-      console.log("profile: ",profile);
-      console.log("cb: ",cb);
-      // TODO create user with google_id = profile.id and name = profile.displayName
-      return true
-    }))
-    passport.serializeUser(function(user:any, cb:any) {
-      process.nextTick(function() {
+  googleAuth() {
+    try {
+      const self = this;
+      passport.use(
+        new GoogleStrategy(
+          {
+            clientID: process.env["GOOGLE_CLIENT_ID"],
+            clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
+            callbackURL: "http://localhost:9090/auth/google/callback",
+            scope: ["profile", "email"],
+          },
+          async function verify(issuer: any, profile: any, cb: any) {
+            try {
+              const user = await self.userService.findByEmail(
+                profile?.emails[0]?.value
+              );
+              return cb(null, user);
+            } catch (error) {
+              if (error instanceof NotFoundError) {
+                await self.userService.createUser({
+                  name: profile.displayName,
+                  email: profile?.emails[0]?.value,
+                  phone: "",
+                  address: "",
+                  confirmed: true,
+                  role: ROLES.CLIENT,
+                });
+              } else {
+                cb(error);
+              }
+            }
+          }
+        )
+      );
+      passport.serializeUser(function (user: any, cb: any) {
+        process.nextTick(function () {
+          cb(null, { id: user.id, username: user.username, name: user.name });
+        });
+      });
+
+      passport.deserializeUser(function (user: any, cb: any) {
+        process.nextTick(function () {
+          return cb(null, user);
+        });
+      });
+      return passport;
+    } catch (error) {
+      console.log("global catch");
+    }
+  }
+  facebookAuth() {
+    const self = this;
+    passport.use(
+      new FacebookStrategy(
+        {
+          clientID: process.env.FACEBOOK_APP_ID,
+          clientSecret: process.env.FACEBOOK_APP_SECRET,
+          callbackURL: "http://localhost:9090/auth/facebook/callback",
+          state: true,
+          profileFields: ['displayName', 'email']
+        },
+        async function (
+          accessToken: any,
+          refreshToken: any,
+          profile: any,
+          cb: any
+        ) {
+          try {
+            console.log("profile: ",profile)
+            const user = await self.userService.findByEmail(
+              profile.email || "facebook@login.com"
+            );
+            return cb(null, user);
+          } catch (error) {
+            if (error instanceof NotFoundError) {
+             const user = await self.userService.createUser({
+                name: profile.displayName,
+                email: profile.email || "facebook@login.com",
+                phone: "",
+                address: "",
+                confirmed: true,
+                role: ROLES.CLIENT,
+              });
+              return cb(null, user);
+            } else {
+              cb(error);
+            }
+          }
+        }
+      )
+    );
+    passport.serializeUser(function (user: any, cb: any) {
+      process.nextTick(function () {
         cb(null, { id: user.id, username: user.username, name: user.name });
       });
     });
-    
-    passport.deserializeUser(function(user:any, cb:any) {
-      process.nextTick(function() {
+
+    passport.deserializeUser(function (user: any, cb: any) {
+      process.nextTick(function () {
         return cb(null, user);
       });
     });
+    return passport;
   }
 }
