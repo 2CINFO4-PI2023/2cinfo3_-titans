@@ -2,6 +2,7 @@ import { hash } from "bcrypt";
 import { IUser } from "../model/user.schema";
 import { IUserRepository } from "../repository/user.repository";
 import { deleteFile } from "../../../helpers/fs";
+import { ROLES } from "./auth.service";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
@@ -10,6 +11,7 @@ export interface IUserService {
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
   findByEmail(email: string): IUser | Promise<IUser>;
+  createAdmin(user: IUser): IUser | Promise<IUser>;
 }
 
 export class UserService implements IUserService {
@@ -21,6 +23,21 @@ export class UserService implements IUserService {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;
       }
+      user.role = ROLES.CLIENT;
+      user.confirmed = true
+      return await this.userRepository.create(user);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async createAdmin(user: IUser): Promise<IUser> {
+    try {
+      if (user.password) {
+        const hashedPassword = await hash(<string>user.password, 10);
+        user.password = hashedPassword;
+      }
+      user.role = ROLES.ADMIN;
+      user.confirmed = true
       return await this.userRepository.create(user);
     } catch (error) {
       throw error;
