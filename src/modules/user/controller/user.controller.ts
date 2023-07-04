@@ -27,13 +27,12 @@ export class UserController implements IUserController {
       if (error) {
         throw new InvalidBodyError(error.details[0].message);
       }
-      // if (req.file) {
-      //   imageUrl = `${req.protocol}://${req.get("host")}/images/${
-      //     req.file.filename
-      //   }`;
-        
-      // console.log("imageUrl: ",imageUrl)
-      // }
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${
+          req.file.filename
+        }`;
+        user.image = imageUrl
+      }
       const data = await this.userService.createUser(user);
       res.status(201).json(data);
     } catch (error: any) {
@@ -92,6 +91,13 @@ export class UserController implements IUserController {
       const { error } = updateUserSchema.validate(body);
       if (error) {
         throw new InvalidBodyError(error.details[0].message);
+      }
+      let imageUrl:string
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${
+          req.file.filename
+        }`;
+        body.image = imageUrl
       }
       const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);

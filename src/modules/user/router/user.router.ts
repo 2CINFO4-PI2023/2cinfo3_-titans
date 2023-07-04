@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { IUserController } from "../controller/user.controller";
 import { multerConfig } from "../../../config/multer";
+const upload = multerConfig(); 
 
 export class UserRouter {
   private _userRoutes: Router = Router();
@@ -13,7 +14,7 @@ export class UserRouter {
   private init() {
     this._userRoutes
       .route("")
-      .post((req, res) => {
+      .post(upload.single('photo'),(req, res) => {
         this.userController.create(req, res);
       })
       .get((req, res) => {

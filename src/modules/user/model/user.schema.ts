@@ -8,6 +8,7 @@ export interface IUser {
   password?: string;
   confirmed:boolean;
   role:number;
+  image?:string,
   _id?: Types.ObjectId
 }
 
@@ -16,6 +17,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true,unique: true},
   phone: String,
   address: String,
+  image:String,
   password: { type: String },
   confirmed: { type: Boolean, default: false },
   role: Number

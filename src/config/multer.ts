@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 
 const storageEngine = multer.diskStorage({
-  destination: "./assets",
+  destination: "./dist",
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}--${file.originalname}`);
   },

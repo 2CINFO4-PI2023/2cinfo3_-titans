@@ -8,7 +8,7 @@ export interface IUserRepository {
   create(user: IUser): IUser | Promise<IUser>;
   get(id: string): IUser | Promise<IUser>;
   all(): IUser[] | Promise<IUser[]>;
-  delete(id: string): void;
+  delete(id: string): IUser | Promise<IUser>;
   update(id: string, user: IUser): void;
   findByEmail(email: string): IUser | Promise<IUser>;
 }
@@ -49,7 +49,7 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  async delete(id: string) {
+  async delete(id: string):Promise<IUser>{
     try {
       if (!isValidObjectId(id)) {
         throw new InvalidObjectIdError();
@@ -58,6 +58,7 @@ export class UserRepository implements IUserRepository {
       if (doc == null) {
         throw new NotFoundError("user not found");
       }
+      return doc
     } catch (error) {
       throw error;
     }
