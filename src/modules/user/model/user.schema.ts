@@ -8,7 +8,7 @@ export interface IUser {
   password?: string;
   confirmed:boolean;
   role:number;
-  _id: Types.ObjectId
+  _id?: Types.ObjectId
 }
 
 const userSchema = new Schema<IUser>({

@@ -43,8 +43,9 @@ import { PlatRepository } from "./modules/stock/repository/plat.repository";
 import { PlatService } from "./modules/stock/service/plat.service";
 import { PlatController } from "./modules/stock/controller/plat.controller";
 import { PlatRouter } from "./modules/stock/router/plat.router";
-const session = require("express-session");
+import session from "express-session";
 const passport = require('passport');
+import redisConnect from 'connect-redis';
 
 dotenv.config();
 
@@ -107,14 +108,12 @@ const init = async (app: Express) => {
 
   app.use(
     session({
-      secret: "keyboard cat",
-      saveUninitialized: true,
-      resave: true,
+      secret: <string>process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
     })
   );
-  app.use(passport.initialize());
-  app.use(passport.session());
-  // global router
+  
   new Routes(
     app,
     reclamationRouter,
