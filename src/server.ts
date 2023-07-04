@@ -72,7 +72,6 @@ const init = async (app: Express) => {
   const authService = new AuthService(userService, mailer, tokenRepositoy);
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
-  authService.googleAuth();
   // Initialize the inscription module
   const inscriptionRepository = new InscriptionRepository();
   const inscriptionService = new InscriptionService(inscriptionRepository);
@@ -105,6 +104,7 @@ const init = async (app: Express) => {
 
   // init
   app.use(express.json());
+
   app.use(
     session({
       secret: "keyboard cat",
@@ -114,7 +114,6 @@ const init = async (app: Express) => {
   );
   app.use(passport.initialize());
   app.use(passport.session());
-
   // global router
   new Routes(
     app,

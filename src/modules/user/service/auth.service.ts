@@ -19,6 +19,7 @@ export interface IAuthService {
   activateUser(token: string): any;
   sendPasswordResetEmail(email: string): any;
   resetPassword(otp:string,newPassword:string): any;
+  googleAuth(): any;
 }
 
 export enum ROLES {
@@ -118,12 +119,14 @@ export class AuthService implements IAuthService {
     passport.use(new GoogleStrategy({
       clientID: process.env['GOOGLE_CLIENT_ID'],
       clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-      callbackURL: '/auth/google/callback',
-      scope: [ 'profile' ]
+      callbackURL: 'http://localhost:9090/auth/google/callback',
+      scope: [ 'profile',"email" ]
     }, function verify(issuer:any, profile:any, cb:any) {
       console.log("issuer: ",issuer);
       console.log("profile: ",profile);
       console.log("cb: ",cb);
+      // TODO create user with google_id = profile.id and name = profile.displayName
+      return true
     }))
     passport.serializeUser(function(user:any, cb:any) {
       process.nextTick(function() {
