@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { IUserController } from "../controller/user.controller";
+import { multerConfig } from "../../../config/multer";
 
 export class UserRouter {
   private _userRoutes: Router = Router();

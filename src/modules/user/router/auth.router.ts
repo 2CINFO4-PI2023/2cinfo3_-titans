@@ -27,6 +27,13 @@ export class AuthRouter {
     this.authRoutes.post("/reset-password", (req, res) => {
       this.authController.resetPassword(req, res);
     });
-    this.authRoutes.get('/login/google', passport.authenticate('google'));
+    this.authRoutes.get("/google/callback", (req, res) => {
+      console.log("auth login")
+      this.authController.googleAuth(req, res);
+    });
+
+    this.authRoutes.get('/login/google', (req,res)=>{
+      this.authController.googleLogin(req, res);
+    });
   }
 }
