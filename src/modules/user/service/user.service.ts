@@ -1,6 +1,7 @@
 import { hash } from "bcrypt";
 import { IUser } from "../model/user.schema";
 import { IUserRepository } from "../repository/user.repository";
+import { deleteFile } from "../../../helpers/fs";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
@@ -43,7 +44,8 @@ export class UserService implements IUserService {
   }
   async deleteUser(id: string) {
     try {
-      await this.userRepository.delete(id);
+      const user = await this.userRepository.delete(id);
+      deleteFile(<string>user.image)
     } catch (error) {
       throw error;
     }
@@ -51,6 +53,10 @@ export class UserService implements IUserService {
 
   async updateUser(id: string, user: IUser) {
     try {
+      const doc = await this.userRepository.get(id)
+      if(doc.image != user.image){
+        deleteFile(<string>doc.image)
+      }
       if (user.password) {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;
