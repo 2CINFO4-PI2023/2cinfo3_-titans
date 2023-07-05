@@ -5,6 +5,7 @@ import { deleteFile } from "../../../helpers/fs";
 import { ROLES } from "./auth.service";
 import { IPlat } from "../../stock/model/plat.schema";
 import { IPlatRepository } from "../../stock/repository/plat.repository";
+import { use } from "passport";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
@@ -122,7 +123,6 @@ export class UserService implements IUserService {
       for (const platid of user.favoritePlat) {
         if(platid==platId){
           duplicatedPlat = true;
-          console.info("favorite plate already exists in the list");
           break;
         }
       }
@@ -130,6 +130,11 @@ export class UserService implements IUserService {
         user.favoritePlat.push(platId);
         this.userRepository.update(userId, user);
         console.info("favorite plate added into the list");
+      }else{
+        const index = user.favoritePlat.indexOf(platId);
+        if (index !== -1) {
+          user.favoritePlat.splice(index, 1);
+        }
       }
     } catch (error) {
       console.error(error);
