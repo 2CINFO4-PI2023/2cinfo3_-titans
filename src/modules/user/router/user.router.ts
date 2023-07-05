@@ -17,24 +17,23 @@ export class UserRouter {
     return this._userRoutes;
   }
   private init() {
-    //this._userRoutes.use(authorize([ROLES.ADMIN, ROLES.CLIENT]));
     this._userRoutes
       .route("")
-      .post(upload.single("photo"), (req, res) => {
+      .post(authorize([ROLES.ADMIN]),upload.single("photo"), (req, res) => {
         this.userController.create(req, res);
       })
-      .get((req, res) => {
+      .get(authorize([ROLES.ADMIN]),(req, res) => {
         this.userController.getAll(req, res);
       });
     this._userRoutes
       .route("/:id")
-      .get((req, res) => {
+      .get(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.get(req, res);
       })
-      .delete(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
+      .delete(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
         this.userController.delete(req, res);
       })
-      .put((req, res) => {
+      .put(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.update(req, res);
       });
   }
