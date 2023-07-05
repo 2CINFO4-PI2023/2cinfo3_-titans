@@ -18,6 +18,13 @@ export class CommandeController implements ICommandeController {
       const commande = req.body;
       const data = await this.commandeService.createCommande(commande);
       res.status(201).json(data);
+
+      // add confirmation email with mohamed
+
+         
+
+
+
     } catch (error: any) {
       if (error instanceof DuplicatedError) {
         return res.status(error.http_code).json({ message: error.message, description: error.description });

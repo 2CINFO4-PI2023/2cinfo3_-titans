@@ -25,6 +25,7 @@ import { CommandeRepository } from './modules/commande/repository/commande.repos
 import { CommandeService } from './modules/commande/service/commande.service';
 import { CommandeController } from './modules/commande/controller/commande.controller';
 import { CommandeRouter } from './modules/commande/router/commande.router';
+import { PaymentRouter } from './modules/commande/router/payment.router';
 
 dotenv.config();
 
@@ -56,12 +57,14 @@ const commandeRouter = new CommandeRouter(commandeController)
 const authService = new AuthService(userService,mailer)
 const authController = new AuthController(authService)
 const authRouter = new AuthRouter(authController)
+const paymentRouter = new PaymentRouter();
+
 
 app.use(express.json());
 
 // global router
 
-new Routes(app,reclamationRouter,commandeRouter,userRouter,authRouter,).init()
+new Routes(app,reclamationRouter,commandeRouter,paymentRouter,userRouter,authRouter,).init()
 
 
 // Serve Swagger documentation
