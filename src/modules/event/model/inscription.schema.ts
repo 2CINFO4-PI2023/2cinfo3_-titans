@@ -1,8 +1,11 @@
 import { Schema, Document, model, SchemaTimestampsConfig } from "mongoose";
 import { Event } from "./event.schema";
+import { User } from "../../user/model/user.schema";
+
 
 export interface IInscription extends Document, SchemaTimestampsConfig {
   eventId: Schema.Types.ObjectId | string;
+  userId: Schema.Types.ObjectId | string;
   name: string;
   email: string;
   status: string;
@@ -10,7 +13,8 @@ export interface IInscription extends Document, SchemaTimestampsConfig {
 
 const inscriptionSchema = new Schema<IInscription>({
   eventId: { type: Schema.Types.ObjectId, ref: "Event", required: true },
-  name: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  name: { type: String,    required: true },
   email: { type: String, required: true },
   status: { type: String, required: true },
 });

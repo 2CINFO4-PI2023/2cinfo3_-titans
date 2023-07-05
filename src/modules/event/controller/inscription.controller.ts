@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { IInscriptionService } from "../service/inscription.service";
+import { IUser } from "../../user/model/user.schema";
 
 export interface IInscriptionController {
   create(req: Request, res: Response): void;
   get(req: Request, res: Response): void;
   getAll(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
+  getUser(req: Request, res: Response): void; // Add the getUser method
 }
 
 export class InscriptionController implements IInscriptionController {
@@ -48,6 +50,19 @@ export class InscriptionController implements IInscriptionController {
       const id = req.params.id;
       await this.inscriptionService.deleteInscription(id);
       res.json({ message: "Inscription deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
+  async getUser(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const user = await this.inscriptionService.getUserById(id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
     } catch (error: any) {
       res.status(500).send(error);
     }
