@@ -147,6 +147,7 @@ export class AuthService implements IAuthService {
                   address: "",
                   confirmed: true,
                   role: ROLES.CLIENT,
+                  favoritePlat: []
                 });
               } else {
                 cb(error);
@@ -189,7 +190,6 @@ export class AuthService implements IAuthService {
           cb: any
         ) {
           try {
-            console.log("profile: ",profile)
             const user = await self.userService.findByEmail(
               profile.email || "facebook@login.com"
             );
@@ -197,13 +197,14 @@ export class AuthService implements IAuthService {
           } catch (error) {
             if (error instanceof NotFoundError) {
              const user = await self.userService.createUser({
-                name: profile.displayName,
-                email: profile.email || "facebook@login.com",
-                phone: "",
-                address: "",
-                confirmed: true,
-                role: ROLES.CLIENT,
-              });
+               name: profile.displayName,
+               email: profile.email || "facebook@login.com",
+               phone: "",
+               address: "",
+               confirmed: true,
+               role: ROLES.CLIENT,
+               favoritePlat: []
+             });
               return cb(null, user);
             } else {
               cb(error);
