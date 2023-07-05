@@ -1,19 +1,24 @@
-# Base image
+# Use the official Node.js image as the base image
 FROM node:18-alpine
 
+# Set the working directory inside the container
 WORKDIR /app
 
-RUN apk update
-RUN apk add --no-cache python3 make g++ musl-dev
-
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
-RUN npm install typescript
-RUN npm install bcrypt --build-from-source --unsafe-perm=true
-RUN npm ci
 
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the working directory
 COPY . .
+
+# Build the TypeScript code
+RUN npm run copy-assets
 RUN npm run build
 
+# Expose the port on which the application will run (replace 3000 with your desired port)
 EXPOSE 9090
 
-CMD [ "node", "dist/server.js" ]
+# Start the application
+CMD ["npm", "start"]

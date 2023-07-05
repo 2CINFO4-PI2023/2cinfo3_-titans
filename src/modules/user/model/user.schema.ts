@@ -10,6 +10,7 @@ export interface IUser {
   role:number;
   image?:string,
   _id?: Types.ObjectId
+  favoritePlat: string[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -20,6 +21,7 @@ const userSchema = new Schema<IUser>({
   image:String,
   password: { type: String },
   confirmed: { type: Boolean, default: false },
+  favoritePlat:[{ type: Schema.Types.ObjectId, ref: 'Plat' }],
   role: Number
 },{
   timestamps:true
