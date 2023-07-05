@@ -28,5 +28,6 @@ export class Routes {
     this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);
     this.app.use("/ingredient",this.ingredientRouter.ingredientRoutes)
     this.app.use("/plats",this.platRouter.platRoutes)
+    
   }
 }
