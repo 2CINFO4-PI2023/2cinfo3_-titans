@@ -10,6 +10,8 @@ import { IngredientRouter } from "../modules/stock/router/ingredient.router";
 import { PlatRouter } from "../modules/stock/router/plat.router";
 import { ROLES } from "../modules/user/service/auth.service";
 import { NextFunction, Request, Response } from "express";
+import { CommandeRouter } from "../modules/commande/router/commande.router";
+import { PaymentRouter } from "../modules/commande/router/payment.router";
 
 export class Routes {
   constructor(
@@ -21,28 +23,22 @@ export class Routes {
     private inscriptionRouter: InscriptionRouter,
     private eventTypeRouter: EventTypeRouter,
     private ingredientRouter: IngredientRouter,
-    private platRouter: PlatRouter
+    private platRouter: PlatRouter,
+    private commandeRouter: CommandeRouter,
+    private paymentRouter: PaymentRouter
   ) {}
 
   init() {
     // Serve static files from the 'dist' directory
     this.app.use("/assets", express.static("dist"));
     this.app.use("/auth", this.authRouter.userRoutes);
-    this.app.use(
-      "/users",
-      validateJwtToken,
-      this.userRouter.userRoutes
-    );
+    this.app.use("/users", validateJwtToken, this.userRouter.userRoutes);
     this.app.use(
       "/reclamations",
       validateJwtToken,
       this.reclamationRouter.reclamationRoutes
     );
-    this.app.use(
-      "/events",
-      validateJwtToken,
-      this.eventRouter.eventRoutes
-    );
+    this.app.use("/events", validateJwtToken, this.eventRouter.eventRoutes);
     this.app.use(
       "/inscriptions",
       validateJwtToken,
@@ -58,10 +54,16 @@ export class Routes {
       validateJwtToken,
       this.ingredientRouter.ingredientRoutes
     );
+    this.app.use("/plats", validateJwtToken, this.platRouter.platRoutes);
     this.app.use(
-      "/plats",
+      "/commandes",
       validateJwtToken,
-      this.platRouter.platRoutes
+      this.commandeRouter.commandeRoutes
+    );
+    this.app.use(
+      "/payment",
+      validateJwtToken,
+      this.paymentRouter.paymentRoutes
     );
   }
 }

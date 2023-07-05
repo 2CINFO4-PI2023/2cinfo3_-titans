@@ -44,8 +44,13 @@ import { PlatService } from "./modules/stock/service/plat.service";
 import { PlatController } from "./modules/stock/controller/plat.controller";
 import { PlatRouter } from "./modules/stock/router/plat.router";
 import session from "express-session";
-const passport = require('passport');
-import redisConnect from 'connect-redis';
+const passport = require("passport");
+import redisConnect from "connect-redis";
+import { CommandeRepository } from "./modules/commande/repository/commande.repository";
+import { CommandeService } from "./modules/commande/service/commande.service";
+import { CommandeController } from "./modules/commande/controller/commande.controller";
+import { CommandeRouter } from "./modules/commande/router/commande.router";
+import { PaymentRouter } from "./modules/commande/router/payment.router";
 
 dotenv.config();
 
@@ -57,7 +62,7 @@ const init = async (app: Express) => {
   let redisClient: any = await connectRedis();
   // init util modules
   const mailer = new Mailer();
-  
+
   // Initialize the ingredient module
   const ingredientRepo = new IngredientRepository();
   const ingredientService = new IngredientService(ingredientRepo);
@@ -73,7 +78,7 @@ const init = async (app: Express) => {
   // init user module
   const tokenRepositoy = new TokenRepositoy(redisClient);
   const userRepository = new UserRepository();
-  const userService = new UserService(userRepository,platRepo);
+  const userService = new UserService(userRepository, platRepo);
   const userController = new UserController(userService);
   const userRouter = new UserRouter(userController);
 
@@ -82,15 +87,25 @@ const init = async (app: Express) => {
   const reclamationService = new ReclamationService(reclamationRepository);
   const reclamationController = new ReclamationController(reclamationService);
   const reclamationRouter = new ReclamationRouter(reclamationController);
+  // init commande module
+  const commandeRepository = new CommandeRepository();
+  const commandeService = new CommandeService(commandeRepository);
+  const commandeController = new CommandeController(commandeService);
+
+  const commandeRouter = new CommandeRouter(commandeController);
+  const paymentRouter = new PaymentRouter();
 
   const authService = new AuthService(userService, mailer, tokenRepositoy);
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
   // Initialize the inscription module
-const inscriptionRepository = new InscriptionRepository();
-const inscriptionService = new InscriptionService(inscriptionRepository,mailer);
-const inscriptionController = new InscriptionController(inscriptionService);
-const inscriptionRouter = new InscriptionRouter(inscriptionController);
+  const inscriptionRepository = new InscriptionRepository();
+  const inscriptionService = new InscriptionService(
+    inscriptionRepository,
+    mailer
+  );
+  const inscriptionController = new InscriptionController(inscriptionService);
+  const inscriptionRouter = new InscriptionRouter(inscriptionController);
 
   // Initialize the event module
   const eventRepository = new EventRepository();
@@ -104,6 +119,20 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
+  new Routes(
+    app,
+    reclamationRouter,
+    userRouter,
+    authRouter,
+    eventRouter,
+    inscriptionRouter,
+    eventTypeRouter,
+    ingredientRouter,
+    platRouter,
+    commandeRouter,
+    paymentRouter
+  ).init();
+
   // init
   app.use(express.json());
 
@@ -114,18 +143,6 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
       saveUninitialized: false,
     })
   );
-  
-  new Routes(
-    app,
-    reclamationRouter,
-    userRouter,
-    authRouter,
-    eventRouter,
-    inscriptionRouter,
-    eventTypeRouter,
-    ingredientRouter,
-    platRouter
-  ).init();
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(
