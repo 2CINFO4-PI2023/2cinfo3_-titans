@@ -39,15 +39,15 @@ export function authorize(allowedRoles: number[]) {
       if (!allowedRoles.includes(userRole)) {
         return res.status(403).json({ message: "Forbidden" });
       }
-      console.log("id", req.query.id !== decoded.user._id?.toString());
-      console.log("req.query.id: ", req.query.id);
-
+      const id = req.params.id;
+      console.log("id", id !== decoded.user._id?.toString());
+      console.log("id: ", id);
       if (
         userRole === ROLES.CLIENT &&
-        req.query.id &&
-        req.query.id !== decoded.user._id?.toString()
+        id &&
+        id !== decoded.user._id?.toString()
       ) {
-        return res.status(403).json({ message: "Forbidden" });
+        return res.status(403).json({ message: "Forbidden not the user" });
       }
 
       next();

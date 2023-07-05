@@ -36,37 +36,31 @@ export class Routes {
     this.app.use(
       "/reclamations",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.reclamationRouter.reclamationRoutes
     );
     this.app.use(
       "/events",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.eventRouter.eventRoutes
     );
     this.app.use(
       "/inscriptions",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.inscriptionRouter.inscriptionRoutes
     );
     this.app.use(
       "/types",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.eventTypeRouter.eventTypeRoutes
     );
     this.app.use(
       "/ingredient",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.ingredientRouter.ingredientRoutes
     );
     this.app.use(
       "/plats",
       validateJwtToken,
-      authorize([ROLES.ADMIN, ROLES.CLIENT]),
       this.platRouter.platRoutes
     );
   }
