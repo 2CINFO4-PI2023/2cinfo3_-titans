@@ -16,7 +16,7 @@ export class Routes {
     this.app.use("/auth",this.authRouter.userRoutes)
     this.app.use(validateJwtToken).use("/users",this.userRouter.userRoutes)
     this.app.use(validateJwtToken).use("/reclamations",this.reclamationRouter.reclamationRoutes);
-    this.app.use(validateJwtToken).use("/commandes",this.commandeRouter.commandeRoutes);
+    this.app.use("/commandes",this.commandeRouter.commandeRoutes);
 
   }
 }

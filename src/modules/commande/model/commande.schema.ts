@@ -13,6 +13,7 @@ export interface ICommande {
   orderStatus: any;
   deliveredAt: any;
   createdAt: any;
+  delivery: any;
 }
 
 const commandeSchema = new Schema<ICommande>({
@@ -45,29 +46,20 @@ const commandeSchema = new Schema<ICommande>({
   },
   orderItems: [
     {
-      name: {
-        type: String,
-        required: true,
-      },
+     
       qty: {
         type: Number,
         required: true,
       },
-      images: {
-        type: Schema.Types.Mixed,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
+     
+      
       discount: {
         type: Number,
       },
 
       plat: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: false,
         ref: "Plat",
       },
     },
@@ -111,6 +103,11 @@ const commandeSchema = new Schema<ICommande>({
   },
   deliveredAt: {
     type: Date,
+  },
+  delivery : {
+    type: Schema.Types.ObjectId,
+    required: false,
+    ref: "Livraison",
   },
   createdAt: {
     type: Date,
