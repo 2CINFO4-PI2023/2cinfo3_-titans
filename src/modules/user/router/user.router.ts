@@ -38,12 +38,12 @@ export class UserRouter {
       });
     this._userRoutes
       .route("/favoriteplate/:id")
-      .get((req, res) => {
+      .get(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.favoritePlat(req, res);
       });
       this._userRoutes
-      .route("/favoriteplate/:userId/:platId")
-      .put((req, res) => {
+      .route("/favoriteplate/:id/:platId")
+      .put(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.addPlatToFavorite(req, res);
       });
   }
