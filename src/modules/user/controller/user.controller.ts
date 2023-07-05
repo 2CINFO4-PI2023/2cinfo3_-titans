@@ -128,8 +128,8 @@ export class UserController implements IUserController {
   }
   async addPlatToFavorite(req: Request, res: Response) {
     try {
-      this.userService.addPlatToFavorite(req.params.userId, req.params.platId);
-      const user = this.userService.getUser(req.params.userId);
+      this.userService.addPlatToFavorite(req.params.id, req.params.platId);
+      const user = this.userService.getUser(req.params.id);
       return res.status(200).send(user);
     } catch (error:any) {
       console.log(error);
