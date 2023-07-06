@@ -128,14 +128,15 @@ export class UserService implements IUserService {
       }
       if(!duplicatedPlat){
         user.favoritePlat.push(platId);
-        this.userRepository.update(userId, user);
         console.info("favorite plate added into the list");
       }else{
         const index = user.favoritePlat.indexOf(platId);
         if (index !== -1) {
           user.favoritePlat.splice(index, 1);
+          console.info("favorite plate deleted from the list");
         }
       }
+      this.userRepository.update(userId, user);
     } catch (error) {
       console.error(error);
       throw error;
