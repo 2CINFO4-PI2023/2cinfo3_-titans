@@ -72,13 +72,13 @@ export class PlatService implements IPlatService {
     async commandPlat(id: string) {
         try {
             console.info("PlatService: commanding plat");
-            const plat = this.getPlat(id);
-            (await plat).ingredients.forEach(async (value, key) => {
+            const plat = await this.getPlat(id);
+            for (const [key, value] of (await plat).ingredients) {
                 const ingredient = await this.ingredientRepo.get(key);
                 ingredient.quantity -= value;
                 if (ingredient.quantity < 0) throw new InsufficientStockError();
                 await this.ingredientRepo.update(key, ingredient);
-            })
+            }
             console.info("PlatService: plat is commanded");
         } catch (error) {
             console.error(error);
