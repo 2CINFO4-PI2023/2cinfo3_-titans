@@ -9,6 +9,7 @@ export interface IMessageController {
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
   askchatbot(req: Request, res: Response):void;
+  reclamtionReplyMessage(req: Request, res: Response):void;
 }
 
 export class MessageController implements IMessageController {
@@ -50,6 +51,21 @@ export class MessageController implements IMessageController {
       res.status(500).send(error);
     }
   }
+
+
+  async reclamtionReplyMessage(req: Request, res: Response) {
+    try {
+      const message = req.body.message;
+     const iduser =req.params.idUser;
+     const idReclamation =req.params.idReclamation;
+     const replay = await this.messageService.reclamtionReplyMessage(message,iduser,idReclamation);
+
+      res.json(replay);
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
 
   async getAll(req: Request, res: Response) {
     try {

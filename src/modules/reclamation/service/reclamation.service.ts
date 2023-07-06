@@ -19,7 +19,7 @@ export class ReclamationService implements IReclamationService {
 
   async createReclamation(reclamation: IReclamation): Promise<IReclamation> {
     try {
-      console.log(reclamation)
+    
      // const { statut } = reclamation;
 
       // Check if the type exists in the Statut collection

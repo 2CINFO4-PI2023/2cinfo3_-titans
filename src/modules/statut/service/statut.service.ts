@@ -1,5 +1,6 @@
 import { IStatut } from "../model/statut.schema";
 import { IStatutRepository } from "../repository/statut.repository";
+import { IReclamation, Reclamation } from "../../reclamation/model/reclamation.schema";
 
 export interface IStatutService {
   createStatut(statut: IStatut): IStatut | Promise<IStatut>;
@@ -38,6 +39,9 @@ export class StatutService implements IStatutService {
 
   async deleteStatut(id: string): Promise<void> {
     try {
+
+      const reclamations =await Reclamation.find();
+      console.log(reclamations)
       await this.statutRepository.delete(id);
     } catch (error) {
       throw error;
