@@ -1,13 +1,13 @@
 import { IEventType } from "../model/eventType.schema";
 import { IEventTypeRepository } from "../repository/eventType.repository";
 
-
 export interface IEventTypeService {
   createEventType(eventType: IEventType): Promise<IEventType>;
   getAllEventTypes(): Promise<IEventType[]>;
   getEventTypeById(id: string): Promise<IEventType | null>;
   updateEventType(id: string, eventType: IEventType): Promise<void>;
   deleteEventType(id: string): Promise<void>;
+  getEventCountByType(eventTypeId: string): Promise<{ _id: string; name: string; count: number }[]>;
 }
 
 export class EventTypeService implements IEventTypeService {
@@ -31,5 +31,9 @@ export class EventTypeService implements IEventTypeService {
 
   async deleteEventType(id: string): Promise<void> {
     return this.eventTypeRepository.delete(id);
+  }
+
+  async getEventCountByType(eventTypeId: string): Promise<{ _id: string; name: string; count: number }[]> {
+    return this.eventTypeRepository.getEventCountByType(eventTypeId);
   }
 }
