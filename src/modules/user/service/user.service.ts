@@ -67,7 +67,9 @@ export class UserService implements IUserService {
   async deleteUser(id: string) {
     try {
       const user = await this.userRepository.delete(id);
-      deleteFile(<string>user.image)
+      if(user.image){
+        deleteFile(<string>user.image)
+      }
     } catch (error) {
       throw error;
     }
@@ -75,10 +77,13 @@ export class UserService implements IUserService {
 
   async updateUser(id: string, user: IUser) {
     try {
+
       const doc = await this.userRepository.get(id)
+      
       if(doc.image != user.image){
-        deleteFile(<string>doc.image)
+        deleteFile(<string>user.image)
       }
+
       if (user.password) {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;

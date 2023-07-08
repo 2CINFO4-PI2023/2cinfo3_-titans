@@ -33,7 +33,7 @@ export class UserRouter {
       .delete(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
         this.userController.delete(req, res);
       })
-      .put(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
+      .put(authorize([ROLES.ADMIN, ROLES.CLIENT]),upload.single("photo"),(req, res) => {
         this.userController.update(req, res);
       });
     this._userRoutes

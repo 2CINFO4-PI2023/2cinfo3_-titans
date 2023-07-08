@@ -44,7 +44,7 @@ export class AuthService implements IAuthService {
       const token = generateRandomToken();
       const content = readFileSync("dist/confirmation.html", "utf8").toString();
       const modifiedContent = content.replace(/\[TOKEN\]/g, token);
-      this.tokenRepositoy.set(token, user._id?.toString(), 60 * 2);
+      this.tokenRepositoy.set(token, user._id?.toString(), 60 * 30);
       this.mailNotifier.sendMail(
         user.email,
         modifiedContent,
@@ -102,7 +102,7 @@ export class AuthService implements IAuthService {
         "utf8"
       ).toString();
       // modifiedContent = content.replace(/\[TOKEN\]/g, resetToken);
-      this.tokenRepositoy.set(otp, user._id?.toString(), 60 * 5);
+      this.tokenRepositoy.set(otp, user._id?.toString(), 60 * 10);
       this.mailNotifier.sendMail(user.email, otp, "Reset password");
     } catch (error) {
       throw error;

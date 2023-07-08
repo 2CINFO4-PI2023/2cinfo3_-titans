@@ -86,6 +86,7 @@ export class UserController implements IUserController {
 
   async update(req: Request, res: Response) {
     try {
+      console.log("update")
       const body = req.body;
       if (Object.keys(body).length === 0) {
         throw new InvalidBodyError("Empty body");
@@ -104,6 +105,8 @@ export class UserController implements IUserController {
       const user = await this.userService.updateUser(req.params.id, body);
       return res.status(200).send(user);
     } catch (error: any) {
+      console.log("error: ",error)
+
       if (error instanceof HTTPError) {
         return res
           .status(error.http_code)
