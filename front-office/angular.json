@@ -32,7 +32,9 @@
               "src/assets/app.scss",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/scripts/script.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -89,7 +91,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/scripts/script.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

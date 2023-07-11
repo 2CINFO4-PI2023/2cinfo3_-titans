@@ -53,17 +53,18 @@
   }
 }
 .color-options{
-  width: 60px;
-  height: 300px;
+ 
+  width: 600px;
+  height: 470px;
   position: fixed;
   top: 414px;
-  right: -62px;
+  right: 25px;
   z-index: 9999;
   .options-icon{
       padding: 0;
       position: absolute;
       top: 12px;
-      left: -46px;
+      left: 26px;
     min-width: 49px;
       z-index: 1;
       box-shadow: -2px 3px 1px -2px rgba(0,0,0,.2), 
@@ -82,7 +83,8 @@
       height: 100%;
   }
   &.show{
-      right: -2px;
+    
+      right: 25px;
       -webkit-transition: max-height 0.25s ease-in;
       -moz-transition: max-height 0.25s ease-in;
       transition: max-height 0.25s ease-in;
