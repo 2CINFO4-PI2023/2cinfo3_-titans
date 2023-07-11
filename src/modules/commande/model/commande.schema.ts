@@ -55,11 +55,13 @@ const commandeSchema = new Schema<ICommande>({
       
       discount: {
         type: Number,
+        required: false,
+
       },
 
       plat: {
         type: Schema.Types.ObjectId,
-        required: false,
+        required: true,
         ref: "Plat",
       },
     },

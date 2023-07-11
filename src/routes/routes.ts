@@ -12,6 +12,7 @@ import { ROLES } from "../modules/user/service/auth.service";
 import { NextFunction, Request, Response } from "express";
 import { CommandeRouter } from "../modules/commande/router/commande.router";
 import { PaymentRouter } from "../modules/commande/router/payment.router";
+import { LivraisonRouter } from "../modules/commande/router/livraison.router";
 
 export class Routes {
   constructor(
@@ -25,7 +26,9 @@ export class Routes {
     private ingredientRouter: IngredientRouter,
     private platRouter: PlatRouter,
     private commandeRouter: CommandeRouter,
-    private paymentRouter: PaymentRouter
+    private paymentRouter: PaymentRouter,
+    private livraisonRouter: LivraisonRouter
+
   ) {}
 
   init() {
@@ -62,8 +65,13 @@ export class Routes {
     );
     this.app.use(
       "/payment",
-      validateJwtToken,
+      
       this.paymentRouter.paymentRoutes
+    );
+    this.app.use(
+      "/livraison",
+      validateJwtToken,
+      this.livraisonRouter.livraisonRoutes
     );
   }
 }

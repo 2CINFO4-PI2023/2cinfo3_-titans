@@ -5,16 +5,22 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // Process stripe payments   =>   /payment/process
 export const processPayment = async (req :any , res: any, next: any) => {
 
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: req.body.amount,
-        currency: 'EUR',
-
-        metadata: { integration_check: 'accept_a_payment' }
-    });
+    const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: req.body.amount,
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        
+      });
+    
 
     res.status(200).json({
         success: true,
-        client_secret: paymentIntent.client_secret
+        info: session
     })
 
 };

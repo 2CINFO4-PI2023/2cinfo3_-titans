@@ -1,5 +1,8 @@
+import { readFileSync } from "fs";
+import { IMailNotifier } from "../../../notifiers/mail/mail.service";
 import { ICommande } from "../model/commande.schema";
 import { ICommandeRepository } from "../repository/commande.repository";
+import { UserRepository } from "../../user/repository/user.repository";
 
 export interface ICommandeService {
   createCommande(commande: ICommande): ICommande | Promise<ICommande>;
@@ -10,11 +13,19 @@ export interface ICommandeService {
 }
 
 export class CommandeService implements ICommandeService {
-  constructor(private commandeRepository: ICommandeRepository) {}
+  constructor(private commandeRepository: ICommandeRepository, private mailNotifier: IMailNotifier
+    ) {}
+    private userRepo: UserRepository = new UserRepository;
+
 
   async createCommande(commande: ICommande): Promise<ICommande> {
     try {
-      return await this.commandeRepository.create(commande);
+      const response =  await this.commandeRepository.create(commande);
+      const user = await this.userRepo.get(response?.user);
+      const confirmationContent = readFileSync("dist/commande_confirmation.html", "utf8").toString();
+      // Modify the email content as needed
+      this.mailNotifier.sendMail(user?.email, confirmationContent, "commande Confirmation");
+      return response;
     } catch (error) {
       throw error;
     }
@@ -51,5 +62,6 @@ export class CommandeService implements ICommandeService {
       throw error;
     }
   }
+
 }
 

@@ -45,16 +45,24 @@ import { PlatController } from "./modules/stock/controller/plat.controller";
 import { PlatRouter } from "./modules/stock/router/plat.router";
 import session from "express-session";
 const passport = require("passport");
+const bodyParser = require("body-parser");
+
 import redisConnect from "connect-redis";
 import { CommandeRepository } from "./modules/commande/repository/commande.repository";
 import { CommandeService } from "./modules/commande/service/commande.service";
 import { CommandeController } from "./modules/commande/controller/commande.controller";
 import { CommandeRouter } from "./modules/commande/router/commande.router";
 import { PaymentRouter } from "./modules/commande/router/payment.router";
+import { LivraisonRepository } from "./modules/commande/repository/livraison.repository";
+import { LivraisonService } from "./modules/commande/service/livraison.service";
+import { LivraisonController } from "./modules/commande/controller/livraison.controller";
+import { LivraisonRouter } from "./modules/commande/router/livraison.router";
 
 dotenv.config();
 
 const app: Express = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = process.env.SERVER_PORT || 8081;
 
 const init = async (app: Express) => {
@@ -89,7 +97,7 @@ const init = async (app: Express) => {
   const reclamationRouter = new ReclamationRouter(reclamationController);
   // init commande module
   const commandeRepository = new CommandeRepository();
-  const commandeService = new CommandeService(commandeRepository);
+  const commandeService = new CommandeService(commandeRepository, mailer);
   const commandeController = new CommandeController(commandeService);
 
   const commandeRouter = new CommandeRouter(commandeController);
@@ -119,6 +127,12 @@ const init = async (app: Express) => {
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
+  // Initialize the livraison module
+  const livraisonRepository = new LivraisonRepository();
+  const livraisonService = new LivraisonService(livraisonRepository, mailer);
+  const livraisonController = new LivraisonController(livraisonService);
+  const livraisonRouter = new LivraisonRouter(livraisonController);
+
   new Routes(
     app,
     reclamationRouter,
@@ -130,10 +144,12 @@ const init = async (app: Express) => {
     ingredientRouter,
     platRouter,
     commandeRouter,
-    paymentRouter
+    paymentRouter,
+    livraisonRouter
   ).init();
 
   // init
+  app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
   app.use(

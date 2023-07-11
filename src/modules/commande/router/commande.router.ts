@@ -32,5 +32,8 @@ export class CommandeRouter {
     this._commandeRoutes.route("/:id").delete((req, res) => {
       this.commandeController.delete(req, res);
     });
+    this._commandeRoutes.route("/payment").post((req, res) => {
+      this.commandeController.payCommande(req, res);
+    });
   }
 }
