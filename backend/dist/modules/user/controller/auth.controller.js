@@ -36,6 +36,7 @@ class AuthController {
                 res.status(201).json(data);
             }
             catch (error) {
+                console.log("error: ", error);
                 if (error instanceof HTTPError_1.HTTPError) {
                     return res
                         .status(error.http_code)

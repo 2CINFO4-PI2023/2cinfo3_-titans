@@ -45,7 +45,7 @@ const routes = [
         loadChildren: './file-manager/file-manager.module#FileManagerModule'
     },
     {
-        path        : 'contacts',
+        path        : 'users',
         loadChildren: './contacts/contacts.module#ContactsModule'
     },
     {

@@ -33,6 +33,8 @@ export class AuthController implements IAuthController {
       const data = await this.authService.signup(req.body);
       res.status(201).json(data);
     } catch (error) {
+      console.log("error: ",error);
+      
       if (error instanceof HTTPError) {
         return res
           .status(error.http_code)

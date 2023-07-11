@@ -46,6 +46,7 @@ import { PlatRouter } from "./modules/stock/router/plat.router";
 import session from "express-session";
 const passport = require('passport');
 import redisConnect from 'connect-redis';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -103,6 +104,7 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeService = new EventTypeService(eventTypeRepository);
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
+  app.use(cors());
 
   // init
   app.use(express.json());
@@ -136,6 +138,7 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   app.get("/", (req: Request, res: Response) => {
     res.send("OK");
   });
+
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
   });

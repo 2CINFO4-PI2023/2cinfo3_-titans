@@ -78,6 +78,7 @@ const plat_controller_1 = require("./modules/stock/controller/plat.controller");
 const plat_router_1 = require("./modules/stock/router/plat.router");
 const express_session_1 = __importDefault(require("express-session"));
 const passport = require('passport');
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.SERVER_PORT || 8081;
@@ -125,6 +126,7 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const eventTypeService = new eventType_service_1.EventTypeService(eventTypeRepository);
     const eventTypeController = new eventType_controller_1.EventTypeController(eventTypeService);
     const eventTypeRouter = new eventType_router_1.EventTypeRouter(eventTypeController);
+    app.use((0, cors_1.default)());
     // init
     app.use(express_1.default.json());
     app.use((0, express_session_1.default)({
