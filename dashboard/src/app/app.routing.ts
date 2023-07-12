@@ -76,7 +76,8 @@ export const appRoutes: Route[] = [
         children   : [
             {path: 'home', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'utilisateurs', loadChildren: () => import('app/modules/admin/user/user.module').then(m => m.UserModule)},
-            {path: 'stock', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'ingredient', loadChildren: () => import('app/modules/admin/ingredient/ingredient.module').then(m => m.IngredientModule)},
+            {path: 'plat', loadChildren: () => import('app/modules/admin/plat/plat.module').then(m => m.PlatModule)},
             {path: 'commandes', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'events', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'reclamation', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)}
