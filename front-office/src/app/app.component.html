@@ -1,5 +1,8 @@
+
+
 <div id="mainDIV" class="sophia-app app"  [ngClass]="settings.theme"  style="height: 100vh;overflow: auto;">
 
+  
 <mat-sidenav-container fullscreen>
 
     <mat-sidenav [opened]="false" mode="over"  #start  class="sidenav">
@@ -11,6 +14,8 @@
             <app-sidebar *ngFor="let item of navItems" [item]="item"></app-sidebar>
         </div>
     </mat-sidenav>
+
+    
     <mat-toolbar class="main-topbar" color="primary" [ngClass]="{topbar_four: url == '/home/four'}">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" class="top-bar container" >
                 <span fxHide="false" fxHide.gt-sm   >
@@ -66,6 +71,7 @@
 
       </mat-toolbar>
     <app-header></app-header>
+    
     <ngx-spinner></ngx-spinner>
 <router-outlet></router-outlet>
 <app-color-options></app-color-options>
@@ -73,4 +79,6 @@
 
 
 </mat-sidenav-container>
+
+
 </div>
