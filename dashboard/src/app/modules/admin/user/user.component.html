@@ -65,9 +65,23 @@
                             Role
                         </th>
                         <td mat-cell *matCellDef="let user">
-                            <span class="pr-6 font-medium whitespace-nowrap">
-                                {{ roles[user.role] }}
+                            <span
+                                class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                [ngClass]="{
+                                    'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50':
+                                        user.role == 99,
+                                    'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50':
+                                        user.role == 1
+                                }"
+                            >
+                                <span
+                                    class="leading-relaxed whitespace-nowrap"
+                                    >{{ roles[user.role] }}</span
+                                >
                             </span>
+                            <!-- <span class="pr-6 font-medium whitespace-nowrap">
+                                {{ roles[user.role] }}
+                            </span> -->
                         </td>
                     </ng-container>
 
