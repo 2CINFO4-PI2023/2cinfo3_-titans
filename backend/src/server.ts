@@ -46,6 +46,7 @@ import { PlatRouter } from "./modules/stock/router/plat.router";
 import session from "express-session";
 const passport = require('passport');
 import redisConnect from 'connect-redis';
+import cors = require("cors");
 
 dotenv.config();
 
@@ -105,8 +106,8 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
   // init
+  app.use(cors())
   app.use(express.json());
-
   app.use(
     session({
       secret: <string>process.env.SESSION_SECRET,
