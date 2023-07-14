@@ -224,5 +224,15 @@ class AuthService {
             }
         });
     }
+    refreshToken(token) {
+        try {
+            const decoded = (0, jwtHelper_1.decodeAccessToken)(token);
+            const accessToken = (0, jwtHelper_1.generateAccessToken)({ user: decoded.user });
+            return accessToken;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 }
 exports.AuthService = AuthService;

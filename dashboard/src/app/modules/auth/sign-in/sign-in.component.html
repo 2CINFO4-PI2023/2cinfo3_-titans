@@ -43,7 +43,7 @@
                     <mat-error *ngIf="signInForm.get('email').hasError('required')">
                         Email address is required
                     </mat-error>
-                    <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                    <mat-error *ngIf="signInForm.get('email').hasError('invalidEmailFormat')">
                         Please enter a valid email address
                     </mat-error>
                 </mat-form-field>
@@ -71,9 +71,16 @@
                             *ngIf="passwordField.type === 'text'"
                             [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
-                    <mat-error>
-                        Password is required
-                    </mat-error>
+                    
+                  <mat-error
+                  *ngIf="
+                      signInForm.get('password').invalid &&
+                      signInForm.get('password').touched
+                  "
+              >
+                  Password is required and should have a minimum of 8
+                  characters
+              </mat-error>
                 </mat-form-field>
 
                 <!-- Actions -->
@@ -94,7 +101,7 @@
                     class="fuse-mat-button-large w-full mt-6 orange_btn"
                     mat-flat-button
                     [color]="'primary'"
-                    [disabled]="signInForm.disabled"
+                    [disabled]="signInForm.disabled || signInForm.invalid"
                     (click)="signIn()">
                     <span *ngIf="!signInForm.disabled">
                         Sign in

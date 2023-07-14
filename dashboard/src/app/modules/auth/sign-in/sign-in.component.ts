@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
@@ -22,6 +22,7 @@ export class AuthSignInComponent implements OnInit
     signInForm: FormGroup;
     showAlert: boolean = false;
 
+
     /**
      * Constructor
      */
@@ -38,6 +39,19 @@ export class AuthSignInComponent implements OnInit
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
+    emailRegexValidator(): ValidatorFn {
+        const emailRegex: RegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      
+        return (control: AbstractControl): { [key: string]: any } | null => {
+          const email: string = control.value;
+      
+          if (email && !emailRegex.test(email)) {
+            return { invalidEmailFormat: true };
+          }
+      
+          return null;
+        };
+      }
     /**
      * On init
      */
@@ -45,9 +59,8 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
-            password  : ['admin', Validators.required],
-            rememberMe: ['']
+            email     : ["",[Validators.required, this.emailRegexValidator()]],
+            password  : ["",[Validators.required,Validators.minLength(8)]],
         });
     }
 
@@ -75,20 +88,13 @@ export class AuthSignInComponent implements OnInit
         // Sign in
         this._authService.signIn(this.signInForm.value)
             .subscribe(
-                () => {
-
-                    // Set the redirect url.
-                    // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
-                    // to the correct page after a successful sign in. This way, that url can be set via
-                    // routing file and we don't have to touch here.
-                    const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
-
-                    // Navigate to the redirect url
-                    this._router.navigateByUrl(redirectURL);
+                (res) => {
+                    this._router.navigateByUrl("/home");
 
                 },
                 (response) => {
 
+                    console.log("response: ",response)
                     // Re-enable the form
                     this.signInForm.enable();
 

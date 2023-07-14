@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { environment } from 'environments/environment';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService
@@ -73,10 +74,8 @@ export class AuthService
         {
             return throwError('User is already logged in.');
         }
-
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        return this._httpClient.post(`${environment.baseUrl}auth/login`, credentials).pipe(
             switchMap((response: any) => {
-
                 // Store the access token in the local storage
                 this.accessToken = response.accessToken;
 
@@ -96,9 +95,9 @@ export class AuthService
      * Sign in using the access token
      */
     signInUsingToken(): Observable<any>
-    {
+    {        
         // Renew token
-        return this._httpClient.post('api/auth/refresh-access-token', {
+        return this._httpClient.post(environment.baseUrl+'auth/refresh-token', {
             accessToken: this.accessToken
         }).pipe(
             catchError(() =>
@@ -176,12 +175,22 @@ export class AuthService
         }
 
         // Check the access token expire date
-        if ( AuthUtils.isTokenExpired(this.accessToken) )
+        if ( this.accessToken == undefined || AuthUtils.isTokenExpired(this.accessToken) )
         {
             return of(false);
         }
 
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
+    }
+
+     login(credentials: { email: string; password: string })
+    {
+        // Throw error, if the user is already logged in
+        if ( this._authenticated )
+        {
+            return throwError('User is already logged in.');
+        }
+        return this._httpClient.post(`${environment.baseUrl}auth/login`, credentials)
     }
 }

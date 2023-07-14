@@ -55,8 +55,8 @@ class AuthController {
                 if (error) {
                     throw new InvalidBodyError_1.InvalidBodyError(error.details[0].message);
                 }
-                const token = yield this.authService.login(req.body);
-                res.status(200).json({ token });
+                const accessToken = yield this.authService.login(req.body);
+                res.status(200).json({ accessToken });
             }
             catch (error) {
                 if (error instanceof HTTPError_1.HTTPError) {
@@ -132,6 +132,27 @@ class AuthController {
                         .status(error.http_code)
                         .json({ message: error.message, description: error.description });
                 }
+                res.status(500).send(error);
+            }
+        });
+    }
+    refreshToken(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const refreshToken = req.body.refreshToken;
+                if (!refreshToken) {
+                    return res.status(400).json({ error: "Refresh token is required" });
+                }
+                const accessToken = this.authService.refreshToken(refreshToken);
+                res.status(200).json({ accessToken });
+            }
+            catch (error) {
+                if (error instanceof HTTPError_1.HTTPError) {
+                    return res
+                        .status(error.http_code)
+                        .json({ message: error.message, description: error.description });
+                }
+                console.log(error);
                 res.status(500).send(error);
             }
         });

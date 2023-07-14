@@ -17,35 +17,35 @@ import { ReclamationRouter } from "./modules/reclamation/router/reclamation.rout
 import { ReclamationService } from "./modules/reclamation/service/reclamation.service";
 import { Routes } from "./routes/routes";
 
+import { EventController } from "./modules/event/controller/event.controller";
+import { EventTypeController } from "./modules/event/controller/eventType.controller";
+import { InscriptionController } from "./modules/event/controller/inscription.controller";
+import { EventRepository } from "./modules/event/repository/event.repository";
+import { EventTypeRepository } from "./modules/event/repository/eventType.repository";
+import { InscriptionRepository } from "./modules/event/repository/inscription.repository";
+import { EventRouter } from "./modules/event/router/event.router";
+import { EventTypeRouter } from "./modules/event/router/eventType.router";
+import { InscriptionRouter } from "./modules/event/router/inscription.router";
+import { EventService } from "./modules/event/service/event.service";
+import { EventTypeService } from "./modules/event/service/eventType.service";
+import { InscriptionService } from "./modules/event/service/inscription.service";
 import { AuthController } from "./modules/user/controller/auth.controller";
 import { TokenRepositoy } from "./modules/user/repository/token.repository";
 import { AuthRouter } from "./modules/user/router/auth.router";
 import { AuthService } from "./modules/user/service/auth.service";
 import { Mailer } from "./notifiers/mail/mail.service";
-import { InscriptionRepository } from "./modules/event/repository/inscription.repository";
-import { InscriptionService } from "./modules/event/service/inscription.service";
-import { InscriptionController } from "./modules/event/controller/inscription.controller";
-import { InscriptionRouter } from "./modules/event/router/inscription.router";
-import { EventRepository } from "./modules/event/repository/event.repository";
-import { EventService } from "./modules/event/service/event.service";
-import { EventController } from "./modules/event/controller/event.controller";
-import { EventRouter } from "./modules/event/router/event.router";
-import { EventTypeController } from "./modules/event/controller/eventType.controller";
-import { EventTypeRepository } from "./modules/event/repository/eventType.repository";
-import { EventTypeRouter } from "./modules/event/router/eventType.router";
-import { EventTypeService } from "./modules/event/service/eventType.service";
 
-import { IngredientRepository } from "./modules/stock/repository/ingredient.repository";
-import { IngredientService } from "./modules/stock/service/ingredient.service";
-import { IngredientController } from "./modules/stock/controller/ingredient.controller";
-import { IngredientRouter } from "./modules/stock/router/ingredient.router";
-import { PlatRepository } from "./modules/stock/repository/plat.repository";
-import { PlatService } from "./modules/stock/service/plat.service";
-import { PlatController } from "./modules/stock/controller/plat.controller";
-import { PlatRouter } from "./modules/stock/router/plat.router";
 import session from "express-session";
+import { IngredientController } from "./modules/stock/controller/ingredient.controller";
+import { PlatController } from "./modules/stock/controller/plat.controller";
+import { IngredientRepository } from "./modules/stock/repository/ingredient.repository";
+import { PlatRepository } from "./modules/stock/repository/plat.repository";
+import { IngredientRouter } from "./modules/stock/router/ingredient.router";
+import { PlatRouter } from "./modules/stock/router/plat.router";
+import { IngredientService } from "./modules/stock/service/ingredient.service";
+import { PlatService } from "./modules/stock/service/plat.service";
 const passport = require('passport');
-import redisConnect from 'connect-redis';
+var cors = require('cors')
 
 dotenv.config();
 
@@ -105,6 +105,7 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
   // init
+  app.use(cors())
   app.use(express.json());
 
   app.use(

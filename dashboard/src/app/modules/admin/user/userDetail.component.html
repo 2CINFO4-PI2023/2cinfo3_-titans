@@ -1,0 +1,135 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start flex-auto min-w-0">
+  <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-full py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+    <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <!-- Section -->
+            <div class="w-full">
+                <div class="text-xl">User Details</div>
+            </div>
+            <div>
+                <fuse-alert
+                    class="mt-8 -mb-4"
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="alert.type === 'error'"
+                >
+                    {{ alert.message }}
+                </fuse-alert>
+            </div>
+            <form
+                [formGroup]="userDetailsForm"
+                (ngSubmit)="onSubmit()"
+                #userDetailNgForm="ngForm"
+            >
+                <div class="sm:col-span-4">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            placeholder="Name"
+                            formControlName="name"
+                        />
+                        <mat-error
+                            *ngIf="
+                                userDetailsForm.get('name').invalid &&
+                                userDetailsForm.get('name').touched
+                            "
+                        >
+                            Name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            type="email"
+                            placeholder="Email"
+                            formControlName="email"
+                        />
+                        <mat-error
+                            *ngIf="
+                                userDetailsForm.get('email').invalid &&
+                                userDetailsForm.get('email').touched
+                            "
+                        >
+                            Email is required and should be a valid email
+                            address
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            type="phone"
+                            placeholder="Phone"
+                            formControlName="phone"
+                        />
+                        <mat-error
+                            *ngIf="
+                                userDetailsForm.get('phone').invalid &&
+                                userDetailsForm.get('phone').touched
+                            "
+                        >
+                            Phone is required and should have exactly 8 digits
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            placeholder="Address"
+                            formControlName="address"
+                        />
+                        <mat-error
+                            *ngIf="
+                                userDetailsForm.get('address').invalid &&
+                                userDetailsForm.get('address').touched
+                            "
+                        >
+                            Address is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4" *ngIf="!isUpdating">
+                    <mat-form-field>
+                        <input *ngIf="!isUpdating"
+                            matInput
+                            type="password"
+                            placeholder="Password"
+                            formControlName="password"
+                        />
+                        <mat-error
+                            *ngIf="
+                                userDetailsForm.get('password').invalid &&
+                                userDetailsForm.get('password').touched
+                            "
+                        >
+                            Password is required and should have a minimum of 8
+                            characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="sm:col-span-4">
+    <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+            <mat-option value="99">Admin</mat-option>
+            <mat-option value="1">Client</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div> -->
+                <button
+                    mat-raised-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="userDetailsForm.invalid"
+                >
+                    Enregistrer
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

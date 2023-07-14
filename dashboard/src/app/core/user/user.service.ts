@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { User } from 'app/core/user/user.types';
+import { environment } from 'environments/environment';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { User } from 'app/core/user/user.types';
 
 @Injectable({
     providedIn: 'root'
@@ -47,6 +48,7 @@ export class UserService
      */
     get(): Observable<User>
     {
+        console.log("get user from mock api")
         return this._httpClient.get<User>('api/common/user').pipe(
             tap((user) => {
                 this._user.next(user);
@@ -66,5 +68,20 @@ export class UserService
                 this._user.next(response);
             })
         );
+    }
+    getUsers(){
+        return this._httpClient.get(`${environment.baseUrl}users`)
+    }
+    deleteUser(id:string){
+        return this._httpClient.delete(`${environment.baseUrl}users/${id}`)
+    }
+    getUser(id:string){
+        return this._httpClient.get(`${environment.baseUrl}users/${id}`)
+    }
+    updateUser(id:string,data:any){
+        return this._httpClient.put(`${environment.baseUrl}users/${id}`,data)
+    }
+    addUser(data:any){
+        return this._httpClient.post(`${environment.baseUrl}users`,data)
     }
 }

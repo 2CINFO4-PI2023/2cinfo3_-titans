@@ -14,6 +14,7 @@ export interface IAuthController {
   resetPassword(req: Request, res: Response): void;
   oAuthRedirection(req: Request, res: Response): void;
   createAdmin(req: Request, res: Response): void;
+  refreshToken(req: Request, res: Response): void;
 }
 
 export class AuthController implements IAuthController {
@@ -50,15 +51,15 @@ export class AuthController implements IAuthController {
       if (error) {
         throw new InvalidBodyError(error.details[0].message);
       }
-      const token = await this.authService.login(req.body);
-      res.status(200).json({ token });
+      const accessToken = await this.authService.login(req.body);
+      res.status(200).json({ accessToken });
     } catch (error) {
       if (error instanceof HTTPError) {
         return res
           .status(error.http_code)
           .json({ message: error.message, description: error.description });
       }
-      console.log(error)
+      console.log(error);
       res.status(500).send(error);
     }
   }
@@ -106,10 +107,10 @@ export class AuthController implements IAuthController {
       res.status(500).send(error);
     }
   }
-  
+
   oAuthRedirection(req: Request, res: Response) {
-    const status = req.query.state == "GOOD" ? 200 : 401
-    res.status(status).send({message:status == 200 ? "OK":"Login failed"})
+    const status = req.query.state == "GOOD" ? 200 : 401;
+    res.status(status).send({ message: status == 200 ? "OK" : "Login failed" });
   }
 
   async createAdmin(req: Request, res: Response) {
@@ -123,6 +124,24 @@ export class AuthController implements IAuthController {
           .status(error.http_code)
           .json({ message: error.message, description: error.description });
       }
+      res.status(500).send(error);
+    }
+  }
+  async refreshToken(req: Request, res: Response) {
+    try {
+      const refreshToken = req.body.refreshToken;
+      if (!refreshToken) {
+        return res.status(400).json({ error: "Refresh token is required" });
+      }      
+      const accessToken = this.authService.refreshToken(refreshToken);      
+      res.status(200).json({ accessToken });
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      console.log(error);
       res.status(500).send(error);
     }
   }

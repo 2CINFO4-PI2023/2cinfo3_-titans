@@ -2,7 +2,7 @@ import { compare } from "bcrypt";
 import { readFileSync } from "fs";
 import { NotFoundError } from "../../../errors/NotFoundError";
 import { UnauthorizedError } from "../../../errors/UnauthorizedError";
-import { generateAccessToken } from "../../../helpers/jwtHelper";
+import { decodeAccessToken, generateAccessToken } from "../../../helpers/jwtHelper";
 import { generateOTP, generateRandomToken } from "../../../helpers/tokenHelper";
 import { IMailNotifier } from "../../../notifiers/mail/mail.service";
 import { ISignupBody } from "../dto/ISignupBody";
@@ -23,6 +23,7 @@ export interface IAuthService {
   googleAuth(): any;
   facebookAuth(): any;
   createAdmin(user: IUser): Promise<IUser>
+  refreshToken(token:string):string | Promise<string>
 }
 
 export enum ROLES {
@@ -232,6 +233,15 @@ export class AuthService implements IAuthService {
       return await this.userService.createAdmin(user);
     } catch (error) {
       throw error;
+    }
+  }
+  refreshToken(token:string):string{
+    try {
+      const decoded:any = decodeAccessToken(token)
+      const accessToken = generateAccessToken({user:<IUser>decoded.user})
+      return accessToken
+    } catch (error) {
+      throw error
     }
   }
 }
