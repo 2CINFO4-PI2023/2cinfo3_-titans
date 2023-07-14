@@ -139,7 +139,7 @@ class AuthController {
     refreshToken(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const refreshToken = req.body.refreshToken;
+                const refreshToken = req.body.accessToken;
                 if (!refreshToken) {
                     return res.status(400).json({ error: "Refresh token is required" });
                 }

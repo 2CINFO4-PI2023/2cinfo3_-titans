@@ -68,6 +68,7 @@
                     [color]="'primary'"
                     [formControlName]="'confirmed'"
                     [checked]="user.confirmed"
+                    (change)="toggleConfirmation(user._id,$event)"
                     #communication>
                 </mat-slide-toggle>
                             <!-- <span

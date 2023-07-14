@@ -80,7 +80,7 @@ export class UserService implements IUserService {
 
       const doc = await this.userRepository.get(id)
       
-      if(doc.image != user.image){
+      if(doc.image != user.image && user.image != undefined){
         deleteFile(<string>user.image)
       }
 
@@ -90,6 +90,7 @@ export class UserService implements IUserService {
       }
       return await this.userRepository.update(id, user);
     } catch (error) {
+      console.log("error: ",error)
       throw error;
     }
   }

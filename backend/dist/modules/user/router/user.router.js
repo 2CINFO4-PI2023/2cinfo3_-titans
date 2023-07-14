@@ -45,6 +45,11 @@ class UserRouter {
             .put((0, authMiddleware_1.authorize)([auth_service_1.ROLES.ADMIN, auth_service_1.ROLES.CLIENT]), (req, res) => {
             this.userController.addPlatToFavorite(req, res);
         });
+        this._userRoutes
+            .route("/:id/confirmed")
+            .patch((0, authMiddleware_1.authorize)([auth_service_1.ROLES.ADMIN]), (req, res) => {
+            this.userController.toggleConfirmation(req, res);
+        });
     }
 }
 exports.UserRouter = UserRouter;

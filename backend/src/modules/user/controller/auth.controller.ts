@@ -129,7 +129,7 @@ export class AuthController implements IAuthController {
   }
   async refreshToken(req: Request, res: Response) {
     try {
-      const refreshToken = req.body.refreshToken;
+      const refreshToken = req.body.accessToken;
       if (!refreshToken) {
         return res.status(400).json({ error: "Refresh token is required" });
       }      

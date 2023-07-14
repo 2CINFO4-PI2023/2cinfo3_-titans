@@ -11,6 +11,7 @@ import { map, tap } from 'rxjs/operators';
 export class UserService
 {
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
+    private _loggedInUser: User;
 
     /**
      * Constructor
@@ -18,6 +19,19 @@ export class UserService
     constructor(private _httpClient: HttpClient)
     {
     }
+
+    setLoggedInUser(user: User): void {
+        this._loggedInUser = user;
+        this._user.next(user);
+    }
+
+    /**
+     * Get the currently logged-in user
+     */
+    getLoggedInUser(): User {
+        return this._loggedInUser;
+    }
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -48,7 +62,6 @@ export class UserService
      */
     get(): Observable<User>
     {
-        console.log("get user from mock api")
         return this._httpClient.get<User>('api/common/user').pipe(
             tap((user) => {
                 this._user.next(user);
@@ -83,5 +96,8 @@ export class UserService
     }
     addUser(data:any){
         return this._httpClient.post(`${environment.baseUrl}users`,data)
+    }
+    toggleConfirmation(id:string,confirmed:boolean){
+        return this._httpClient.patch(`${environment.baseUrl}users/${id}/confirmed`,{confirmed})
     }
 }

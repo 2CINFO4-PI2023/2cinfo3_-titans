@@ -46,5 +46,10 @@ export class UserRouter {
       .put(authorize([ROLES.ADMIN, ROLES.CLIENT]),(req, res) => {
         this.userController.addPlatToFavorite(req, res);
       });
+      this._userRoutes
+      .route("/:id/confirmed")
+      .patch(authorize([ROLES.ADMIN]),(req, res) => {
+        this.userController.toggleConfirmation(req, res);
+      });
   }
 }

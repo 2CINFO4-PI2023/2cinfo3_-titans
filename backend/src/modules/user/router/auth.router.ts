@@ -111,7 +111,7 @@ export class AuthRouter {
     this.authRoutes.post('/create-admin',authenticateAdmin,(req,res)=>{
       this.authController.createAdmin(req,res)
     })
-    this.authRoutes.post('/refresh-token',authenticateAdmin,(req,res)=>{
+    this.authRoutes.post('/refresh-token',(req,res)=>{
       this.authController.refreshToken(req,res)
     })
   }

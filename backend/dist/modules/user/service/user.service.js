@@ -89,7 +89,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const doc = yield this.userRepository.get(id);
-                if (doc.image != user.image) {
+                if (doc.image != user.image && user.image != undefined) {
                     (0, fs_1.deleteFile)(user.image);
                 }
                 if (user.password) {
@@ -99,6 +99,7 @@ class UserService {
                 return yield this.userRepository.update(id, user);
             }
             catch (error) {
+                console.log("error: ", error);
                 throw error;
             }
         });

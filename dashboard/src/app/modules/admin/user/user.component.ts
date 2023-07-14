@@ -63,4 +63,11 @@ export class UserComponent implements OnInit {
             }
         });
     }
+    toggleConfirmation(userId:string,value:any){
+        console.log({userId,checked:value.checked})
+        this.userService.toggleConfirmation(userId,value.checked).subscribe((res)=>{
+        },(error)=>{
+            // TODO Handle the error
+        })
+    }
 }

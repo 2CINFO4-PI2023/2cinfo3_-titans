@@ -156,5 +156,25 @@ class UserController {
             }
         });
     }
+    toggleConfirmation(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { confirmed } = req.body;
+                if (confirmed == undefined) {
+                    throw new InvalidBodyError_1.InvalidBodyError("Missed field confirmed from the body");
+                }
+                const user = yield this.userService.updateUser(req.params.id, { confirmed });
+                return res.status(200).send(user);
+            }
+            catch (error) {
+                if (error instanceof HTTPError_1.HTTPError) {
+                    return res
+                        .status(error.http_code)
+                        .json({ message: error.message, description: error.description });
+                }
+                res.status(500).send(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;
