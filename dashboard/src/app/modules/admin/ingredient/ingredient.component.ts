@@ -1,5 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { IngredientService } from 'app/core/ingredient/ingredient.service';
+import { Ingredient } from 'app/core/ingredient/ingredient.types';
 
 @Component({
     selector     : 'app-ingredient',
@@ -7,25 +11,17 @@ import { MatTableDataSource } from '@angular/material/table';
     encapsulation: ViewEncapsulation.None
 })
 export class IngredientComponent{
-    ingredientsDataSource: MatTableDataSource<any> = new MatTableDataSource();
+    ingredientsDataSource: MatTableDataSource<Ingredient> = new MatTableDataSource();
     recentTransactionsTableColumns: string[] = ['name', 'quantity','actions'];
     /**
      * Constructor
      */
-    constructor()
+    constructor(private ingredientService: IngredientService)
     {
-        this.ingredientsDataSource.data = [
-            {
-                id: 1,
-                name: 'potato',
-                quantity: 100,
-            },
-            {
-                id: 2,
-                name: 'tomato',
-                quantity: 9,
-            },
-        ];
+        this.ingredientService.getIngredients().subscribe(res =>{
+            console.log(res);
+            this.ingredientsDataSource.data= res;
+        })
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;
