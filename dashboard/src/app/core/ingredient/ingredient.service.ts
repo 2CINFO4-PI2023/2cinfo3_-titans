@@ -3,7 +3,7 @@ import { Observable, ReplaySubject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Ingredient } from "./ingredient.types";
 import { environment } from "environments/environment";
-import { map, tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 
 @Injectable({
@@ -40,13 +40,8 @@ export class IngredientService{
         )
 
     }
-    get(): Observable<Ingredient>
-    {
-        return this._httpClient.get<Ingredient>(`${environment.baseUrl}ingredient`).pipe(
-            tap((ingredient) => {
-                this._ingredient.next(ingredient);
-            })
-        );
+    getIngredient(id:string){
+        return this._httpClient.get(`${environment.baseUrl}ingredient/${id}`)
     }
     /**
     * Update the ingredient

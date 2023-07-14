@@ -34,12 +34,8 @@ export class PlatService{
         )
 
     }
-    get(): Observable<Plat>{
-        return this._httpClient.get<Plat>(`${environment.baseUrl}plats`).pipe(
-            tap((plat) => {
-                this._plat.next(plat);
-            })
-        );
+    getPlat(id: string): Observable<Plat>{
+        return this._httpClient.get<Plat>(`${environment.baseUrl}plats/${id}`);
     }
     /**
     * Update the plat
