@@ -49,7 +49,7 @@ export class UserDetailComponent implements OnInit {
                 Validators.pattern(/^\d{8}$/),
             ]),
             address: new FormControl('', Validators.required),
-            // role: new FormControl(''),
+            role: new FormControl(this.roles[1], Validators.required),
             // image: new FormControl(null),
         });
 
@@ -69,17 +69,17 @@ export class UserDetailComponent implements OnInit {
                         Validators.pattern(/^\d{8}$/),
                     ]),
                     address: new FormControl('', Validators.required),
-                    // role: new FormControl(''),
+                    role: new FormControl('', Validators.required),
                     // image: new FormControl(null),
                 });
                 this.userService.getUser(userId).subscribe((user: any) => {
                     this.userDetailsForm.patchValue({
                         name: user.name,
                         email: user.email,
-                        password: '', // You can choose to exclude the password field from updating or initialize it with a placeholder value
+                        password: '',
                         phone: user.phone,
                         address: user.address,
-                        // role: user.role,
+                        role: user.role,
                     });
                 });
             }
@@ -107,7 +107,7 @@ export class UserDetailComponent implements OnInit {
                             this.alert = {
                                 type: 'error',
                                 message:
-                                    'Cette adresse e-mail est déjà utilisée ',
+                                    'Cette adresse e-mail est déjà utilisée',
                             };
                         } else if (error.status === 400) {
                             console.log(error);

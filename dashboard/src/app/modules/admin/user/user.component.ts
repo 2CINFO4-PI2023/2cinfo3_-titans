@@ -81,7 +81,17 @@ export class UserComponent implements OnInit {
         });
     }
     toggleConfirmation(userId:string,value:any){
-        console.log({userId,checked:value.checked})
+        this.showAlert = false
+        if(this.userService.getLoggedInUser()._id == userId){
+            value.source.checked = true;
+            this.alert = {
+                type: 'error',
+                message:
+                    "You can't disable your owen account",
+            };
+            this.showAlert = true
+            return
+        }
         this.userService.toggleConfirmation(userId,value.checked).subscribe((res)=>{
         },(error)=>{
             // TODO Handle the error
