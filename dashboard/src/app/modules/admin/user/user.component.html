@@ -13,6 +13,20 @@
         [color]="'primary'" [routerLink]="['/utilisateurs', 'add']">Ajouter un utilisateur</button>
         
             </div>
+
+            <div>
+                <fuse-alert
+                    class="mt-8 mb-4 mr-5 ml-5"
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="alert.type === 'error'"
+                >
+                    {{ alert.message }}
+                </fuse-alert>
+            </div>
+
             <div class="overflow-x-auto mx-6">
                 <table
                     class="w-full bg-transparent"
@@ -66,7 +80,6 @@
                             <mat-slide-toggle
                     class="ml-2"
                     [color]="'primary'"
-                    [formControlName]="'confirmed'"
                     [checked]="user.confirmed"
                     (change)="toggleConfirmation(user._id,$event)"
                     #communication>
