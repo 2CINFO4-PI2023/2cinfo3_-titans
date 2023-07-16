@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
     recentTransactionsTableColumns: string[] = [
         'name',
         'email',
+        'phone',
         'role',
         'status',
         'actions',
@@ -31,26 +32,68 @@ export class UserComponent implements OnInit {
         message: '',
     };
     showAlert: boolean = false;
+    filterValues: { [key: string]: string } = {
+        email: '',
+        name: '',
+        role: '',
+        phone: '',
+    };
+    sortField: string = '';
+    sortOrder: 'asc' | 'desc' = 'asc';
+    pageSize: number = 10;
+    currentPage: number = 1;
+    totalItems:number=0
     ngOnInit(): void {
-        this.userService.getUsers().subscribe(
-            (data: any) => {
-                this.usersDataSource.data = data;
-            },
-            (err) => {
-                console.log('errors: ', err);
-            }
-        );
+        this.getUsers();
     }
     /**
      * Constructor
      */
-    constructor(private userService: UserService, private dialog: MatDialog,private router: Router) {}
+    constructor(
+        private userService: UserService,
+        private dialog: MatDialog,
+        private router: Router
+    ) {}
 
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
-    goToAddUser(){
-        this.router.navigateByUrl('/add')
+    getUsers() {
+        this.userService
+            .getUsers(
+                this.currentPage,
+                this.pageSize,
+                this.filterValues,
+                this.sortField,
+                this.sortOrder
+            )
+            .subscribe(
+                (data: any) => {
+                    this.usersDataSource.data = data.users;
+                    this.totalItems = data.total
+                },
+                (err) => {
+                    console.log('errors: ', err);
+                }
+            );
+    }
+    applyFilters() {
+        this.currentPage = 1;
+        this.getUsers();
+    }
+    applySort(sort: { active: string; direction: 'asc' | 'desc' }) {
+        this.sortField = sort.active;
+        this.sortOrder = sort.direction;
+        this.getUsers();
+    }
+
+    onPageChange(event: any) {
+        this.currentPage = event.pageIndex + 1;
+        this.pageSize = event.pageSize;
+        this.getUsers();
+    }
+    goToAddUser() {
+        this.router.navigateByUrl('/add');
     }
     openConfirmationDialog(userId: string): void {
         //FuseConfirmationDialogComponent
@@ -61,15 +104,14 @@ export class UserComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result === true) {
-                this.showAlert = false
-                if(this.userService.getLoggedInUser()._id == userId){
+                this.showAlert = false;
+                if (this.userService.getLoggedInUser()._id == userId) {
                     this.alert = {
                         type: 'error',
-                        message:
-                            "You can't delete your owen account",
+                        message: "You can't delete your owen account",
                     };
-                    this.showAlert = true
-                    return
+                    this.showAlert = true;
+                    return;
                 }
                 this.userService.deleteUser(userId).subscribe((res) => {
                     this.usersDataSource.data =
@@ -80,21 +122,22 @@ export class UserComponent implements OnInit {
             }
         });
     }
-    toggleConfirmation(userId:string,value:any){
-        this.showAlert = false
-        if(this.userService.getLoggedInUser()._id == userId){
+    toggleConfirmation(userId: string, value: any) {
+        this.showAlert = false;
+        if (this.userService.getLoggedInUser()._id == userId) {
             value.source.checked = true;
             this.alert = {
                 type: 'error',
-                message:
-                    "You can't disable your owen account",
+                message: "You can't disable your owen account",
             };
-            this.showAlert = true
-            return
+            this.showAlert = true;
+            return;
         }
-        this.userService.toggleConfirmation(userId,value.checked).subscribe((res)=>{
-        },(error)=>{
-            // TODO Handle the error
-        })
+        this.userService.toggleConfirmation(userId, value.checked).subscribe(
+            (res) => {},
+            (error) => {
+                // TODO Handle the error
+            }
+        );
     }
 }
