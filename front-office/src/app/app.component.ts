@@ -179,7 +179,7 @@ export class AppComponent implements OnInit {
       iconName: 'report_problem',
       children: [
         {
-          displayName: 'Blog List',
+          displayName: 'Events',
           iconName: 'group',
           route: '/blog/blog-list'
         },

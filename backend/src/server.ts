@@ -10,11 +10,25 @@ import { UserService } from "./modules/user/service/user.service";
 
 import * as fs from "fs";
 import path from "path";
-import swaggerUi from "swagger-ui-express";
-import { ReclamationController } from "./modules/reclamation/controller/reclamation.controller";
-import { ReclamationRepository } from "./modules/reclamation/repository/reclamation.repository";
-import { ReclamationRouter } from "./modules/reclamation/router/reclamation.router";
-import { ReclamationService } from "./modules/reclamation/service/reclamation.service";
+//import swaggerUi from "swagger-ui-express";
+
+import { ReclamationRepository } from './modules/reclamation/repository/reclamation.repository';
+import { ReclamationService } from './modules/reclamation/service/reclamation.service';
+import { ReclamationController } from './modules/reclamation/controller/reclamation.controller';
+import { ReclamationRouter } from './modules/reclamation/router/reclamation.router';
+
+import { StatutRepository } from './modules/statut/repository/statut.repository';
+import { StatutService } from './modules/statut/service/statut.service';
+import { StatutController } from './modules/statut/controller/statut.controller';
+import { StatutRouter } from './modules/statut/router/statut.router';
+
+
+import { MessageRepository } from './modules/message/repository/message.repository';
+import { MessageService } from './modules/message/service/message.service';
+import { MessageController } from './modules/message/controller/message.controller';
+import { MessageRouter } from './modules/message/router/message.router';
+
+
 import { Routes } from "./routes/routes";
 
 import { EventController } from "./modules/event/controller/event.controller";
@@ -90,11 +104,25 @@ const init = async (app: Express) => {
   const userController = new UserController(userService);
   const userRouter = new UserRouter(userController);
 
-  // init reclamation module
-  const reclamationRepository = new ReclamationRepository();
-  const reclamationService = new ReclamationService(reclamationRepository);
-  const reclamationController = new ReclamationController(reclamationService);
-  const reclamationRouter = new ReclamationRouter(reclamationController);
+// init reclamation module
+const reclamationRepository = new ReclamationRepository()
+const reclamationService = new ReclamationService(reclamationRepository)
+const reclamationController = new ReclamationController(reclamationService)
+const reclamationRouter = new ReclamationRouter(reclamationController)
+
+// init mesage module
+const messageRepository = new MessageRepository()
+const mesageService = new MessageService(messageRepository,reclamationRepository)
+const mesageController = new MessageController(mesageService)
+const mesageRouter = new MessageRouter(mesageController)
+
+
+// init type  reclamation module
+const statutRepository = new StatutRepository()
+const statutService = new StatutService(statutRepository)
+const statutController = new StatutController(statutService)
+const statutRouter = new StatutRouter(statutController)
+
 
    // init commande module
    const commandeRepository = new CommandeRepository();
@@ -145,7 +173,7 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   
   new Routes(
     app,
-    reclamationRouter,
+    reclamationRouter, statutRouter, mesageRouter,
     userRouter,
     authRouter,
     eventRouter,
@@ -162,7 +190,7 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const swaggerDocument = JSON.parse(
     fs.readFileSync(path.join(__dirname, "swagger.json"), "utf-8")
   );
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+ // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.get("/", (req: Request, res: Response) => {
     res.send("OK");
