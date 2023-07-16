@@ -13,6 +13,8 @@ import { Route, RouterModule } from '@angular/router';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { UserComponent } from './user.component';
 import { UserDetailComponent } from './userDetail.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 const userRoutes: Route[] = [
     {
@@ -49,7 +51,9 @@ const userRoutes: Route[] = [
         MatIconModule,
         FuseAlertModule,
         CommonModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatPaginatorModule,
+        MatSortModule
     ]
 })
 export class UserModule

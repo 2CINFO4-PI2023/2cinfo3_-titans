@@ -47,7 +47,7 @@ export class UserDetailComponent implements OnInit {
             ]),
             phone: new FormControl('', [
                 Validators.required,
-                Validators.pattern(/^\d{8}$/),
+                Validators.pattern(/^\+216(20|21|22|23|24|25|26|27|28|29|50|52|53|54|55|56|58|90|91|92|93|94|95|96|97|98|99)\d{6}$/)
             ]),
             address: new FormControl('', Validators.required),
             role: new FormControl(this.roles[1], Validators.required),
