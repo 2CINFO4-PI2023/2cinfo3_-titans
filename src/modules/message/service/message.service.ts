@@ -89,14 +89,14 @@ export class MessageService implements IMessageService {
       // Transformer la chaîne de caractères en objet JSON
       const parsedResponse = JSON.parse(jsonResponse);
    
-      if(parsedResponse.action=="create_message" || parsedResponse.action=="create_reclamation" )
+      if(parsedResponse.action=="create_reclamation" )
       {
 
         const nouvelleReclamation = new Reclamation({
           user :user,
       //    statut: parsedResponse.message.statut ,
-          numero:parsedResponse.message.numero,
-          description: parsedResponse.message.description,
+          numero:parsedResponse.reclamation.numero,
+          description: parsedResponse.reclamation.description,
           date_now: new Date(),
         });
 
