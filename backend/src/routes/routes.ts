@@ -10,6 +10,9 @@ import { IngredientRouter } from "../modules/stock/router/ingredient.router";
 import { PlatRouter } from "../modules/stock/router/plat.router";
 import { ROLES } from "../modules/user/service/auth.service";
 import { NextFunction, Request, Response } from "express";
+import { CommandeRouter } from "../modules/commande/router/commande.router";
+import { PaymentRouter } from "../modules/commande/router/payment.router";
+import { LivraisonRouter } from "../modules/commande/router/livraison.router";
 
 export class Routes {
   constructor(
@@ -21,7 +24,11 @@ export class Routes {
     private inscriptionRouter: InscriptionRouter,
     private eventTypeRouter: EventTypeRouter,
     private ingredientRouter: IngredientRouter,
-    private platRouter: PlatRouter
+    private platRouter: PlatRouter,
+    private commandeRouter: CommandeRouter,
+    private paymentRouter: PaymentRouter,
+    private livraisonRouter: LivraisonRouter
+
   ) {}
 
   init() {
@@ -62,6 +69,21 @@ export class Routes {
       "/plats",
       validateJwtToken,
       this.platRouter.platRoutes
+    );
+    this.app.use(
+      "/commandes",
+      validateJwtToken,
+      this.commandeRouter.commandeRoutes
+    );
+    this.app.use(
+      "/payment",
+      
+      this.paymentRouter.paymentRoutes
+    );
+    this.app.use(
+      "/livraison",
+      validateJwtToken,
+      this.livraisonRouter.livraisonRoutes
     );
   }
 }
