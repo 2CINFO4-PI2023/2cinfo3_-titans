@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReclamationService } from './faq.service';
 
 @Component({
@@ -10,9 +12,12 @@ export class FaqComponent {
   claimCreated: boolean = false;
   claimDescription: string = '';
   reclamationType: string = '';
-  id: string = ''; // Add the 'id' property and set its appropriate value
+  id: string = '';
 
-  constructor(private reclamationService: ReclamationService) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private reclamationService: ReclamationService
+  ) {}
 
   generateRandomNumber(): string {
     const prefix = 'RC-';
@@ -26,15 +31,15 @@ export class FaqComponent {
         this.id = response._id;
       },
       (error) => {
-        console.error('Failed to get new statut!', error);
+        console.error('Failed to get new status!', error);
       }
     );
   }
 
-  submitClaim(claimDescription: string, reclamationType: string) {
+  submitClaim(form: NgForm) {
     const reclamation = {
-      description: claimDescription,
-      type: reclamationType,
+      description: this.claimDescription,
+      type: this.reclamationType,
       statut: this.id,
       numero: this.generateRandomNumber()
     };
@@ -43,13 +48,21 @@ export class FaqComponent {
       (response) => {
         console.log('Claim submitted successfully.', response);
         this.claimCreated = true;
-        this.claimDescription = '';
-        this.reclamationType = '';
-        alert('Claim created!');
+        form.resetForm();
+        this.showNotification('Claim Created!');
       },
       (error) => {
         console.error('Failed to submit claim.', error);
+        this.showNotification('Failed to Submit Claim!');
       }
     );
+  }
+
+  showNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds (3 seconds in this example)
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
   }
 }
