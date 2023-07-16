@@ -1,7 +1,7 @@
 <div class="w-full w-10/12">
     <div>
-        <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false" [type]="alert.type"
-            [@shake]="alert.type === 'error'">
+        <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+            [type]="alert.type" [@shake]="alert.type === 'error'">
             {{ alert.message }}
         </fuse-alert>
     </div>
@@ -19,7 +19,7 @@
             </mat-form-field>
         </div>
         <div class="sm:col-span-4">
-            <mat-form-field  class="w-1/2 mt-4 mx-4">
+            <mat-form-field class="w-1/2 mt-4 mx-4">
                 <mat-label>Email</mat-label>
                 <input matInput type="email" placeholder="Email" formControlName="email" />
                 <mat-error *ngIf="
@@ -39,7 +39,7 @@
                         userDetailsForm.get('phone').invalid &&
                         userDetailsForm.get('phone').touched
                     ">
-                    Phone is required and should have exactly 8 digits
+                    Phone is required and should be a valid Tunisian phone number
                 </mat-error>
             </mat-form-field>
         </div>
@@ -63,8 +63,7 @@
                         userDetailsForm.get('password').invalid &&
                         userDetailsForm.get('password').touched
                     ">
-                    Password is required and should have a minimum of 8
-                    characters
+                    Password should have at least one lowercase letter, one uppercase letter, and one digit, and its length should be at least 8 characters
                 </mat-error>
             </mat-form-field>
         </div>
@@ -77,21 +76,22 @@
                 </mat-select>
             </mat-form-field>
         </div>
+
+        <div class="sm:col-span-4">
+            <label for="image">Avatar</label>
+            <input formControlName="photo" id="image" type="file" accept=".jpg,.jpeg,.png"
+                (change)="onAvatarChange($event)" />
+        </div>
+
         <!-- Divider -->
         <div class="mt-4 mb-10 border-t"></div>
-    
+
         <!-- Actions -->
         <div class="flex items-center justify-end mb-10 mx-4">
-            <button
-                mat-stroked-button
-                type="button"
-                (click)="goToUsersList()">
+            <button mat-stroked-button type="button" (click)="goToUsersList()">
                 Cancel
             </button>
-            <button
-                class="ml-4"
-                mat-flat-button
-                type="submit" [disabled]="userDetailsForm.invalid"
+            <button class="ml-4" mat-flat-button type="submit" [disabled]="userDetailsForm.invalid"
                 [color]="'primary'">Save
             </button>
         </div>

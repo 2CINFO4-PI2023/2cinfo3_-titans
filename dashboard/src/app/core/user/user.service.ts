@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
 import { environment } from 'environments/environment';
@@ -82,9 +82,31 @@ export class UserService
             })
         );
     }
-    getUsers(){
-        return this._httpClient.get(`${environment.baseUrl}users`)
-    }
+    getUsers(
+        page: number = 1,
+        pageSize: number = 10,
+        filters: { [key: string]: string } = {},
+        sortField: string = '',
+        sortOrder: 'asc' | 'desc' = 'asc'
+      ): Observable<any> {
+        let params = new HttpParams();
+    
+        params = params.append('page', page.toString());
+        params = params.append('pageSize', pageSize.toString());
+    
+        Object.keys(filters).forEach((key) => {
+          if (filters[key] !== '') {
+            params = params.append(key, filters[key]);
+          }
+        });
+    
+        if (sortField !== '' && (sortOrder === 'asc' || sortOrder === 'desc')) {
+          params = params.append('sortField', sortField);
+          params = params.append('sortOrder', sortOrder);
+        }
+    
+        return this._httpClient.get(`${environment.baseUrl}users`, { params });
+      }
     deleteUser(id:string){
         return this._httpClient.delete(`${environment.baseUrl}users/${id}`)
     }
