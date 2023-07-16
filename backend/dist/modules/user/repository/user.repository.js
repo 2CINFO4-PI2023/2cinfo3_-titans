@@ -49,7 +49,7 @@ class UserRepository {
                 if (!(0, mongoose_1.isValidObjectId)(id)) {
                     throw new InvalidObjectIdError_1.InvalidObjectIdError();
                 }
-                const user = yield user_schema_1.User.findById(id).select('-password');
+                const user = yield user_schema_1.User.findById(id).select("-password");
                 if (user == null) {
                     throw new NotFoundError_1.NotFoundError("user not found");
                 }
@@ -60,10 +60,30 @@ class UserRepository {
             }
         });
     }
-    all() {
+    all(page, pageSize, filters, sortField, sortOrder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield user_schema_1.User.find().select('-password');
+                const skip = (page - 1) * pageSize;
+                const query = {};
+                if (filters.name) {
+                    query.name = { $regex: new RegExp(filters.name, "i") };
+                }
+                if (filters.email) {
+                    query.email = { $regex: new RegExp(filters.email, "i") };
+                }
+                if (filters.role) {
+                    query.role = parseInt(filters.role, 10);
+                }
+                if (filters.phone) {
+                    query.phone = { $regex: new RegExp(filters.phone, "i") };
+                }
+                const sortQuery = {};
+                sortQuery[sortField] = sortOrder === "desc" ? -1 : 1;
+                const users = yield user_schema_1.User.find(query)
+                    .select("-password")
+                    .skip(skip)
+                    .limit(pageSize)
+                    .sort(sortQuery);
                 return users;
             }
             catch (error) {
@@ -117,6 +137,17 @@ class UserRepository {
                     throw new NotFoundError_1.NotFoundError("user not found");
                 }
                 return doc;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    countUsers(filters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const count = yield user_schema_1.User.countDocuments(filters);
+                return count;
             }
             catch (error) {
                 throw error;

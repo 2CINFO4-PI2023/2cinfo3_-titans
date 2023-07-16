@@ -51,7 +51,32 @@ export class UserController implements IUserController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const data = await this.userService.allUsers();
+      
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const filters: { [key: string]: string | number } = {};
+
+      // Add filters to the query if they are provided in the request
+      if (req.query.name) {
+          filters.name = req.query.name as string;
+      }
+
+      if (req.query.email) {
+          filters.email = req.query.email as string;
+      }
+
+      if (req.query.role) {
+          filters.role = req.query.role as unknown as number;
+      }
+
+      if (req.query.phone) {
+          filters.phone = req.query.phone as string;
+      }
+
+      const sortField = req.query.sortField as string || 'name';
+      const sortOrder = req.query.sortOrder as string || 'asc';
+
+      const data = await this.userService.allUsers(page, pageSize, filters, sortField, sortOrder);
       res.status(200).json(data);
     } catch (error: any) {
       res.status(500).send(error);

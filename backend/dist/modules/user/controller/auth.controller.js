@@ -14,6 +14,7 @@ const HTTPError_1 = require("../../../errors/HTTPError");
 const InvalidBodyError_1 = require("../../../errors/InvalidBodyError");
 const loginSchema_1 = require("./schema/loginSchema");
 const signupSchema_1 = require("./schema/signupSchema");
+const resetPasswordSchema_1 = require("./schema/resetPasswordSchema");
 const passport = require("passport");
 class AuthController {
     constructor(authService) {
@@ -103,6 +104,10 @@ class AuthController {
         try {
             const otp = req.body.otp;
             const newPassword = req.body.newPassword;
+            const { error } = resetPasswordSchema_1.resetPasswordSchema.validate(req.body);
+            if (error) {
+                throw new InvalidBodyError_1.InvalidBodyError(error.details[0].message);
+            }
             this.authService.resetPassword(otp, newPassword);
             return res.sendStatus(204);
         }
