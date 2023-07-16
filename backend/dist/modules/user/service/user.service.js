@@ -25,10 +25,6 @@ class UserService {
                     const hashedPassword = yield (0, bcrypt_1.hash)(user.password, 10);
                     user.password = hashedPassword;
                 }
-                // if (user.role == ''){
-                //   user.role = ROLES.CLIENT;
-                // }
-                user.confirmed = true;
                 return yield this.userRepository.create(user);
             }
             catch (error) {
