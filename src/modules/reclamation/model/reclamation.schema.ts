@@ -8,6 +8,7 @@ export interface IReclamation {
   user : IUser
   statut: IStatut;
   numero:String;
+  type:String;
   description: string;
   date_creation:Date
 }
@@ -18,6 +19,7 @@ const reclamationSchema = new Schema<IReclamation>({
   statut: { type: Schema.Types.ObjectId, ref: 'Statut' }, 
   user: { type: Schema.Types.ObjectId, ref: 'User' }, 
   numero:String,
+  type:String,
   description:String,
   date_creation:Date
 });

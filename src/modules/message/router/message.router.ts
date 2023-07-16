@@ -28,12 +28,16 @@ export class MessageRouter {
       this.messageController.getAll(req, res);
     });
 
-    this._messageRoutes.route("/askchatbot/:id").get((req, res) => {
+    this._messageRoutes.route("/:id").post((req, res) => {
       this.messageController.askchatbot(req, res);
     });
 
     this._messageRoutes.route("/:id").put((req, res) => {
       this.messageController.update(req, res);
+    });
+
+    this._messageRoutes.route("/messages/:id").get((req, res) => {
+      this.messageController.getbyUserId(req, res);
     });
 
     this._messageRoutes.route("/:id").delete((req, res) => {

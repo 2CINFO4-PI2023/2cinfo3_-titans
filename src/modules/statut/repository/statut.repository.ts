@@ -7,6 +7,7 @@ export interface IStatutRepository {
   all(): Promise<IStatut[]>;
   delete(id: string): Promise<void>;
   update(id: string, statut: IStatut): Promise<void>;
+  findOrCreateNewStatus(): Promise<IStatut>;
 }
 
 export class StatutRepository implements IStatutRepository {
@@ -54,6 +55,21 @@ export class StatutRepository implements IStatutRepository {
   async update(id: string, statut: IStatut): Promise<void> {
     try {
       await Statut.findByIdAndUpdate(id, statut);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async findOrCreateNewStatus(): Promise<IStatut> {
+    try {
+      const existingStatus = await Statut.findOne({ statut: "new" });
+      if (existingStatus) {
+        return existingStatus;
+      } else {
+        const newStatus: IStatut = { statut: "new" };
+        const createdStatus = await this.create(newStatus);
+        return createdStatus;
+      }
     } catch (error: any) {
       throw error;
     }

@@ -8,6 +8,8 @@ export interface IStatutController {
   getAll(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
+  findOrCreateNewStatus(req: Request, res: Response): void;
+
 }
 
 export class StatutController implements IStatutController {
@@ -64,6 +66,15 @@ export class StatutController implements IStatutController {
       const id = req.params.id;
       await this.statutService.deleteStatut(id);
       res.json({ message: "Statut deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+  
+  async findOrCreateNewStatus(req: Request, res: Response) {
+    try {
+      const newStatus = await this.statutService.findOrCreateNewStatus();
+      res.json(newStatus);
     } catch (error: any) {
       res.status(500).send(error);
     }

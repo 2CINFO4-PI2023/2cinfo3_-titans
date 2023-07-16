@@ -7,6 +7,7 @@ export interface IMessageRepository {
   all(): Promise<IMessage[]>;
   delete(id: string): Promise<void>;
   update(id: string, message: IMessage): Promise<void>;
+  byUser(userId: string): Promise<IMessage[]>;
 }
 
 export class MessageRepository implements IMessageRepository {
@@ -38,6 +39,16 @@ export class MessageRepository implements IMessageRepository {
     try {
       const docs = await Message.find();
       return docs;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  
+  async byUser(userId: string): Promise<IMessage[]> {
+    try {
+      const messages = await Message.find({ user: userId }, null, { sort: { date_creation: 1 } });
+      return messages;
     } catch (error: any) {
       throw error;
     }

@@ -13,6 +13,10 @@ export class StatutRouter {
   }
 
   private init() {
+
+    this._statutRoutes.route("/new").get((req, res) => {
+      this.statutController.findOrCreateNewStatus(req, res);
+    });
     this._statutRoutes.route("").post((req, res) => {
       this.statutController.create(req, res);
     });
@@ -32,5 +36,7 @@ export class StatutRouter {
     this._statutRoutes.route("/:id").delete((req, res) => {
       this.statutController.delete(req, res);
     });
+
+   
   }
 }

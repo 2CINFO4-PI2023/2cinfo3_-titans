@@ -10,6 +10,7 @@ export interface IMessageController {
   delete(req: Request, res: Response): void;
   askchatbot(req: Request, res: Response):void;
   reclamtionReplyMessage(req: Request, res: Response):void;
+  getbyUserId(req: Request, res: Response) :void;
 }
 
 export class MessageController implements IMessageController {
@@ -40,6 +41,20 @@ export class MessageController implements IMessageController {
       res.status(500).send(error);
     }
   }
+
+  async getbyUserId(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const message = await this.messageService.allMessagesByUser(id);
+      if (!message) {
+        return res.status(404).json({ message: "Message not found" });
+      }
+      res.json(message);
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
 
   async askchatbot(req: Request, res: Response) {
     try {

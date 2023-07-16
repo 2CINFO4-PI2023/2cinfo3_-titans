@@ -35,10 +35,15 @@ import { AuthRouter } from './modules/user/router/auth.router';
 import { AuthService } from './modules/user/service/auth.service';
 import { Mailer } from './notifiers/mail/mail.service';
 
+import cors from 'cors'; // Import the cors package
+
 dotenv.config();
+
 
 const app: Express = express();
 const port = process.env.SERVER_PORT || 8081;
+
+app.use(cors());
 
 connectDB()
 
