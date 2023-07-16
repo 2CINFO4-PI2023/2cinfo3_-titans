@@ -7,7 +7,7 @@ export interface IUser {
   address: string;
   password?: string;
   confirmed:boolean;
-  role:number | string;
+  role:number;
   image?:string,
   _id?: Types.ObjectId
   favoritePlat: string[];

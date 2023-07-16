@@ -28,10 +28,6 @@ export class UserService implements IUserService {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;
       }
-      // if (user.role == ''){
-      //   user.role = ROLES.CLIENT;
-      // }
-      user.confirmed = true
       return await this.userRepository.create(user);
     } catch (error) {
       throw error;
