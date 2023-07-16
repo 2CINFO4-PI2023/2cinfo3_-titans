@@ -77,10 +77,22 @@ const ingredient_router_1 = require("./modules/stock/router/ingredient.router");
 const plat_router_1 = require("./modules/stock/router/plat.router");
 const ingredient_service_1 = require("./modules/stock/service/ingredient.service");
 const plat_service_1 = require("./modules/stock/service/plat.service");
+const commande_repository_1 = require("./modules/commande/repository/commande.repository");
+const commande_service_1 = require("./modules/commande/service/commande.service");
+const commande_controller_1 = require("./modules/commande/controller/commande.controller");
+const commande_router_1 = require("./modules/commande/router/commande.router");
+const payment_router_1 = require("./modules/commande/router/payment.router");
+const livraison_repository_1 = require("./modules/commande/repository/livraison.repository");
+const livraison_service_1 = require("./modules/commande/service/livraison.service");
+const livraison_controller_1 = require("./modules/commande/controller/livraison.controller");
+const livraison_router_1 = require("./modules/commande/router/livraison.router");
 const passport = require('passport');
 var cors = require('cors');
+const bodyParser = require("body-parser");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = process.env.SERVER_PORT || 8081;
 const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     (0, mongo_1.default)();
@@ -108,6 +120,12 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const reclamationService = new reclamation_service_1.ReclamationService(reclamationRepository);
     const reclamationController = new reclamation_controller_1.ReclamationController(reclamationService);
     const reclamationRouter = new reclamation_router_1.ReclamationRouter(reclamationController);
+    // init commande module
+    const commandeRepository = new commande_repository_1.CommandeRepository();
+    const commandeService = new commande_service_1.CommandeService(commandeRepository, mailer);
+    const commandeController = new commande_controller_1.CommandeController(commandeService);
+    const commandeRouter = new commande_router_1.CommandeRouter(commandeController);
+    const paymentRouter = new payment_router_1.PaymentRouter();
     const authService = new auth_service_1.AuthService(userService, mailer, tokenRepositoy);
     const authController = new auth_controller_1.AuthController(authService);
     const authRouter = new auth_router_1.AuthRouter(authController);
@@ -126,6 +144,11 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const eventTypeService = new eventType_service_1.EventTypeService(eventTypeRepository);
     const eventTypeController = new eventType_controller_1.EventTypeController(eventTypeService);
     const eventTypeRouter = new eventType_router_1.EventTypeRouter(eventTypeController);
+    // Initialize the livraison module
+    const livraisonRepository = new livraison_repository_1.LivraisonRepository();
+    const livraisonService = new livraison_service_1.LivraisonService(livraisonRepository, mailer);
+    const livraisonController = new livraison_controller_1.LivraisonController(livraisonService);
+    const livraisonRouter = new livraison_router_1.LivraisonRouter(livraisonController);
     // init
     app.use(cors());
     app.use(express_1.default.json());
@@ -134,7 +157,7 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
         resave: false,
         saveUninitialized: false,
     }));
-    new routes_1.Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter).init();
+    new routes_1.Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter).init();
     // Serve Swagger documentation
     const swaggerDocument = JSON.parse(fs.readFileSync(path_1.default.join(__dirname, "swagger.json"), "utf-8"));
     app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument));

@@ -44,12 +44,25 @@ import { IngredientRouter } from "./modules/stock/router/ingredient.router";
 import { PlatRouter } from "./modules/stock/router/plat.router";
 import { IngredientService } from "./modules/stock/service/ingredient.service";
 import { PlatService } from "./modules/stock/service/plat.service";
+import { CommandeRepository } from "./modules/commande/repository/commande.repository";
+import { CommandeService } from "./modules/commande/service/commande.service";
+import { CommandeController } from "./modules/commande/controller/commande.controller";
+import { CommandeRouter } from "./modules/commande/router/commande.router";
+import { PaymentRouter } from "./modules/commande/router/payment.router";
+import { LivraisonRepository } from "./modules/commande/repository/livraison.repository";
+import { LivraisonService } from "./modules/commande/service/livraison.service";
+import { LivraisonController } from "./modules/commande/controller/livraison.controller";
+import { LivraisonRouter } from "./modules/commande/router/livraison.router";
 const passport = require('passport');
 var cors = require('cors')
+const bodyParser = require("body-parser");
+
 
 dotenv.config();
 
 const app: Express = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = process.env.SERVER_PORT || 8081;
 
 const init = async (app: Express) => {
@@ -83,6 +96,14 @@ const init = async (app: Express) => {
   const reclamationController = new ReclamationController(reclamationService);
   const reclamationRouter = new ReclamationRouter(reclamationController);
 
+   // init commande module
+   const commandeRepository = new CommandeRepository();
+   const commandeService = new CommandeService(commandeRepository, mailer);
+   const commandeController = new CommandeController(commandeService);
+ 
+   const commandeRouter = new CommandeRouter(commandeController);
+   const paymentRouter = new PaymentRouter();
+
   const authService = new AuthService(userService, mailer, tokenRepositoy);
   const authController = new AuthController(authService);
   const authRouter = new AuthRouter(authController);
@@ -103,6 +124,12 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeService = new EventTypeService(eventTypeRepository);
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
+
+    // Initialize the livraison module
+    const livraisonRepository = new LivraisonRepository();
+    const livraisonService = new LivraisonService(livraisonRepository, mailer);
+    const livraisonController = new LivraisonController(livraisonService);
+    const livraisonRouter = new LivraisonRouter(livraisonController);
 
   // init
   app.use(cors())
@@ -125,7 +152,10 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
     inscriptionRouter,
     eventTypeRouter,
     ingredientRouter,
-    platRouter
+    platRouter,
+    commandeRouter,
+    paymentRouter,
+    livraisonRouter
   ).init();
 
   // Serve Swagger documentation
