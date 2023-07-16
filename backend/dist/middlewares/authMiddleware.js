@@ -14,8 +14,10 @@ function validateJwtToken(req, res, next) {
         return res.sendStatus(401);
     }
     jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-        if (err)
+        if (err) {
+            console.log("err: ", err);
             return res.sendStatus(403);
+        }
         next();
     });
 }
@@ -23,8 +25,11 @@ exports.validateJwtToken = validateJwtToken;
 function authorize(allowedRoles) {
     return (req, res, next) => {
         var _a, _b;
+        console.log("headers: ", req.headers);
         const authHeader = req.headers["authorization"];
+        console.log("authHeader: ", authHeader);
         const token = authHeader && authHeader.split(" ")[1];
+        console.log("token: ", token);
         try {
             const decoded = (jsonwebtoken_1.default.verify(token, process.env.TOKEN_SECRET));
             const userRole = decoded.user.role;

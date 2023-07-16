@@ -10,7 +10,7 @@ import { environment } from "src/environments/environment";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  decodeJwt(token: string): any {
+  static decodeJwt(token: string): any {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const decodedData = atob(base64);
@@ -20,7 +20,7 @@ export class AuthService {
   login(body: any) {
     return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
       switchMap((response: any) => {
-        const { user } = this.decodeJwt(response.accessToken);
+        const { user } = AuthService.decodeJwt(response.accessToken);
         // if (user.role !== 99) {
         //     return throwError('User role is not authorized.'); // Throw an error if the user's role is not 99
         // }
@@ -32,8 +32,21 @@ export class AuthService {
   signup(body: any) {
     return this.http.post(`${environment.base_url}/auth/signup`, body);
   }
-  getUser() {
-    const { user } = this.decodeJwt(localStorage.getItem("fo_accessToken"));
+  updateUser(id:string,body: any) {
+    return this.http.put(`${environment.base_url}/users/${id}`, body);
+  }
+  static getUser() {
+    const { user } = AuthService.decodeJwt(localStorage.getItem("fo_accessToken"));
     return user;
+  }
+  static getToken() {
+    return localStorage.getItem("fo_accessToken")
+  }
+  static signOut(){
+    return localStorage.removeItem("fo_accessToken")
+
+  }
+  static isAuthenticated(): boolean{
+    return localStorage.getItem("fo_accessToken") != null
   }
 }

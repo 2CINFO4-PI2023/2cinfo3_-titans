@@ -113,7 +113,6 @@ export class UserController implements IUserController {
 
   async update(req: Request, res: Response) {
     try {
-      console.log("update")
       const body = req.body;
       if (Object.keys(body).length === 0) {
         throw new InvalidBodyError("Empty body");

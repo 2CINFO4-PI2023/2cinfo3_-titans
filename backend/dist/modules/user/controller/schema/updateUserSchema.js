@@ -14,9 +14,9 @@ exports.updateUserSchema = joi_1.default.object({
         .allow(''),
     address: joi_1.default.string().optional(),
     password: joi_1.default.string()
+        .optional().allow("")
         .min(8)
         .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
-        .optional()
         .messages({
         'string.pattern.base': 'Password should have at least one lowercase letter, one uppercase letter, and one digit, and its length should be at least 8 characters',
     }),
