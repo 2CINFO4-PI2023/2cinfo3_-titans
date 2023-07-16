@@ -13,6 +13,7 @@ import { Route, RouterModule } from '@angular/router';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { UserComponent } from './user.component';
 import { UserDetailComponent } from './userDetail.component';
+
 const userRoutes: Route[] = [
     {
         path     : '',
@@ -49,7 +50,6 @@ const userRoutes: Route[] = [
         FuseAlertModule,
         CommonModule,
         MatSlideToggleModule
-
     ]
 })
 export class UserModule

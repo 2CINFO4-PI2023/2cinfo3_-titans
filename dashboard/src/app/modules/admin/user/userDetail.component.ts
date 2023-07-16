@@ -43,6 +43,7 @@ export class UserDetailComponent implements OnInit {
             password: new FormControl('', [
                 Validators.required,
                 Validators.minLength(8),
+                Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
             ]),
             phone: new FormControl('', [
                 Validators.required,
@@ -50,7 +51,7 @@ export class UserDetailComponent implements OnInit {
             ]),
             address: new FormControl('', Validators.required),
             role: new FormControl(this.roles[1], Validators.required),
-            // image: new FormControl(null),
+            photo: new FormControl(null),
         });
 
         this.route.params.subscribe((params) => {
@@ -70,7 +71,7 @@ export class UserDetailComponent implements OnInit {
                     ]),
                     address: new FormControl('', Validators.required),
                     role: new FormControl('', Validators.required),
-                    // image: new FormControl(null),
+                    photo: new FormControl(null),
                 });
                 this.userService.getUser(userId).subscribe((user: any) => {
                     this.userDetailsForm.patchValue({
@@ -86,49 +87,71 @@ export class UserDetailComponent implements OnInit {
         });
     }
 
+    onAvatarChange(event: Event): void {
+        const inputElement = event.target as HTMLInputElement;
+        if (inputElement?.files && inputElement.files.length > 0) {
+            const file = inputElement.files[0];
+            this.userDetailsForm.patchValue({
+                photo: file,
+            });
+        }
+    }
+
     goToUsersList() {
         this.router.navigateByUrl('/utilisateurs');
     }
-
+    upload(event: Event) {
+        console.log(event);
+    }
     onSubmit(): void {
         this.showAlert = false;
         this.userDetailsForm.disable();
+        const formData = new FormData();
+        formData.append('name', this.userDetailsForm.get('name').value);
+        formData.append('email', this.userDetailsForm.get('email').value);
+        if (!this.isUpdating) {
+            formData.append(
+                'password',
+                this.userDetailsForm.get('password').value
+            );
+        }
+        formData.append('phone', this.userDetailsForm.get('phone').value);
+        formData.append('address', this.userDetailsForm.get('address').value);
+        formData.append('role', this.userDetailsForm.get('role').value);
+        formData.append('photo', this.userDetailsForm.get('photo').value);
 
         if (this.isUpdating) {
             const userId = this.route.snapshot.params['id'];
-            this.userService
-                .updateUser(userId, this.userDetailsForm.value)
-                .subscribe(
-                    () => {
-                        this.goToUsersList();
-                    },
-                    (error) => {
-                        if (error.status === 409) {
-                            this.alert = {
-                                type: 'error',
-                                message:
-                                    'Cette adresse e-mail est déjà utilisée',
-                            };
-                        } else if (error.status === 400) {
-                            console.log(error);
-                            this.alert = {
-                                type: 'error',
-                                message: 'error occured',
-                            };
-                        } else {
-                            this.alert = {
-                                type: 'error',
-                                message:
-                                    'Une erreur est survenue veuillez réessayer ultérieurement',
-                            };
-                        }
-                        this.userDetailsForm.enable();
-                        this.showAlert = true;
+            this.userService.updateUser(userId, formData).subscribe(
+                () => {
+                    this.goToUsersList();
+                },
+                (error) => {
+                    if (error.status === 409) {
+                        this.alert = {
+                            type: 'error',
+                            message: 'Cette adresse e-mail est déjà utilisée',
+                        };
+                    } else if (error.status === 400) {
+                        console.log(error);
+                        this.alert = {
+                            type: 'error',
+                            message: 'error occured',
+                        };
+                    } else {
+                        this.alert = {
+                            type: 'error',
+                            message:
+                                'Une erreur est survenue veuillez réessayer ultérieurement',
+                        };
                     }
-                );
+                    this.userDetailsForm.enable();
+                    this.showAlert = true;
+                }
+            );
         } else {
             // Perform add operation
-            this.userService.addUser(this.userDetailsForm.value).subscribe(
+            this.userService.addUser(formData).subscribe(
                 () => {
                     this.goToUsersList();
                 },
