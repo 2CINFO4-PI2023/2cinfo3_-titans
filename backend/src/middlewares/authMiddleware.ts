@@ -9,6 +9,7 @@ export function validateJwtToken(
   res: Response,
   next: NextFunction
 ) {
+
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -17,7 +18,10 @@ export function validateJwtToken(
   }
 
   jwt.verify(token, <string>process.env.TOKEN_SECRET, (err: any, user: any) => {
-    if (err) return res.sendStatus(403);
+    if (err) {
+      console.log("err: ", err);
+      return res.sendStatus(403);
+    }
 
     next();
   });
@@ -27,8 +31,12 @@ interface payload {
 }
 export function authorize(allowedRoles: number[]) {
   return (req: Request, res: Response, next: NextFunction) => {
+    console.log("headers: ", req.headers);
     const authHeader = req.headers["authorization"];
+    console.log("authHeader: ", authHeader);
+
     const token = authHeader && authHeader.split(" ")[1];
+    console.log("token: ", token);
 
     try {
       const decoded = <payload>(

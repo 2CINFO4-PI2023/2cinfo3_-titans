@@ -111,7 +111,6 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("update");
                 const body = req.body;
                 if (Object.keys(body).length === 0) {
                     throw new InvalidBodyError_1.InvalidBodyError("Empty body");

@@ -55,7 +55,7 @@ export class MyAccountComponent implements OnInit {
       .login({ email: this.loginData.email, password: this.loginData.password })
       .subscribe(
         (res: any) => {
-          this.router.navigate(["/"]);
+          this.router.navigate(["/home/products/all"]);
         },
         (error) => {
           if (error.status == 401) {
