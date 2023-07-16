@@ -1,32 +1,24 @@
 import { Request, Response } from "express";
-import { IReclamationService } from "../service/reclamation.service";
+import { IStatutService } from "../service/statut.service";
 import { DuplicatedError } from "../../../errors/DuplicatedError";
-import { User } from "../../user/model/user.schema";
 
-export interface IReclamationController {
+export interface IStatutController {
   create(req: Request, res: Response): void;
   get(req: Request, res: Response): void;
   getAll(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
+  findOrCreateNewStatus(req: Request, res: Response): void;
+
 }
 
-export class ReclamationController implements IReclamationController {
-  constructor(private reclamationService: IReclamationService) {}
+export class StatutController implements IStatutController {
+  constructor(private statutService: IStatutService) {}
 
   async create(req: Request, res: Response) {
     try {
-
-     
-      const id = req.params.id;
-      const user =await User.findById(id);
-     
-
-      const reclamation = req.body;
-      reclamation.user=user;
-      
-      const data = await this.reclamationService.createReclamation(reclamation);
-      
+      const statut = req.body;
+      const data = await this.statutService.createStatut(statut);
       res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof DuplicatedError) {
@@ -39,11 +31,11 @@ export class ReclamationController implements IReclamationController {
   async get(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const reclamation = await this.reclamationService.getReclamation(id);
-      if (!reclamation) {
-        return res.status(404).json({ message: "Reclamation not found" });
+      const statut = await this.statutService.getStatut(id);
+      if (!statut) {
+        return res.status(404).json({ message: "Statut not found" });
       }
-      res.json(reclamation);
+      res.json(statut);
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -51,8 +43,8 @@ export class ReclamationController implements IReclamationController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const reclamations = await this.reclamationService.allReclamations();
-      res.json(reclamations);
+      const statuts = await this.statutService.allStatuts();
+      res.json(statuts);
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -61,9 +53,9 @@ export class ReclamationController implements IReclamationController {
   async update(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const reclamation = req.body;
-      await this.reclamationService.updateReclamation(id, reclamation);
-      res.json({ message: "Reclamation updated successfully" });
+      const statut = req.body;
+      await this.statutService.updateStatut(id, statut);
+      res.json({ message: "Statut updated successfully" });
     } catch (error: any) {
       res.status(500).send(error);
     }
@@ -72,8 +64,17 @@ export class ReclamationController implements IReclamationController {
   async delete(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      await this.reclamationService.deleteReclamation(id);
-      res.json({ message: "Reclamation deleted successfully" });
+      await this.statutService.deleteStatut(id);
+      res.json({ message: "Statut deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+  
+  async findOrCreateNewStatus(req: Request, res: Response) {
+    try {
+      const newStatus = await this.statutService.findOrCreateNewStatus();
+      res.json(newStatus);
     } catch (error: any) {
       res.status(500).send(error);
     }

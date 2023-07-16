@@ -9,78 +9,80 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReclamationService = void 0;
-const NotFoundError_1 = require("../../../errors/NotFoundError");
-const statut_schema_1 = require("../../statut/model/statut.schema");
-class ReclamationService {
-    constructor(reclamationRepository) {
-        this.reclamationRepository = reclamationRepository;
-    }
-    createReclamation(reclamation) {
+exports.StatutRepository = void 0;
+const DuplicatedError_1 = require("../../../errors/DuplicatedError");
+const statut_schema_1 = require("../model/statut.schema");
+class StatutRepository {
+    constructor() { }
+    create(statut) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // const { statut } = reclamation;
-                // Check if the type exists in the Statut collection
-                // const existingType = await Statut.findById(statut);
-                //  if (!existingType) {
-                //   throw new NotFoundError("Invalid type provided.");
-                // }
-                return yield this.reclamationRepository.create(reclamation);
+                const doc = yield statut_schema_1.Statut.create(statut);
+                return doc;
+            }
+            catch (error) {
+                if (error.code === 11000) {
+                    // Handle duplicate key error
+                    throw new DuplicatedError_1.DuplicatedError("Statut already exists");
+                }
+                throw error;
+            }
+        });
+    }
+    get(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const doc = yield statut_schema_1.Statut.findById(id);
+                return doc;
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    getReclamation(id) {
+    all() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reclamation = yield this.reclamationRepository.get(id);
-                const statut = yield statut_schema_1.Statut.findById(reclamation === null || reclamation === void 0 ? void 0 : reclamation.statut);
-                if (statut == null)
-                    throw new NotFoundError_1.NotFoundError("Statut Not  Found !");
-                return reclamation;
+                const docs = yield statut_schema_1.Statut.find();
+                return docs;
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    allReclamations() {
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.reclamationRepository.all();
+                yield statut_schema_1.Statut.findByIdAndDelete(id);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    deleteReclamation(id) {
+    update(id, statut) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.reclamationRepository.delete(id);
+                yield statut_schema_1.Statut.findByIdAndUpdate(id, statut);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    updateReclamation(id, reclamation) {
+    findOrCreateNewStatus() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.reclamationRepository.update(id, reclamation);
-            }
-            catch (error) {
-                throw error;
-            }
-        });
-    }
-    populateType(typeId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const type = yield statut_schema_1.Statut.findById(typeId);
-                return type;
+                const existingStatus = yield statut_schema_1.Statut.findOne({ statut: "new" });
+                if (existingStatus) {
+                    return existingStatus;
+                }
+                else {
+                    const newStatus = { statut: "new" };
+                    const createdStatus = yield this.create(newStatus);
+                    return createdStatus;
+                }
             }
             catch (error) {
                 throw error;
@@ -88,4 +90,4 @@ class ReclamationService {
         });
     }
 }
-exports.ReclamationService = ReclamationService;
+exports.StatutRepository = StatutRepository;

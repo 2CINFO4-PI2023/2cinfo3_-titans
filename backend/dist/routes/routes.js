@@ -7,9 +7,11 @@ exports.Routes = void 0;
 const express_1 = __importDefault(require("express"));
 const authMiddleware_1 = require("../middlewares/authMiddleware");
 class Routes {
-    constructor(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter) {
+    constructor(app, reclamationRouter, statutRouter, messageRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter) {
         this.app = app;
         this.reclamationRouter = reclamationRouter;
+        this.statutRouter = statutRouter;
+        this.messageRouter = messageRouter;
         this.userRouter = userRouter;
         this.authRouter = authRouter;
         this.eventRouter = eventRouter;
@@ -26,7 +28,9 @@ class Routes {
         this.app.use("/assets", express_1.default.static("dist"));
         this.app.use("/auth", this.authRouter.userRoutes);
         this.app.use("/users", authMiddleware_1.validateJwtToken, this.userRouter.userRoutes);
-        this.app.use("/reclamations", authMiddleware_1.validateJwtToken, this.reclamationRouter.reclamationRoutes);
+        this.app.use("/message", this.messageRouter.messageRoutes);
+        this.app.use("/reclamations", this.reclamationRouter.reclamationRoutes);
+        this.app.use("/statuts", this.statutRouter.statutRoutes);
         this.app.use("/events", authMiddleware_1.validateJwtToken, this.eventRouter.eventRoutes);
         this.app.use("/inscriptions", authMiddleware_1.validateJwtToken, this.inscriptionRouter.inscriptionRoutes);
         this.app.use("/types", authMiddleware_1.validateJwtToken, this.eventTypeRouter.eventTypeRoutes);

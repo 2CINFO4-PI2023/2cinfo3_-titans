@@ -9,78 +9,68 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReclamationService = void 0;
-const NotFoundError_1 = require("../../../errors/NotFoundError");
-const statut_schema_1 = require("../../statut/model/statut.schema");
-class ReclamationService {
-    constructor(reclamationRepository) {
-        this.reclamationRepository = reclamationRepository;
+exports.StatutService = void 0;
+const reclamation_schema_1 = require("../../reclamation/model/reclamation.schema");
+class StatutService {
+    constructor(statutRepository) {
+        this.statutRepository = statutRepository;
     }
-    createReclamation(reclamation) {
+    createStatut(statut) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // const { statut } = reclamation;
-                // Check if the type exists in the Statut collection
-                // const existingType = await Statut.findById(statut);
-                //  if (!existingType) {
-                //   throw new NotFoundError("Invalid type provided.");
-                // }
-                return yield this.reclamationRepository.create(reclamation);
+                return yield this.statutRepository.create(statut);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    getReclamation(id) {
+    getStatut(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reclamation = yield this.reclamationRepository.get(id);
-                const statut = yield statut_schema_1.Statut.findById(reclamation === null || reclamation === void 0 ? void 0 : reclamation.statut);
-                if (statut == null)
-                    throw new NotFoundError_1.NotFoundError("Statut Not  Found !");
-                return reclamation;
+                return yield this.statutRepository.get(id);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    allReclamations() {
+    allStatuts() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.reclamationRepository.all();
+                return yield this.statutRepository.all();
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    deleteReclamation(id) {
+    deleteStatut(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.reclamationRepository.delete(id);
+                const reclamations = yield reclamation_schema_1.Reclamation.find();
+                console.log(reclamations);
+                yield this.statutRepository.delete(id);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    updateReclamation(id, reclamation) {
+    updateStatut(id, statut) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.reclamationRepository.update(id, reclamation);
+                yield this.statutRepository.update(id, statut);
             }
             catch (error) {
                 throw error;
             }
         });
     }
-    populateType(typeId) {
+    findOrCreateNewStatus() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const type = yield statut_schema_1.Statut.findById(typeId);
-                return type;
+                return yield this.statutRepository.findOrCreateNewStatus();
             }
             catch (error) {
                 throw error;
@@ -88,4 +78,4 @@ class ReclamationService {
         });
     }
 }
-exports.ReclamationService = ReclamationService;
+exports.StatutService = StatutService;

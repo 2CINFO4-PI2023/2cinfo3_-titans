@@ -9,21 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReclamationController = void 0;
+exports.StatutController = void 0;
 const DuplicatedError_1 = require("../../../errors/DuplicatedError");
-const user_schema_1 = require("../../user/model/user.schema");
-class ReclamationController {
-    constructor(reclamationService) {
-        this.reclamationService = reclamationService;
+class StatutController {
+    constructor(statutService) {
+        this.statutService = statutService;
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const id = req.params.id;
-                const user = yield user_schema_1.User.findById(id);
-                const reclamation = req.body;
-                reclamation.user = user;
-                const data = yield this.reclamationService.createReclamation(reclamation);
+                const statut = req.body;
+                const data = yield this.statutService.createStatut(statut);
                 res.status(201).json(data);
             }
             catch (error) {
@@ -38,11 +34,11 @@ class ReclamationController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = req.params.id;
-                const reclamation = yield this.reclamationService.getReclamation(id);
-                if (!reclamation) {
-                    return res.status(404).json({ message: "Reclamation not found" });
+                const statut = yield this.statutService.getStatut(id);
+                if (!statut) {
+                    return res.status(404).json({ message: "Statut not found" });
                 }
-                res.json(reclamation);
+                res.json(statut);
             }
             catch (error) {
                 res.status(500).send(error);
@@ -52,8 +48,8 @@ class ReclamationController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const reclamations = yield this.reclamationService.allReclamations();
-                res.json(reclamations);
+                const statuts = yield this.statutService.allStatuts();
+                res.json(statuts);
             }
             catch (error) {
                 res.status(500).send(error);
@@ -64,9 +60,9 @@ class ReclamationController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = req.params.id;
-                const reclamation = req.body;
-                yield this.reclamationService.updateReclamation(id, reclamation);
-                res.json({ message: "Reclamation updated successfully" });
+                const statut = req.body;
+                yield this.statutService.updateStatut(id, statut);
+                res.json({ message: "Statut updated successfully" });
             }
             catch (error) {
                 res.status(500).send(error);
@@ -77,8 +73,19 @@ class ReclamationController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = req.params.id;
-                yield this.reclamationService.deleteReclamation(id);
-                res.json({ message: "Reclamation deleted successfully" });
+                yield this.statutService.deleteStatut(id);
+                res.json({ message: "Statut deleted successfully" });
+            }
+            catch (error) {
+                res.status(500).send(error);
+            }
+        });
+    }
+    findOrCreateNewStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const newStatus = yield this.statutService.findOrCreateNewStatus();
+                res.json(newStatus);
             }
             catch (error) {
                 res.status(500).send(error);
@@ -86,4 +93,4 @@ class ReclamationController {
         });
     }
 }
-exports.ReclamationController = ReclamationController;
+exports.StatutController = StatutController;

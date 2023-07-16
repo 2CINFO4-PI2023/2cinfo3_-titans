@@ -45,11 +45,19 @@ const user_router_1 = require("./modules/user/router/user.router");
 const user_service_1 = require("./modules/user/service/user.service");
 const fs = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const reclamation_controller_1 = require("./modules/reclamation/controller/reclamation.controller");
+//import swaggerUi from "swagger-ui-express";
 const reclamation_repository_1 = require("./modules/reclamation/repository/reclamation.repository");
-const reclamation_router_1 = require("./modules/reclamation/router/reclamation.router");
 const reclamation_service_1 = require("./modules/reclamation/service/reclamation.service");
+const reclamation_controller_1 = require("./modules/reclamation/controller/reclamation.controller");
+const reclamation_router_1 = require("./modules/reclamation/router/reclamation.router");
+const statut_repository_1 = require("./modules/statut/repository/statut.repository");
+const statut_service_1 = require("./modules/statut/service/statut.service");
+const statut_controller_1 = require("./modules/statut/controller/statut.controller");
+const statut_router_1 = require("./modules/statut/router/statut.router");
+const message_repository_1 = require("./modules/message/repository/message.repository");
+const message_service_1 = require("./modules/message/service/message.service");
+const message_controller_1 = require("./modules/message/controller/message.controller");
+const message_router_1 = require("./modules/message/router/message.router");
 const routes_1 = require("./routes/routes");
 const event_controller_1 = require("./modules/event/controller/event.controller");
 const eventType_controller_1 = require("./modules/event/controller/eventType.controller");
@@ -120,6 +128,16 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const reclamationService = new reclamation_service_1.ReclamationService(reclamationRepository);
     const reclamationController = new reclamation_controller_1.ReclamationController(reclamationService);
     const reclamationRouter = new reclamation_router_1.ReclamationRouter(reclamationController);
+    // init mesage module
+    const messageRepository = new message_repository_1.MessageRepository();
+    const mesageService = new message_service_1.MessageService(messageRepository, reclamationRepository);
+    const mesageController = new message_controller_1.MessageController(mesageService);
+    const mesageRouter = new message_router_1.MessageRouter(mesageController);
+    // init type  reclamation module
+    const statutRepository = new statut_repository_1.StatutRepository();
+    const statutService = new statut_service_1.StatutService(statutRepository);
+    const statutController = new statut_controller_1.StatutController(statutService);
+    const statutRouter = new statut_router_1.StatutRouter(statutController);
     // init commande module
     const commandeRepository = new commande_repository_1.CommandeRepository();
     const commandeService = new commande_service_1.CommandeService(commandeRepository, mailer);
@@ -157,10 +175,10 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
         resave: false,
         saveUninitialized: false,
     }));
-    new routes_1.Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter).init();
+    new routes_1.Routes(app, reclamationRouter, statutRouter, mesageRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter).init();
     // Serve Swagger documentation
     const swaggerDocument = JSON.parse(fs.readFileSync(path_1.default.join(__dirname, "swagger.json"), "utf-8"));
-    app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument));
+    // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.get("/", (req, res) => {
         res.send("OK");
     });
