@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EventService } from './blog-list.service';
 
 @Component({
   selector: 'app-blog-list',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./blog-list.component.sass']
 })
 export class BlogListComponent implements OnInit {
+  events: any[];
 
-  constructor() { }
+  constructor(private eventService: EventService) { }
 
   ngOnInit() {
+    this.getEvents();
   }
 
+  getEvents() {
+    this.eventService.getEvents().subscribe(
+      (response) => {
+        this.events = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }

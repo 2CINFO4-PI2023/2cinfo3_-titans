@@ -31,8 +31,12 @@ class Routes {
         this.app.use("/message", this.messageRouter.messageRoutes);
         this.app.use("/reclamations", this.reclamationRouter.reclamationRoutes);
         this.app.use("/statuts", this.statutRouter.statutRoutes);
-        this.app.use("/events", authMiddleware_1.validateJwtToken, this.eventRouter.eventRoutes);
-        this.app.use("/inscriptions", authMiddleware_1.validateJwtToken, this.inscriptionRouter.inscriptionRoutes);
+        this.app.use("/events", 
+        //validateJwtToken,
+        this.eventRouter.eventRoutes);
+        this.app.use("/inscriptions", 
+        //validateJwtToken,
+        this.inscriptionRouter.inscriptionRoutes);
         this.app.use("/types", authMiddleware_1.validateJwtToken, this.eventTypeRouter.eventTypeRoutes);
         this.app.use("/ingredient", authMiddleware_1.validateJwtToken, this.ingredientRouter.ingredientRoutes);
         this.app.use("/plats", authMiddleware_1.validateJwtToken, this.platRouter.platRoutes);
