@@ -85,7 +85,6 @@ class MessageService {
                         description: messageprompt,
                         date_creation: new Date(),
                     });
-                    console.log(parsedResponse.adminResponse);
                     this.createMessage(nouvelleMessagefromUser);
                     this.createMessage(nouvelleMessagefromAdmin);
                     this.reclamationRepository.create(nouvelleReclamation);

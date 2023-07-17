@@ -35,11 +35,11 @@ export class ColorOptionsComponent implements AfterViewInit {
     this.running = true;
     this.addMsg(msg);
 
-    const userId = '648c66938f0e146262dacfcf'; // Replace with the appropriate user ID
-    this.messageService.askChatbot(userId, msg).subscribe(
+
+    this.messageService.askChatbot( msg).subscribe(
       (response: any) => {
         // Handle the response data
-        console.log(response);
+      
         this.addResponseMsg(response.adminResponse);
       },
       (error) => {
@@ -100,11 +100,10 @@ export class ColorOptionsComponent implements AfterViewInit {
   }
 
   fetchMessages() {
-    const userId = '648c66938f0e146262dacfcf'; // Replace with the appropriate user ID
-    this.messageService.getMessages(userId).subscribe(
+ 
+    this.messageService.getMessages().subscribe(
       (response: any[]) => {
         // Handle the response data
-        console.log(response);
         this.processMessages(response);
       },
       (error) => {
