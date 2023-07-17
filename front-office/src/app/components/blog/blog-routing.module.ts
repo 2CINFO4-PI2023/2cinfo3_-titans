@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BlogListComponent } from './blog-list/blog-list.component';
 import { BlogColumnComponent } from './blog-column/blog-column.component';
 import { BlogDetailsComponent } from './blog-details/blog-details.component';
+import { PopupComponent } from './popup/popup.component';
 
 
 
@@ -12,7 +13,9 @@ const routes: Routes = [
     children: [
       { path: 'blog-list', component: BlogListComponent},
       { path: 'blog-column', component: BlogColumnComponent},
-      { path: 'blog-details', component: BlogDetailsComponent}
+      { path: 'blog-details', component: BlogDetailsComponent},
+      { path: 'popup', component: PopupComponent}
+
     ]
   }
 ];
