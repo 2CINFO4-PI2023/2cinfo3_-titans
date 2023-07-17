@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BlogRoutingModule } from './blog-routing.module';
@@ -16,8 +16,8 @@ import { PopupComponent } from './popup/popup.component';
     CommonModule,
     FormsModule,
     SharedModule,
-    BlogRoutingModule
-
+    BlogRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [
     BlogDetailsComponent,

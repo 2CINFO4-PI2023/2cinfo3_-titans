@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { InscriptionService } from './blog-details.service';
 
 @Component({
@@ -8,16 +9,15 @@ import { InscriptionService } from './blog-details.service';
 })
 export class BlogDetailsComponent implements OnInit {
   event: any;
-  firstName: string;
+  name: string;
   lastName: string;
   email: string;
   content: string;
 
-  constructor(private inscriptionService: InscriptionService) { }
+  constructor(private http: HttpClient, private inscriptionService: InscriptionService) { }
 
   ngOnInit() {
-    // Fetch event details from the server using the event ID
-    const eventId = '6496268d43e194ba488d566c'; // Replace with actual event ID
+    const eventId = '6496268d43e194ba488d566c';
     this.inscriptionService.getEvent(eventId)
       .subscribe((response: any) => {
         this.event = response;
@@ -26,9 +26,9 @@ export class BlogDetailsComponent implements OnInit {
 
   submitRegistrationForm() {
     const inscription = {
-      eventId: '6496268d43e194ba488d566c', // Replace with actual event ID
-      userId: '649f43dccd5a374f418af849', // Replace with actual user ID
-      name: this.firstName + ' ' + this.lastName,
+      eventId: '6496268d43e194ba488d566c', 
+      userId: '649f43dccd5a374f418af849', 
+      name: this.name,
       email: this.email,
       status: 'confirmed',
       content: this.content
@@ -37,18 +37,21 @@ export class BlogDetailsComponent implements OnInit {
     this.inscriptionService.createInscription(inscription)
       .subscribe(
         (response: any) => {
-          // Inscription created successfully
           console.log('Inscription created:', response);
-          // Reset form values
-          this.firstName = '';
-          this.lastName = '';
+          this.name = '';
           this.email = '';
           this.content = '';
         },
         (error: any) => {
-          // Error occurred while creating inscription
           console.error('Error creating inscription:', error);
         }
       );
+  }
+
+  scrollToEventDetails() {
+    const element = document.getElementById('eventDetails');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }
