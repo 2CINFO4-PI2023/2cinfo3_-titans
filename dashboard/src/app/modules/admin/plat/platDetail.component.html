@@ -28,12 +28,23 @@
                     <div *ngFor="let item of inputFields">
 
                         <div class="sm:col-span-4">
-                            <input matInput type="text" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}"
-                                placeholder="ingredient">
+                            <mat-form-field>
+                                <input matInput type="text" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}"
+                                    placeholder="ingredient" required #key="ngModel">
+                            </mat-form-field>
+
+                            <mat-error *ngIf="key.invalid && key.touched">
+                                Ingredient is required.
+                            </mat-error>
                         </div>
                         <div class="sm:col-span-4">
-                            <input matInput type="number" [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                                placeholder="Value">
+                            <mat-form-field>
+                                <input matInput type="number" [(ngModel)]="item.value"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Value" required #value="ngModel">
+                            </mat-form-field>
+                            <mat-error *ngIf="value.invalid && value.touched">
+                                Ingredient value is required.
+                            </mat-error>
                         </div>
                         <div class="sm:col-span-4">
                             <button mat-raised-button color="warm" (click)="remove(item)">Remove</button>
@@ -45,8 +56,7 @@
 
                 <div class="sm:col-span-4">
                     <mat-form-field>
-                        <input matInput type="number" placeholder="price
-                              formControlName=" price />
+                        <input matInput type="number" placeholder="price" formControlName="price" />
                         <mat-error *ngIf="
                               platDetailsForm.get('price').invalid &&
                                   platDetailsForm.get('price').touched">

@@ -1,5 +1,5 @@
 export interface Plat{
-    id: String;
+    _id: String;
     name:  String;
     ingredients: { [key: string]: number };
     price: Number;

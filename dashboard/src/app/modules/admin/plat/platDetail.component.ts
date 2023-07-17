@@ -16,7 +16,7 @@ export class PlatDetailComponent implements OnInit {
 
     inputFields = [
         { key: '', value: '' },
-      ];
+    ];
 
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
@@ -30,12 +30,11 @@ export class PlatDetailComponent implements OnInit {
         private platService: PlatService,
         private router: Router,
         private route: ActivatedRoute
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.platDetailsForm = new FormGroup({
             name: new FormControl('', Validators.required),
-            ingredients: new FormControl('', Validators.required),
             price: new FormControl('', [
                 Validators.required,
             ]),
@@ -49,7 +48,6 @@ export class PlatDetailComponent implements OnInit {
                 this.isUpdating = true;
                 this.platDetailsForm = new FormGroup({
                     name: new FormControl('', Validators.required),
-                    ingredients: new FormControl('', Validators.required),
                     price: new FormControl('', [
                         Validators.required,
                     ]),
@@ -57,6 +55,8 @@ export class PlatDetailComponent implements OnInit {
                 });
                 this.platService.getPlat(platId).subscribe((plat: any) => {
                     this.inputFields = plat.ingredients;
+                    console.log(plat.ingredients);
+                    console.log(this.inputFields);
                     this.platDetailsForm.patchValue({
                         name: plat.name,
                         price: plat.price,
@@ -73,11 +73,11 @@ export class PlatDetailComponent implements OnInit {
     }
     addInput() {
         this.inputFields.push({ key: '', value: '' });
-      }
-    
-      remove(item) {
+    }
+
+    remove(item) {
         this.inputFields.splice(this.inputFields.indexOf(item), 1);
-      }
+    }
     onSubmit(): void {
         this.showAlert = false;
         this.platDetailsForm.disable();
@@ -110,6 +110,15 @@ export class PlatDetailComponent implements OnInit {
                 );
         } else {
             // Perform add operation
+            console.log(this.platDetailsForm.value)
+            console.log(JSON.stringify(this.inputFields))
+            const obj = {}
+            this.inputFields.forEach(element => {
+                obj[element.key] = element.value
+            });
+
+            this.platDetailsForm.value.ingredients = obj;
+            console.log(this.platDetailsForm.value)
             this.platService.createPlat(this.platDetailsForm.value).subscribe(
                 () => {
                     this.goToPlatsList();
