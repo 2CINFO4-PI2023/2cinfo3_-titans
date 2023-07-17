@@ -43,6 +43,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:mail',
         link : '/reclamation'
+    },
+    {
+        id   : 'chat',
+        title: 'Chat',
+        type : 'basic',
+        icon : 'heroicons_outline:chat-alt',
+        link : '/chat'
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
