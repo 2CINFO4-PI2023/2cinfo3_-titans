@@ -123,7 +123,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.userService.getUsers(this.currentPage, this.pageSize, this.filterValues, this.sortField, this.sortOrder)
       .subscribe(
         (data: any) => {
-          console.log(data.users);
           this.chats = this.filteredChats = data.users.map((user: any) => {
             return {
               id: user._id,
