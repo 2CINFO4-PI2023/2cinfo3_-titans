@@ -7,6 +7,7 @@ import { NotFoundError } from "../../../errors/NotFoundError";
 export interface IIngredientRepository {
     create(ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     get(id: string): IIngredient | Promise<IIngredient>;
+    getByName(name: string): IIngredient | Promise<IIngredient>;
     getAll(): IIngredient[] | Promise<IIngredient[]>;
     update(id: string, ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     delete(id: string): void;
@@ -35,6 +36,20 @@ export class IngredientRepository implements IIngredientRepository {
                 throw new InvalidObjectIdError();
             }
             const ing = await Ingredient.findById(id);
+            if (ing == null) {
+                throw new NotFoundError("Ingredient is not found");
+            }
+            console.info("IngredientRepo: ingredients is found ");
+            return ing;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+    async getByName(name: string): Promise<IIngredient> {
+        try {
+            console.info("IngredientRepo: getting an ingredient");
+            const ing = await Ingredient.findOne({name});
             if (ing == null) {
                 throw new NotFoundError("Ingredient is not found");
             }
