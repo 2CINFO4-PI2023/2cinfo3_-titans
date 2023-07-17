@@ -23,9 +23,11 @@ export class FaqComponent {
     const prefix = 'RC-';
     const randomNumber = Math.floor(1000 + Math.random() * 9000);
     return `${prefix}${randomNumber}`;
+  
   }
 
   ngOnInit() {
+
     this.reclamationService.getNewStatusId().subscribe(
       (response) => {
         this.id = response._id;
@@ -46,7 +48,6 @@ export class FaqComponent {
 
     this.reclamationService.createReclamation(reclamation).subscribe(
       (response) => {
-        console.log('Claim submitted successfully.', response);
         this.claimCreated = true;
         form.resetForm();
         this.showNotification('Claim Created!');
