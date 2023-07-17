@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PlatService } from 'app/core/plat/plat.service';
 import { Plat } from 'app/core/plat/plat.types';
-import { forEach } from 'lodash';
 
 @Component({
     selector: 'app-plat',

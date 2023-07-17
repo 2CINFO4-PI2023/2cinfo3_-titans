@@ -14,9 +14,7 @@ import { PlatService } from "app/core/plat/plat.service";
 export class PlatDetailComponent implements OnInit {
     @ViewChild('platDetailsNgForm') platDetailsNgForm: NgForm;
 
-    inputFields = [
-        { key: '', value: '' },
-    ];
+    inputFields = [];
 
     alert: { type: FuseAlertType; message: string } = {
         type: 'success',
@@ -54,9 +52,9 @@ export class PlatDetailComponent implements OnInit {
                     image: new FormControl('', Validators.required),
                 });
                 this.platService.getPlat(platId).subscribe((plat: any) => {
-                    this.inputFields = plat.ingredients;
-                    console.log(plat.ingredients);
-                    console.log(this.inputFields);
+                    Object.keys(plat.ingredients).forEach((i)=>{
+                        this.inputFields.push({key:i,value:plat.ingredients[i]})
+                    });          
                     this.platDetailsForm.patchValue({
                         name: plat.name,
                         price: plat.price,
@@ -110,15 +108,13 @@ export class PlatDetailComponent implements OnInit {
                 );
         } else {
             // Perform add operation
-            console.log(this.platDetailsForm.value)
-            console.log(JSON.stringify(this.inputFields))
+            console.log(this.inputFields);
             const obj = {}
             this.inputFields.forEach(element => {
                 obj[element.key] = element.value
             });
 
             this.platDetailsForm.value.ingredients = obj;
-            console.log(this.platDetailsForm.value)
             this.platService.createPlat(this.platDetailsForm.value).subscribe(
                 () => {
                     this.goToPlatsList();
