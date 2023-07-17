@@ -68,10 +68,10 @@ import { LivraisonService } from "./modules/commande/service/livraison.service";
 import { LivraisonController } from "./modules/commande/controller/livraison.controller";
 import { LivraisonRouter } from "./modules/commande/router/livraison.router";
 const passport = require('passport');
+import redisConnect from 'connect-redis';
+
 var cors = require('cors')
 const bodyParser = require("body-parser");
-
-
 dotenv.config();
 
 const app: Express = express();
@@ -162,7 +162,6 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   // init
   app.use(cors())
   app.use(express.json());
-
   app.use(
     session({
       secret: <string>process.env.SESSION_SECRET,

@@ -31,13 +31,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/events'
     },
     {
-        id   : 'stock',
-        title: 'Stock',
-        type : 'basic',
-        icon : 'heroicons_outline:clipboard-list',
-        link : '/stock'
-    },
-    {
         id   : 'reclamation',
         title: 'Réclamation',
         type : 'basic',
@@ -45,6 +38,19 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/reclamation'
     },
     {
+        id   : 'plat',
+        title: 'Plat',
+        type : 'basic',
+        icon : 'heroicons_outline:table',
+        link : '/plat'
+    },
+    {
+        id   : 'ingredient',
+        title: 'Ingredient',
+        type : 'basic',
+        icon : 'heroicons-outline:clipboard-list',
+        link : '/ingredient'
+    }   
         id   : 'chat',
         title: 'Chat',
         type : 'basic',
