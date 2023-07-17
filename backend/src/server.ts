@@ -10,11 +10,25 @@ import { UserService } from "./modules/user/service/user.service";
 
 import * as fs from "fs";
 import path from "path";
-import swaggerUi from "swagger-ui-express";
-import { ReclamationController } from "./modules/reclamation/controller/reclamation.controller";
-import { ReclamationRepository } from "./modules/reclamation/repository/reclamation.repository";
-import { ReclamationRouter } from "./modules/reclamation/router/reclamation.router";
-import { ReclamationService } from "./modules/reclamation/service/reclamation.service";
+//import swaggerUi from "swagger-ui-express";
+
+import { ReclamationRepository } from './modules/reclamation/repository/reclamation.repository';
+import { ReclamationService } from './modules/reclamation/service/reclamation.service';
+import { ReclamationController } from './modules/reclamation/controller/reclamation.controller';
+import { ReclamationRouter } from './modules/reclamation/router/reclamation.router';
+
+import { StatutRepository } from './modules/statut/repository/statut.repository';
+import { StatutService } from './modules/statut/service/statut.service';
+import { StatutController } from './modules/statut/controller/statut.controller';
+import { StatutRouter } from './modules/statut/router/statut.router';
+
+
+import { MessageRepository } from './modules/message/repository/message.repository';
+import { MessageService } from './modules/message/service/message.service';
+import { MessageController } from './modules/message/controller/message.controller';
+import { MessageRouter } from './modules/message/router/message.router';
+
+
 import { Routes } from "./routes/routes";
 
 import { EventController } from "./modules/event/controller/event.controller";
@@ -44,12 +58,25 @@ import { IngredientRouter } from "./modules/stock/router/ingredient.router";
 import { PlatRouter } from "./modules/stock/router/plat.router";
 import { IngredientService } from "./modules/stock/service/ingredient.service";
 import { PlatService } from "./modules/stock/service/plat.service";
+import { CommandeRepository } from "./modules/commande/repository/commande.repository";
+import { CommandeService } from "./modules/commande/service/commande.service";
+import { CommandeController } from "./modules/commande/controller/commande.controller";
+import { CommandeRouter } from "./modules/commande/router/commande.router";
+import { PaymentRouter } from "./modules/commande/router/payment.router";
+import { LivraisonRepository } from "./modules/commande/repository/livraison.repository";
+import { LivraisonService } from "./modules/commande/service/livraison.service";
+import { LivraisonController } from "./modules/commande/controller/livraison.controller";
+import { LivraisonRouter } from "./modules/commande/router/livraison.router";
 const passport = require('passport');
 var cors = require('cors')
+const bodyParser = require("body-parser");
+
 
 dotenv.config();
 
 const app: Express = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = process.env.SERVER_PORT || 8081;
 
 const init = async (app: Express) => {
@@ -77,11 +104,33 @@ const init = async (app: Express) => {
   const userController = new UserController(userService);
   const userRouter = new UserRouter(userController);
 
-  // init reclamation module
-  const reclamationRepository = new ReclamationRepository();
-  const reclamationService = new ReclamationService(reclamationRepository);
-  const reclamationController = new ReclamationController(reclamationService);
-  const reclamationRouter = new ReclamationRouter(reclamationController);
+// init reclamation module
+const reclamationRepository = new ReclamationRepository()
+const reclamationService = new ReclamationService(reclamationRepository)
+const reclamationController = new ReclamationController(reclamationService)
+const reclamationRouter = new ReclamationRouter(reclamationController)
+
+// init mesage module
+const messageRepository = new MessageRepository()
+const mesageService = new MessageService(messageRepository,reclamationRepository)
+const mesageController = new MessageController(mesageService)
+const mesageRouter = new MessageRouter(mesageController)
+
+
+// init type  reclamation module
+const statutRepository = new StatutRepository()
+const statutService = new StatutService(statutRepository)
+const statutController = new StatutController(statutService)
+const statutRouter = new StatutRouter(statutController)
+
+
+   // init commande module
+   const commandeRepository = new CommandeRepository();
+   const commandeService = new CommandeService(commandeRepository, mailer);
+   const commandeController = new CommandeController(commandeService);
+ 
+   const commandeRouter = new CommandeRouter(commandeController);
+   const paymentRouter = new PaymentRouter();
 
   const authService = new AuthService(userService, mailer, tokenRepositoy);
   const authController = new AuthController(authService);
@@ -104,6 +153,12 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   const eventTypeController = new EventTypeController(eventTypeService);
   const eventTypeRouter = new EventTypeRouter(eventTypeController);
 
+    // Initialize the livraison module
+    const livraisonRepository = new LivraisonRepository();
+    const livraisonService = new LivraisonService(livraisonRepository, mailer);
+    const livraisonController = new LivraisonController(livraisonService);
+    const livraisonRouter = new LivraisonRouter(livraisonController);
+
   // init
   app.use(cors())
   app.use(express.json());
@@ -118,21 +173,24 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   
   new Routes(
     app,
-    reclamationRouter,
+    reclamationRouter, statutRouter, mesageRouter,
     userRouter,
     authRouter,
     eventRouter,
     inscriptionRouter,
     eventTypeRouter,
     ingredientRouter,
-    platRouter
+    platRouter,
+    commandeRouter,
+    paymentRouter,
+    livraisonRouter
   ).init();
 
   // Serve Swagger documentation
   const swaggerDocument = JSON.parse(
     fs.readFileSync(path.join(__dirname, "swagger.json"), "utf-8")
   );
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+ // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.get("/", (req: Request, res: Response) => {
     res.send("OK");

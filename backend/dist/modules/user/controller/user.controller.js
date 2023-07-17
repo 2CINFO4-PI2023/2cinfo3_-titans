@@ -50,7 +50,25 @@ class UserController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.userService.allUsers();
+                const page = parseInt(req.query.page) || 1;
+                const pageSize = parseInt(req.query.pageSize) || 10;
+                const filters = {};
+                // Add filters to the query if they are provided in the request
+                if (req.query.name) {
+                    filters.name = req.query.name;
+                }
+                if (req.query.email) {
+                    filters.email = req.query.email;
+                }
+                if (req.query.role) {
+                    filters.role = req.query.role;
+                }
+                if (req.query.phone) {
+                    filters.phone = req.query.phone;
+                }
+                const sortField = req.query.sortField || 'name';
+                const sortOrder = req.query.sortOrder || 'asc';
+                const data = yield this.userService.allUsers(page, pageSize, filters, sortField, sortOrder);
                 res.status(200).json(data);
             }
             catch (error) {
@@ -93,7 +111,6 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("update");
                 const body = req.body;
                 if (Object.keys(body).length === 0) {
                     throw new InvalidBodyError_1.InvalidBodyError("Empty body");

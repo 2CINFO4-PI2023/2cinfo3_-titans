@@ -4,6 +4,7 @@ import { InvalidBodyError } from "../../../errors/InvalidBodyError";
 import { IAuthService } from "../service/auth.service";
 import { loginSchema } from "./schema/loginSchema";
 import { signupSchema } from "./schema/signupSchema";
+import { resetPasswordSchema } from "./schema/resetPasswordSchema";
 const passport = require("passport");
 
 export interface IAuthController {
@@ -67,7 +68,7 @@ export class AuthController implements IAuthController {
     try {
       const token = <string>req.query.token;
       this.authService.activateUser(token);
-      res.sendStatus(204);
+      res.redirect("http://localhost:4200/#/pages/my-account")
     } catch (error) {
       if (error instanceof HTTPError) {
         return res
@@ -96,6 +97,10 @@ export class AuthController implements IAuthController {
     try {
       const otp = req.body.otp;
       const newPassword = req.body.newPassword;
+      const { error } = resetPasswordSchema.validate(req.body);
+      if (error) {
+        throw new InvalidBodyError(error.details[0].message);
+      }
       this.authService.resetPassword(otp, newPassword);
       return res.sendStatus(204);
     } catch (error) {

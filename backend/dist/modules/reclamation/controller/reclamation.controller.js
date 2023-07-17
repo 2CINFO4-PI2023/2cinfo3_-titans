@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReclamationController = void 0;
 const DuplicatedError_1 = require("../../../errors/DuplicatedError");
+const user_schema_1 = require("../../user/model/user.schema");
 class ReclamationController {
     constructor(reclamationService) {
         this.reclamationService = reclamationService;
@@ -18,7 +19,10 @@ class ReclamationController {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const id = req.params.id;
+                const user = yield user_schema_1.User.findById(id);
                 const reclamation = req.body;
+                reclamation.user = user;
                 const data = yield this.reclamationService.createReclamation(reclamation);
                 res.status(201).json(data);
             }

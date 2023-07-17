@@ -7,10 +7,19 @@ import { IUser, User } from "../model/user.schema";
 export interface IUserRepository {
   create(user: IUser): IUser | Promise<IUser>;
   get(id: string): IUser | Promise<IUser>;
-  all(): IUser[] | Promise<IUser[]>;
+  all(
+    page: number,
+    pageSize: number,
+    filters: { [key: string]: string | number },
+    sortField: string,
+    sortOrder: string
+  ): IUser[] | Promise<IUser[]>;
   delete(id: string): IUser | Promise<IUser>;
   update(id: string, user: IUser): void;
   findByEmail(email: string): IUser | Promise<IUser>;
+  countUsers(filters: {
+    [key: string]: string | number;
+  }): Number | Promise<Number>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -32,7 +41,7 @@ export class UserRepository implements IUserRepository {
       if (!isValidObjectId(id)) {
         throw new InvalidObjectIdError();
       }
-      const user = await User.findById(id).select('-password');
+      const user = await User.findById(id).select("-password");
       if (user == null) {
         throw new NotFoundError("user not found");
       }
@@ -41,15 +50,48 @@ export class UserRepository implements IUserRepository {
       throw error;
     }
   }
-  async all(): Promise<IUser[]> {
+  async all(
+    page: number,
+    pageSize: number,
+    filters: { [key: string]: string },
+    sortField: string,
+    sortOrder: string
+  ): Promise<IUser[]> {
     try {
-      const users = await User.find().select('-password');
+      const skip = (page - 1) * pageSize;
+
+      const query: any = {};
+
+      if (filters.name) {
+        query.name = { $regex: new RegExp(filters.name, "i") };
+      }
+
+      if (filters.email) {
+        query.email = { $regex: new RegExp(filters.email, "i") };
+      }
+
+      if (filters.role) {
+        query.role = parseInt(filters.role, 10);
+      }
+
+      if (filters.phone) {
+        query.phone = { $regex: new RegExp(filters.phone, "i") };
+      }
+
+      const sortQuery: any = {};
+      sortQuery[sortField] = sortOrder === "desc" ? -1 : 1;
+
+      const users = await User.find(query)
+        .select("-password")
+        .skip(skip)
+        .limit(pageSize)
+        .sort(sortQuery);
       return users;
     } catch (error) {
       throw error;
     }
   }
-  async delete(id: string):Promise<IUser>{
+  async delete(id: string): Promise<IUser> {
     try {
       if (!isValidObjectId(id)) {
         throw new InvalidObjectIdError();
@@ -58,7 +100,7 @@ export class UserRepository implements IUserRepository {
       if (doc == null) {
         throw new NotFoundError("user not found");
       }
-      return doc
+      return doc;
     } catch (error) {
       throw error;
     }
@@ -89,6 +131,14 @@ export class UserRepository implements IUserRepository {
         throw new NotFoundError("user not found");
       }
       return doc;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async countUsers(filters: { [key: string]: string }): Promise<Number> {
+    try {
+      const count = await User.countDocuments(filters);
+      return count;
     } catch (error) {
       throw error;
     }

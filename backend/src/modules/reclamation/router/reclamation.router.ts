@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { IReclamationController } from "../controller/reclamation.controller";
-import { authorize } from "../../../middlewares/authMiddleware";
-import { ROLES } from "../../user/service/auth.service";
 
 export class ReclamationRouter {
   private _reclamationRoutes: Router = Router();
@@ -15,25 +13,24 @@ export class ReclamationRouter {
   }
 
   private init() {
-    this._reclamationRoutes
-      .route("")
-      .post(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
-        this.reclamationController.create(req, res);
-      })
-      .get(authorize([ROLES.ADMIN]), (req, res) => {
-        this.reclamationController.getAll(req, res);
-      });
+    this._reclamationRoutes.route("/:id").post((req, res) => {
+      this.reclamationController.create(req, res);
+    });
 
-    this._reclamationRoutes
-      .route("/:id")
-      .get(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
-        this.reclamationController.get(req, res);
-      })
-      .put(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
-        this.reclamationController.update(req, res);
-      })
-      .delete(authorize([ROLES.ADMIN, ROLES.CLIENT]), (req, res) => {
-        this.reclamationController.delete(req, res);
-      });
+    this._reclamationRoutes.route("/:id").get((req, res) => {
+      this.reclamationController.get(req, res);
+    });
+
+    this._reclamationRoutes.route("").get((req, res) => {
+      this.reclamationController.getAll(req, res);
+    });
+
+    this._reclamationRoutes.route("/:id").put((req, res) => {
+      this.reclamationController.update(req, res);
+    });
+
+    this._reclamationRoutes.route("/:id").delete((req, res) => {
+      this.reclamationController.delete(req, res);
+    });
   }
 }

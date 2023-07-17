@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IReclamationService } from "../service/reclamation.service";
 import { DuplicatedError } from "../../../errors/DuplicatedError";
+import { User } from "../../user/model/user.schema";
 
 export interface IReclamationController {
   create(req: Request, res: Response): void;
@@ -15,8 +16,17 @@ export class ReclamationController implements IReclamationController {
 
   async create(req: Request, res: Response) {
     try {
+
+     
+      const id = req.params.id;
+      const user =await User.findById(id);
+     
+
       const reclamation = req.body;
+      reclamation.user=user;
+      
       const data = await this.reclamationService.createReclamation(reclamation);
+      
       res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof DuplicatedError) {

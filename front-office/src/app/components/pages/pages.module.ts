@@ -14,7 +14,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { BlogModule } from '../blog/blog.module';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AgmCoreModule } from '@agm/core';
-
+import { ProfileComponent } from './profile/profile.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { AgmCoreModule } from '@agm/core';
     PagesRoutingModule,
     SharedModule,
     BlogModule,
+    MatCheckboxModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDPM6HA96FiWhoVieMmF0T-segiya5Ytf8'
     })
@@ -37,7 +39,8 @@ import { AgmCoreModule } from '@agm/core';
     MyAccountComponent,
     FaqComponent,
     AboutUsComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    ProfileComponent,
 
   ]
 })
