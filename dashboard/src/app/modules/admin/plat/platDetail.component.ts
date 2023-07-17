@@ -36,6 +36,7 @@ export class PlatDetailComponent implements OnInit {
             price: new FormControl('', [
                 Validators.required,
             ]),
+            ingredients: new FormControl(''),
             image: new FormControl('', Validators.required),
         });
 
@@ -82,6 +83,12 @@ export class PlatDetailComponent implements OnInit {
 
         if (this.isUpdating) {
             const platId = this.route.snapshot.params['id'];
+            const obj = {}
+            this.inputFields.forEach(element => {
+                obj[element.key] = element.value
+            });
+            this.platDetailsForm.value.ingredients = obj;
+            console.log(this.platDetailsForm.value);
             this.platService
                 .updatePlat(platId, this.platDetailsForm.value)
                 .subscribe(
@@ -93,7 +100,7 @@ export class PlatDetailComponent implements OnInit {
                             console.log(error);
                             this.alert = {
                                 type: 'error',
-                                message: 'error occured',
+                                message: 'error occurred',
                             };
                         } else {
                             this.alert = {
@@ -108,7 +115,6 @@ export class PlatDetailComponent implements OnInit {
                 );
         } else {
             // Perform add operation
-            console.log(this.inputFields);
             const obj = {}
             this.inputFields.forEach(element => {
                 obj[element.key] = element.value

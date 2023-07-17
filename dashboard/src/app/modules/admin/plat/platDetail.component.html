@@ -14,7 +14,7 @@
             </div>
             <form [formGroup]="platDetailsForm" (ngSubmit)="onSubmit()" #platDetailNgForm="ngForm">
                 <div class="sm:col-span-4">
-                    <mat-form-field>
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
                         <input matInput placeholder="Name" formControlName="name" />
                         <mat-error *ngIf="
                               platDetailsForm.get('name').invalid &&
@@ -28,7 +28,7 @@
                     <div *ngFor="let item of inputFields">
 
                         <div class="sm:col-span-4">
-                            <mat-form-field>
+                            <mat-form-field class="w-1/2 mt-4 mx-4">
                                 <input matInput type="text" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}"
                                     placeholder="ingredient" required #key="ngModel">
                             </mat-form-field>
@@ -38,7 +38,7 @@
                             </mat-error>
                         </div>
                         <div class="sm:col-span-4">
-                            <mat-form-field>
+                            <mat-form-field class="w-1/2 mt-4 mx-4">
                                 <input matInput type="number" [(ngModel)]="item.value"
                                     [ngModelOptions]="{standalone: true}" placeholder="Value" required #value="ngModel">
                             </mat-form-field>
@@ -47,15 +47,15 @@
                             </mat-error>
                         </div>
                         <div class="sm:col-span-4">
-                            <button mat-raised-button color="warm" (click)="remove(item)">Remove</button>
+                            <button class="mt-4 ml-4" mat-stroked-button color="warm" (click)="remove(item)">Remove</button>
                         </div>
                     </div>
-                    <button mat-raised-button color="primary" type="button" (click)="addInput()">Add Ingredients</button>
+                    <button class="mt-4 ml-4" mat-flat-button color="primary" type="button" (click)="addInput()">Add Ingredients</button>
                 </div>
 
 
                 <div class="sm:col-span-4">
-                    <mat-form-field>
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
                         <input matInput type="number" placeholder="price" formControlName="price" />
                         <mat-error *ngIf="
                               platDetailsForm.get('price').invalid &&
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="sm:col-span-4">
-                    <mat-form-field>
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
                         <input matInput placeholder="Image URL" formControlName="image" />
                         <mat-error *ngIf="
                             platDetailsForm.get('image').invalid &&
@@ -75,10 +75,16 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
+                <div class="mt-4 mb-10 border-t"></div>
 
-                <button mat-raised-button color="primary" type="submit" [disabled]="platDetailsForm.invalid">
+                <div class="flex items-center justify-end mb-10 mx-4">
+                <button class="ml-4" mat-flat-button color="primary" type="submit" [disabled]="platDetailsForm.invalid">
                     Save
                 </button>
+                <button mat-stroked-button type="button" (click)="goToPlatsList()">
+                    Cancel
+                </button>    
+                </div>  
             </form>
         </div>
     </div>
