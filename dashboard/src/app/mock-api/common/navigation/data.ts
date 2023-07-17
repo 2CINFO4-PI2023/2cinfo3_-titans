@@ -50,7 +50,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons-outline:clipboard-list',
         link : '/ingredient'
-    }   
+    },
+    {   
         id   : 'chat',
         title: 'Chat',
         type : 'basic',
