@@ -79,7 +79,8 @@ export const appRoutes: Route[] = [
             {path: 'stock', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'commandes', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'events', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
-            {path: 'reclamation', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)}
+            {path: 'reclamation', loadChildren: () => import('app/modules/admin/scrumboard/scrumboard.module').then(m => m.ScrumboardModule)},
+            {path: 'chat', loadChildren: () => import('app/modules/admin/chat/chat.module').then(m => m.ChatModule)}
         ]
     }
 ];
