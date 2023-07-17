@@ -1,19 +1,27 @@
 import { Schema, model } from "mongoose";
+import { IStatut } from "../../statut/model/statut.schema";
+import { IUser } from "../../user/model/user.schema";
+
 
 export interface IReclamation {
-  name: string;
-  email: string;
-  phone: string;
-  type: string;
-  message: string;
+  
+  user : IUser
+  statut: IStatut;
+  numero:String;
+  type:String;
+  description: string;
+  date_creation:Date
 }
 
 const reclamationSchema = new Schema<IReclamation>({
-  name: { type: String, required: true},
-  email: { type: String, required: true},
-  phone: String,
-  type: String,
-  message:String
+ 
+ 
+  statut: { type: Schema.Types.ObjectId, ref: 'Statut' }, 
+  user: { type: Schema.Types.ObjectId, ref: 'User' }, 
+  numero:String,
+  type:String,
+  description:String,
+  date_creation:Date
 });
 
 export const Reclamation = model<IReclamation>("Reclamation", reclamationSchema);

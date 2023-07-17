@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Settings, AppSettings } from '../../components/shared/services/color-option.service';
+import { MessageService } from './message.service';
 
 @Component({
   selector: 'app-color-options',
@@ -11,8 +12,12 @@ export class ColorOptionsComponent implements AfterViewInit {
   public settings: Settings;
   private running: boolean = false;
 
-  constructor(public appSettings: AppSettings) {
+  constructor(public appSettings: AppSettings, private messageService: MessageService) {
     this.settings = this.appSettings.settings;
+  }
+
+  ngOnInit() {
+    this.fetchMessages();
   }
 
   ngAfterViewInit(): void {
@@ -30,8 +35,24 @@ export class ColorOptionsComponent implements AfterViewInit {
     this.running = true;
     this.addMsg(msg);
 
-    // DELAY MESSAGE RESPONSE Echo
-    setTimeout(() => this.addResponseMsg(msg), 1000);
+
+    this.messageService.askChatbot( msg).subscribe(
+      (response: any) => {
+        // Handle the response data
+      
+        this.addResponseMsg(response.adminResponse);
+      },
+      (error) => {
+        // Handle any errors
+        console.error(error);
+      },
+      () => {
+        this.running = false;
+      }
+    );
+
+    // Clear the input field
+    (document.getElementById("message") as HTMLInputElement).value = "";
   }
 
   private addMsg(msg: string): void {
@@ -70,11 +91,38 @@ export class ColorOptionsComponent implements AfterViewInit {
       chatbot.classList.remove("collapsed");
       (document.getElementById("chatbot_toggle")!.children[0] as HTMLElement).style.display = "none";
       (document.getElementById("chatbot_toggle")!.children[1] as HTMLElement).style.display = "";
-      setTimeout(() => this.addResponseMsg("Hi"), 1000);
+    
     } else {
       chatbot.classList.add("collapsed");
       (document.getElementById("chatbot_toggle")!.children[0] as HTMLElement).style.display = "";
       (document.getElementById("chatbot_toggle")!.children[1] as HTMLElement).style.display = "none";
     }
   }
+
+  fetchMessages() {
+ 
+    this.messageService.getMessages().subscribe(
+      (response: any[]) => {
+        // Handle the response data
+        this.processMessages(response);
+      },
+      (error) => {
+        // Handle any errors
+        console.error(error);
+      }
+    );
+  }
+
+  private processMessages(messages: any[]): void {
+    messages.sort((a, b) => new Date(a.date_creation).getTime() - new Date(b.date_creation).getTime());
+  
+    for (const message of messages) {
+      if (message.from === 'Admin') {
+        setTimeout(() => this.addResponseMsg(message.description), 1000);
+      } else if (message.from === 'User') {
+        setTimeout(() => this.addMsg(message.description), 1000);
+      }
+    }
+  }
+  
 }

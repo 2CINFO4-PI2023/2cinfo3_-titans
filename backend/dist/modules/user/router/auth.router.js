@@ -93,6 +93,9 @@ class AuthRouter {
         this.authRoutes.post('/create-admin', authMiddleware_1.authenticateAdmin, (req, res) => {
             this.authController.createAdmin(req, res);
         });
+        this.authRoutes.post('/refresh-token', (req, res) => {
+            this.authController.refreshToken(req, res);
+        });
     }
 }
 exports.AuthRouter = AuthRouter;

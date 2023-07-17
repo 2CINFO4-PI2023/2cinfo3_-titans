@@ -10,7 +10,7 @@ import { use } from "passport";
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
   getUser(id: string): IUser | Promise<IUser>;
-  allUsers(): IUser[] | Promise<IUser[]>;
+  allUsers(page: number, pageSize: number, filters: { [key: string]: string | number}, sortField: string, sortOrder: string): Promise<any>;
   deleteUser(id: string): void;
   updateUser(id: string, user: IUser): void;
   findByEmail(email: string): IUser | Promise<IUser>;
@@ -28,8 +28,6 @@ export class UserService implements IUserService {
         const hashedPassword = await hash(<string>user.password, 10);
         user.password = hashedPassword;
       }
-      user.role = ROLES.CLIENT;
-      user.confirmed = true
       return await this.userRepository.create(user);
     } catch (error) {
       throw error;
@@ -56,10 +54,11 @@ export class UserService implements IUserService {
       throw error;
     }
   }
-  async allUsers(): Promise<IUser[]> {
+  async allUsers(page: number, pageSize: number, filters: { [key: string]: string | number}, sortField: string, sortOrder: string):Promise<any> {
     try {
-      const users = await this.userRepository.all();
-      return users;
+      const users = await this.userRepository.all(page, pageSize, filters, sortField, sortOrder);
+      const total = await this.userRepository.countUsers(filters)
+      return {users,total};
     } catch (error) {
       throw error;
     }
@@ -80,7 +79,7 @@ export class UserService implements IUserService {
 
       const doc = await this.userRepository.get(id)
       
-      if(doc.image != user.image){
+      if(doc.image != user.image && user.image != undefined){
         deleteFile(<string>user.image)
       }
 
@@ -90,6 +89,7 @@ export class UserService implements IUserService {
       }
       return await this.userRepository.update(id, user);
     } catch (error) {
+      console.log("error: ",error)
       throw error;
     }
   }

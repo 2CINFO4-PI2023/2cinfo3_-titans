@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import Base64 from 'crypto-js/enc-base64';
-import HmacSHA256 from 'crypto-js/hmac-sha256';
-import Utf8 from 'crypto-js/enc-utf8';
-import { cloneDeep } from 'lodash-es';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
 import { user as userData } from 'app/mock-api/common/user/data';
+import Base64 from 'crypto-js/enc-base64';
+import Utf8 from 'crypto-js/enc-utf8';
+import HmacSHA256 from 'crypto-js/hmac-sha256';
+import { cloneDeep } from 'lodash-es';
 
 @Injectable({
     providedIn: 'root'
@@ -90,11 +90,13 @@ export class AuthMockApi
         // @ Verify and refresh the access token - POST
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onPost('api/auth/refresh-access-token')
+            .onPost('/auth/refresh-token')
             .reply(({request}) => {
-
+console.log("this is the refresh")
+console.log("this is the refresh request: ",request)
                 // Get the access token
                 const accessToken = request.body.accessToken;
+                console.log("this is the refresh accessToken: ",accessToken)
 
                 // Verify the token
                 if ( this._verifyJWTToken(accessToken) )

@@ -64,12 +64,14 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
             });
 
         // Subscribe to the user service
-        this._userService.user$
-            .pipe((takeUntil(this._unsubscribeAll)))
-            .subscribe((user: User) => {
-                this.user = user;
-            });
+        // this._userService.user$
+        //     .pipe((takeUntil(this._unsubscribeAll)))
+        //     .subscribe((user: User) => {
+        //         this.user = user;
+        //     });
 
+        this.user = this._userService.getLoggedInUser()
+        console.log("this.user",this.user)
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))

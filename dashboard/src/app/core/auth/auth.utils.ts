@@ -5,6 +5,7 @@
 // https://github.com/auth0/angular2-jwt
 // -----------------------------------------------------------------------------------------------------
 
+
 export class AuthUtils
 {
     /**
@@ -154,11 +155,10 @@ export class AuthUtils
     private static _decodeToken(token: string): any
     {
         // Return if there is no token
-        if ( !token )
+        if ( !token || token === undefined)
         {
             return null;
         }
-
         // Split the token
         const parts = token.split('.');
 

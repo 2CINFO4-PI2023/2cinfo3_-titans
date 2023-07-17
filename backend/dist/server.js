@@ -45,41 +45,62 @@ const user_router_1 = require("./modules/user/router/user.router");
 const user_service_1 = require("./modules/user/service/user.service");
 const fs = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const reclamation_controller_1 = require("./modules/reclamation/controller/reclamation.controller");
+//import swaggerUi from "swagger-ui-express";
 const reclamation_repository_1 = require("./modules/reclamation/repository/reclamation.repository");
-const reclamation_router_1 = require("./modules/reclamation/router/reclamation.router");
 const reclamation_service_1 = require("./modules/reclamation/service/reclamation.service");
+const reclamation_controller_1 = require("./modules/reclamation/controller/reclamation.controller");
+const reclamation_router_1 = require("./modules/reclamation/router/reclamation.router");
+const statut_repository_1 = require("./modules/statut/repository/statut.repository");
+const statut_service_1 = require("./modules/statut/service/statut.service");
+const statut_controller_1 = require("./modules/statut/controller/statut.controller");
+const statut_router_1 = require("./modules/statut/router/statut.router");
+const message_repository_1 = require("./modules/message/repository/message.repository");
+const message_service_1 = require("./modules/message/service/message.service");
+const message_controller_1 = require("./modules/message/controller/message.controller");
+const message_router_1 = require("./modules/message/router/message.router");
 const routes_1 = require("./routes/routes");
+const event_controller_1 = require("./modules/event/controller/event.controller");
+const eventType_controller_1 = require("./modules/event/controller/eventType.controller");
+const inscription_controller_1 = require("./modules/event/controller/inscription.controller");
+const event_repository_1 = require("./modules/event/repository/event.repository");
+const eventType_repository_1 = require("./modules/event/repository/eventType.repository");
+const inscription_repository_1 = require("./modules/event/repository/inscription.repository");
+const event_router_1 = require("./modules/event/router/event.router");
+const eventType_router_1 = require("./modules/event/router/eventType.router");
+const inscription_router_1 = require("./modules/event/router/inscription.router");
+const event_service_1 = require("./modules/event/service/event.service");
+const eventType_service_1 = require("./modules/event/service/eventType.service");
+const inscription_service_1 = require("./modules/event/service/inscription.service");
 const auth_controller_1 = require("./modules/user/controller/auth.controller");
 const token_repository_1 = require("./modules/user/repository/token.repository");
 const auth_router_1 = require("./modules/user/router/auth.router");
 const auth_service_1 = require("./modules/user/service/auth.service");
 const mail_service_1 = require("./notifiers/mail/mail.service");
-const inscription_repository_1 = require("./modules/event/repository/inscription.repository");
-const inscription_service_1 = require("./modules/event/service/inscription.service");
-const inscription_controller_1 = require("./modules/event/controller/inscription.controller");
-const inscription_router_1 = require("./modules/event/router/inscription.router");
-const event_repository_1 = require("./modules/event/repository/event.repository");
-const event_service_1 = require("./modules/event/service/event.service");
-const event_controller_1 = require("./modules/event/controller/event.controller");
-const event_router_1 = require("./modules/event/router/event.router");
-const eventType_controller_1 = require("./modules/event/controller/eventType.controller");
-const eventType_repository_1 = require("./modules/event/repository/eventType.repository");
-const eventType_router_1 = require("./modules/event/router/eventType.router");
-const eventType_service_1 = require("./modules/event/service/eventType.service");
-const ingredient_repository_1 = require("./modules/stock/repository/ingredient.repository");
-const ingredient_service_1 = require("./modules/stock/service/ingredient.service");
-const ingredient_controller_1 = require("./modules/stock/controller/ingredient.controller");
-const ingredient_router_1 = require("./modules/stock/router/ingredient.router");
-const plat_repository_1 = require("./modules/stock/repository/plat.repository");
-const plat_service_1 = require("./modules/stock/service/plat.service");
-const plat_controller_1 = require("./modules/stock/controller/plat.controller");
-const plat_router_1 = require("./modules/stock/router/plat.router");
 const express_session_1 = __importDefault(require("express-session"));
+const ingredient_controller_1 = require("./modules/stock/controller/ingredient.controller");
+const plat_controller_1 = require("./modules/stock/controller/plat.controller");
+const ingredient_repository_1 = require("./modules/stock/repository/ingredient.repository");
+const plat_repository_1 = require("./modules/stock/repository/plat.repository");
+const ingredient_router_1 = require("./modules/stock/router/ingredient.router");
+const plat_router_1 = require("./modules/stock/router/plat.router");
+const ingredient_service_1 = require("./modules/stock/service/ingredient.service");
+const plat_service_1 = require("./modules/stock/service/plat.service");
+const commande_repository_1 = require("./modules/commande/repository/commande.repository");
+const commande_service_1 = require("./modules/commande/service/commande.service");
+const commande_controller_1 = require("./modules/commande/controller/commande.controller");
+const commande_router_1 = require("./modules/commande/router/commande.router");
+const payment_router_1 = require("./modules/commande/router/payment.router");
+const livraison_repository_1 = require("./modules/commande/repository/livraison.repository");
+const livraison_service_1 = require("./modules/commande/service/livraison.service");
+const livraison_controller_1 = require("./modules/commande/controller/livraison.controller");
+const livraison_router_1 = require("./modules/commande/router/livraison.router");
 const passport = require('passport');
+var cors = require('cors');
+const bodyParser = require("body-parser");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = process.env.SERVER_PORT || 8081;
 const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     (0, mongo_1.default)();
@@ -107,6 +128,22 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const reclamationService = new reclamation_service_1.ReclamationService(reclamationRepository);
     const reclamationController = new reclamation_controller_1.ReclamationController(reclamationService);
     const reclamationRouter = new reclamation_router_1.ReclamationRouter(reclamationController);
+    // init mesage module
+    const messageRepository = new message_repository_1.MessageRepository();
+    const mesageService = new message_service_1.MessageService(messageRepository, reclamationRepository);
+    const mesageController = new message_controller_1.MessageController(mesageService);
+    const mesageRouter = new message_router_1.MessageRouter(mesageController);
+    // init type  reclamation module
+    const statutRepository = new statut_repository_1.StatutRepository();
+    const statutService = new statut_service_1.StatutService(statutRepository);
+    const statutController = new statut_controller_1.StatutController(statutService);
+    const statutRouter = new statut_router_1.StatutRouter(statutController);
+    // init commande module
+    const commandeRepository = new commande_repository_1.CommandeRepository();
+    const commandeService = new commande_service_1.CommandeService(commandeRepository, mailer);
+    const commandeController = new commande_controller_1.CommandeController(commandeService);
+    const commandeRouter = new commande_router_1.CommandeRouter(commandeController);
+    const paymentRouter = new payment_router_1.PaymentRouter();
     const authService = new auth_service_1.AuthService(userService, mailer, tokenRepositoy);
     const authController = new auth_controller_1.AuthController(authService);
     const authRouter = new auth_router_1.AuthRouter(authController);
@@ -125,17 +162,23 @@ const init = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const eventTypeService = new eventType_service_1.EventTypeService(eventTypeRepository);
     const eventTypeController = new eventType_controller_1.EventTypeController(eventTypeService);
     const eventTypeRouter = new eventType_router_1.EventTypeRouter(eventTypeController);
+    // Initialize the livraison module
+    const livraisonRepository = new livraison_repository_1.LivraisonRepository();
+    const livraisonService = new livraison_service_1.LivraisonService(livraisonRepository, mailer);
+    const livraisonController = new livraison_controller_1.LivraisonController(livraisonService);
+    const livraisonRouter = new livraison_router_1.LivraisonRouter(livraisonController);
     // init
+    app.use(cors());
     app.use(express_1.default.json());
     app.use((0, express_session_1.default)({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
     }));
-    new routes_1.Routes(app, reclamationRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter).init();
+    new routes_1.Routes(app, reclamationRouter, statutRouter, mesageRouter, userRouter, authRouter, eventRouter, inscriptionRouter, eventTypeRouter, ingredientRouter, platRouter, commandeRouter, paymentRouter, livraisonRouter).init();
     // Serve Swagger documentation
     const swaggerDocument = JSON.parse(fs.readFileSync(path_1.default.join(__dirname, "swagger.json"), "utf-8"));
-    app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocument));
+    // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     app.get("/", (req, res) => {
         res.send("OK");
     });

@@ -25,8 +25,6 @@ class UserService {
                     const hashedPassword = yield (0, bcrypt_1.hash)(user.password, 10);
                     user.password = hashedPassword;
                 }
-                user.role = auth_service_1.ROLES.CLIENT;
-                user.confirmed = true;
                 return yield this.userRepository.create(user);
             }
             catch (error) {
@@ -61,11 +59,12 @@ class UserService {
             }
         });
     }
-    allUsers() {
+    allUsers(page, pageSize, filters, sortField, sortOrder) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const users = yield this.userRepository.all();
-                return users;
+                const users = yield this.userRepository.all(page, pageSize, filters, sortField, sortOrder);
+                const total = yield this.userRepository.countUsers(filters);
+                return { users, total };
             }
             catch (error) {
                 throw error;
@@ -89,7 +88,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const doc = yield this.userRepository.get(id);
-                if (doc.image != user.image) {
+                if (doc.image != user.image && user.image != undefined) {
                     (0, fs_1.deleteFile)(user.image);
                 }
                 if (user.password) {
@@ -99,6 +98,7 @@ class UserService {
                 return yield this.userRepository.update(id, user);
             }
             catch (error) {
+                console.log("error: ", error);
                 throw error;
             }
         });

@@ -50,7 +50,25 @@ class UserController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.userService.allUsers();
+                const page = parseInt(req.query.page) || 1;
+                const pageSize = parseInt(req.query.pageSize) || 10;
+                const filters = {};
+                // Add filters to the query if they are provided in the request
+                if (req.query.name) {
+                    filters.name = req.query.name;
+                }
+                if (req.query.email) {
+                    filters.email = req.query.email;
+                }
+                if (req.query.role) {
+                    filters.role = req.query.role;
+                }
+                if (req.query.phone) {
+                    filters.phone = req.query.phone;
+                }
+                const sortField = req.query.sortField || 'name';
+                const sortOrder = req.query.sortOrder || 'asc';
+                const data = yield this.userService.allUsers(page, pageSize, filters, sortField, sortOrder);
                 res.status(200).json(data);
             }
             catch (error) {
@@ -93,7 +111,6 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("update");
                 const body = req.body;
                 if (Object.keys(body).length === 0) {
                     throw new InvalidBodyError_1.InvalidBodyError("Empty body");
@@ -147,6 +164,26 @@ class UserController {
             }
             catch (error) {
                 console.log(error);
+                if (error instanceof HTTPError_1.HTTPError) {
+                    return res
+                        .status(error.http_code)
+                        .json({ message: error.message, description: error.description });
+                }
+                res.status(500).send(error);
+            }
+        });
+    }
+    toggleConfirmation(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { confirmed } = req.body;
+                if (confirmed == undefined) {
+                    throw new InvalidBodyError_1.InvalidBodyError("Missed field confirmed from the body");
+                }
+                const user = yield this.userService.updateUser(req.params.id, { confirmed });
+                return res.status(200).send(user);
+            }
+            catch (error) {
                 if (error instanceof HTTPError_1.HTTPError) {
                     return res
                         .status(error.http_code)

@@ -5,6 +5,7 @@ import { createUserSchema } from "./schema/createSchema";
 import { InvalidBodyError } from "../../../errors/InvalidBodyError";
 import { updateAddressSchema } from "./schema/updateAddressSchema";
 import { updateUserSchema } from "./schema/updateUserSchema";
+import { IUser } from "../model/user.schema";
 
 export interface IUserController {
   create(req: Request, res: Response): void;
@@ -14,6 +15,7 @@ export interface IUserController {
   update(req: Request, res: Response): void;
   favoritePlat(req: Request, res: Response): void;
   addPlatToFavorite(req: Request, res: Response): void;
+  toggleConfirmation(req: Request, res: Response): void;
 }
 export class UserController implements IUserController {
   constructor(private userService: IUserService) {}
@@ -49,7 +51,32 @@ export class UserController implements IUserController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const data = await this.userService.allUsers();
+      
+      const page = parseInt(req.query.page as string) || 1;
+      const pageSize = parseInt(req.query.pageSize as string) || 10;
+      const filters: { [key: string]: string | number } = {};
+
+      // Add filters to the query if they are provided in the request
+      if (req.query.name) {
+          filters.name = req.query.name as string;
+      }
+
+      if (req.query.email) {
+          filters.email = req.query.email as string;
+      }
+
+      if (req.query.role) {
+          filters.role = req.query.role as unknown as number;
+      }
+
+      if (req.query.phone) {
+          filters.phone = req.query.phone as string;
+      }
+
+      const sortField = req.query.sortField as string || 'name';
+      const sortOrder = req.query.sortOrder as string || 'asc';
+
+      const data = await this.userService.allUsers(page, pageSize, filters, sortField, sortOrder);
       res.status(200).json(data);
     } catch (error: any) {
       res.status(500).send(error);
@@ -86,7 +113,6 @@ export class UserController implements IUserController {
 
   async update(req: Request, res: Response) {
     try {
-      console.log("update")
       const body = req.body;
       if (Object.keys(body).length === 0) {
         throw new InvalidBodyError("Empty body");
@@ -136,6 +162,23 @@ export class UserController implements IUserController {
       return res.status(200).send(user);
     } catch (error:any) {
       console.log(error);
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
+      res.status(500).send(error);
+    }
+  }
+  async toggleConfirmation(req: Request, res: Response){
+    try {
+      const {confirmed} = req.body
+    if(confirmed == undefined){
+      throw new InvalidBodyError("Missed field confirmed from the body")
+    }
+    const user = await this.userService.updateUser(req.params.id,<IUser>{confirmed})
+    return res.status(200).send(user);
+    } catch (error) {
       if (error instanceof HTTPError) {
         return res
           .status(error.http_code)

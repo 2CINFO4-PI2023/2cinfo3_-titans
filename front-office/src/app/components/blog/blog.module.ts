@@ -7,6 +7,7 @@ import { BlogDetailsComponent } from './blog-details/blog-details.component';
 import { BlogColumnComponent } from './blog-column/blog-column.component';
 import { BlogListComponent } from './blog-list/blog-list.component';
 import { SharedModule } from './../shared/shared.module';
+import { PopupComponent } from './popup/popup.component';
 
 
 
@@ -21,7 +22,8 @@ import { SharedModule } from './../shared/shared.module';
   declarations: [
     BlogDetailsComponent,
     BlogColumnComponent,
-    BlogListComponent
+    BlogListComponent,
+    PopupComponent
   ]
 })
 export class BlogModule { }

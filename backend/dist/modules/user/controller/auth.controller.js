@@ -14,6 +14,7 @@ const HTTPError_1 = require("../../../errors/HTTPError");
 const InvalidBodyError_1 = require("../../../errors/InvalidBodyError");
 const loginSchema_1 = require("./schema/loginSchema");
 const signupSchema_1 = require("./schema/signupSchema");
+const resetPasswordSchema_1 = require("./schema/resetPasswordSchema");
 const passport = require("passport");
 class AuthController {
     constructor(authService) {
@@ -55,8 +56,8 @@ class AuthController {
                 if (error) {
                     throw new InvalidBodyError_1.InvalidBodyError(error.details[0].message);
                 }
-                const token = yield this.authService.login(req.body);
-                res.status(200).json({ token });
+                const accessToken = yield this.authService.login(req.body);
+                res.status(200).json({ accessToken });
             }
             catch (error) {
                 if (error instanceof HTTPError_1.HTTPError) {
@@ -73,7 +74,7 @@ class AuthController {
         try {
             const token = req.query.token;
             this.authService.activateUser(token);
-            res.sendStatus(204);
+            res.redirect("http://localhost:4200/#/pages/my-account");
         }
         catch (error) {
             if (error instanceof HTTPError_1.HTTPError) {
@@ -103,6 +104,10 @@ class AuthController {
         try {
             const otp = req.body.otp;
             const newPassword = req.body.newPassword;
+            const { error } = resetPasswordSchema_1.resetPasswordSchema.validate(req.body);
+            if (error) {
+                throw new InvalidBodyError_1.InvalidBodyError(error.details[0].message);
+            }
             this.authService.resetPassword(otp, newPassword);
             return res.sendStatus(204);
         }
@@ -132,6 +137,27 @@ class AuthController {
                         .status(error.http_code)
                         .json({ message: error.message, description: error.description });
                 }
+                res.status(500).send(error);
+            }
+        });
+    }
+    refreshToken(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const refreshToken = req.body.accessToken;
+                if (!refreshToken) {
+                    return res.status(400).json({ error: "Refresh token is required" });
+                }
+                const accessToken = this.authService.refreshToken(refreshToken);
+                res.status(200).json({ accessToken });
+            }
+            catch (error) {
+                if (error instanceof HTTPError_1.HTTPError) {
+                    return res
+                        .status(error.http_code)
+                        .json({ message: error.message, description: error.description });
+                }
+                console.log(error);
                 res.status(500).send(error);
             }
         });

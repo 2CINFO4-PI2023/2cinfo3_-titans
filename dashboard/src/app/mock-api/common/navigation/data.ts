@@ -51,6 +51,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon : 'heroicons-outline:clipboard-list',
         link : '/ingredient'
     }   
+        id   : 'chat',
+        title: 'Chat',
+        type : 'basic',
+        icon : 'heroicons_outline:chat-alt',
+        link : '/chat'
+    }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {

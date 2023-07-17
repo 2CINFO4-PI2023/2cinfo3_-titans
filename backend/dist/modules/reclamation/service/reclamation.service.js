@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReclamationService = void 0;
+const NotFoundError_1 = require("../../../errors/NotFoundError");
+const statut_schema_1 = require("../../statut/model/statut.schema");
 class ReclamationService {
     constructor(reclamationRepository) {
         this.reclamationRepository = reclamationRepository;
@@ -17,6 +19,12 @@ class ReclamationService {
     createReclamation(reclamation) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                // const { statut } = reclamation;
+                // Check if the type exists in the Statut collection
+                // const existingType = await Statut.findById(statut);
+                //  if (!existingType) {
+                //   throw new NotFoundError("Invalid type provided.");
+                // }
                 return yield this.reclamationRepository.create(reclamation);
             }
             catch (error) {
@@ -27,7 +35,11 @@ class ReclamationService {
     getReclamation(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.reclamationRepository.get(id);
+                const reclamation = yield this.reclamationRepository.get(id);
+                const statut = yield statut_schema_1.Statut.findById(reclamation === null || reclamation === void 0 ? void 0 : reclamation.statut);
+                if (statut == null)
+                    throw new NotFoundError_1.NotFoundError("Statut Not  Found !");
+                return reclamation;
             }
             catch (error) {
                 throw error;
@@ -58,6 +70,17 @@ class ReclamationService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.reclamationRepository.update(id, reclamation);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    populateType(typeId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const type = yield statut_schema_1.Statut.findById(typeId);
+                return type;
             }
             catch (error) {
                 throw error;
