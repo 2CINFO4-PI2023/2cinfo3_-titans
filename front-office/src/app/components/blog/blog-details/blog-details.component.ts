@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { InscriptionService } from './blog-details.service';
 
 @Component({
   selector: 'app-blog-details',
@@ -13,12 +13,12 @@ export class BlogDetailsComponent implements OnInit {
   email: string;
   content: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private inscriptionService: InscriptionService) { }
 
   ngOnInit() {
     // Fetch event details from the server using the event ID
     const eventId = '6496268d43e194ba488d566c'; // Replace with actual event ID
-    this.http.get(`http://localhost:9090/events/${eventId}`)
+    this.inscriptionService.getEvent(eventId)
       .subscribe((response: any) => {
         this.event = response;
       });
@@ -34,7 +34,7 @@ export class BlogDetailsComponent implements OnInit {
       content: this.content
     };
 
-    this.http.post('http://localhost:9090/inscriptions', inscription)
+    this.inscriptionService.createInscription(inscription)
       .subscribe(
         (response: any) => {
           // Inscription created successfully
