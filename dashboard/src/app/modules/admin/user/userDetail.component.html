@@ -91,8 +91,9 @@
             <button mat-stroked-button type="button" (click)="goToUsersList()">
                 Cancel
             </button>
-            <button class="ml-4" mat-flat-button type="submit" [disabled]="userDetailsForm.invalid"
-                [color]="'primary'">Save
+            <button class="ml-4"
+            [class.orangeBtn]="!userDetailsForm.invalid"
+            mat-flat-button type="submit" [disabled]="userDetailsForm.invalid">Save
             </button>
         </div>
         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="userDetailsForm.invalid">

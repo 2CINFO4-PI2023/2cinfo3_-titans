@@ -1,6 +1,6 @@
 <!-- Navigation -->
 <fuse-vertical-navigation
-    class="dark bg-gray-900 print:hidden"
+    class="dark green-bg print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
     [navigation]="navigation.default"
@@ -11,8 +11,8 @@
             <!-- Logo -->
             <div class="flex items-center justify-center">
                 <img
-                    class="w-24"
-                    src="assets/images/logo/logo-wb.png">
+                    class="w-15 rounded-full"
+                    src="assets/images/logo/logo.png">
             </div>
             <!-- Components -->
             <div class="flex items-center ml-auto">
@@ -30,6 +30,7 @@
                     alt="User avatar">
                 <mat-icon
                     class="icon-size-24"
+                    style="color: black !important;"
                     *ngIf="!user.image"
                     [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
             </div>
@@ -37,7 +38,7 @@
                 <div class="w-full whitespace-nowrap overflow-ellipsis overflow-hidden text-center leading-normal font-medium">
                     {{user.name}}
                 </div>
-                <div class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
+                <div  style="color: black !important;" class="w-full mt-0.5 whitespace-nowrap overflow-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-secondary">
                     {{user.email}}
                 </div>
             </div>

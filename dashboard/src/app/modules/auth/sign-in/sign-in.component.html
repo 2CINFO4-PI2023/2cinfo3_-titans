@@ -98,9 +98,9 @@
 
                 <!-- Submit button -->
                 <button
-                    class="fuse-mat-button-large w-full mt-6 orange_btn"
+                    class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
-                    [color]="'primary'"
+                    [class.greenBtn]="!signInForm.disabled && !signInForm.invalid"
                     [disabled]="signInForm.disabled || signInForm.invalid"
                     (click)="signIn()">
                     <span *ngIf="!signInForm.disabled">
@@ -149,7 +149,7 @@
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden dark:border-l" style="background-color:#69b550">
         <!-- Background - @formatter:off -->
         <!-- Rings -->
         <svg class="absolute inset-0 pointer-events-none"
