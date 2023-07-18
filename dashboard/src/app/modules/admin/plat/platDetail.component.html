@@ -22,8 +22,13 @@
             <div *ngFor="let item of inputFields">
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-1/2 mt-4 mx-4">
-                        <input matInput type="text" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}"
-                            placeholder="ingredient" required #key="ngModel">
+
+                        <mat-select #key="ngModel" [(ngModel)]="item.key" name="ingredientSelect">
+                            <mat-option *ngFor="let ingredient of ingredients"
+                                [value]="ingredient._id">{{ingredient.name}}</mat-option>
+                        </mat-select>
+                        <!-- <input matInput type="text" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}"
+                            placeholder="Ingredient" required #key="ngModel"> -->
                     </mat-form-field>
 
                     <mat-error *ngIf="key.invalid && key.touched">
@@ -33,7 +38,7 @@
                 <div class="sm:col-span-4">
                     <mat-form-field class="w-1/2 mt-4 mx-4">
                         <input matInput type="number" [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}"
-                            placeholder="Value" required min="1" #value="ngModel">
+                            placeholder="Quantity" required min="1" #value="ngModel">
                     </mat-form-field>
                     <mat-error *ngIf="value.invalid && value.touched">
                         Ingredient value is required and greater that 0.
@@ -61,8 +66,8 @@
 
         <div class="sm:col-span-4">
             <label for="image" class="w-1/2 mt-4 mx-4">Image</label>
-            <input id="image" type="file" accept=".jpg,.jpeg,.png"
-                (change)="onAvatarChange($event)" formControlName="image" />
+            <input id="image" type="file" accept=".jpg,.jpeg,.png" (change)="onAvatarChange($event)"
+                formControlName="image" />
         </div>
         <div class="mt-4 mb-10 border-t"></div>
 
