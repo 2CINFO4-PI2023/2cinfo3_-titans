@@ -44,35 +44,42 @@ export const boards = [
 ];
 export const lists = [
     {
-        id      : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
+        id      : 'new',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 65536,
-        title   : 'To do'
+        title   : 'New Reclamation'
     },
     {
-        id      : '83ca2a34-65af-49c0-a42e-94a34003fcf2',
+        id      : 'In progress',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 131072,
         title   : 'In progress'
     },
     {
-        id      : 'a85ea483-f8f7-42d9-a314-3fed6aac22ab',
-        boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        position: 196608,
-        title   : 'In review'
-    },
-    {
-        id      : '34cbef38-5687-4813-bd66-141a6df6d832',
+        id      : 'Completed',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 262144,
         title   : 'Completed'
-    }
+    },
+    
+        {
+        id: 'Rejected',
+        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+        position: 393216,
+        title: 'Rejected'
+        },
+        {
+        id: 'On Hold',
+        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+        position: 458752,
+        title: 'On Hold'
+        }
 ];
 export const cards = [
     {
         id         : 'e74e66e9-fe0f-441e-a8ce-28ed6eccc48d',
         boardId    : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId     : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
+        listId     : 'new',
         position   : 65536,
         title      : 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards',
         description: 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards. Example that showcase all of the available bits on the card with a fairly long title compared to other cards.',
@@ -88,7 +95,7 @@ export const cards = [
     {
         id      : 'ed58add1-45a7-41db-887d-3ca7ee7f2719',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
+        listId  : 'new',
         position: 131072,
         title   : 'Do a research about most needed admin applications',
         labels  : [
@@ -99,7 +106,7 @@ export const cards = [
     {
         id      : 'cd6897cb-acfd-4016-8b53-3f66a5b5fc68',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
+        listId  : 'new',
         position: 196608,
         title   : 'Implement the Project dashboard',
         labels  : [
@@ -110,7 +117,7 @@ export const cards = [
     {
         id      : '6da8747f-b474-4c9a-9eba-5ef212285500',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'a2df7786-519c-485a-a85f-c09a61cc5f37',
+        listId  : 'new',
         position: 262144,
         title   : 'Implement the Analytics dashboard',
         labels  : [
@@ -121,7 +128,7 @@ export const cards = [
     {
         id      : '94fb1dee-dd83-4cca-acdd-02e96d3cc4f1',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '83ca2a34-65af-49c0-a42e-94a34003fcf2',
+        listId  : 'In progress',
         position: 65536,
         title   : 'Analytics dashboard design',
         labels  : [
@@ -132,7 +139,7 @@ export const cards = [
     {
         id      : 'fc16f7d8-957d-43ed-ba85-20f99b5ce011',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '83ca2a34-65af-49c0-a42e-94a34003fcf2',
+        listId  : 'In progress',
         position: 131072,
         title   : 'Project dashboard design',
         labels  : [
@@ -154,7 +161,7 @@ export const cards = [
     {
         id      : '532c2747-be79-464a-9897-6a682bf22b64',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '34cbef38-5687-4813-bd66-141a6df6d832',
+        listId  : 'Completed',
         position: 65536,
         title   : 'Create low fidelity wireframes',
         labels  : [],
@@ -163,7 +170,7 @@ export const cards = [
     {
         id      : '1d908efe-c830-476e-9e87-d06e30d89bc2',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '34cbef38-5687-4813-bd66-141a6df6d832',
+        listId  : 'Completed',
         position: 131072,
         title   : 'Create high fidelity wireframes',
         labels  : [],
@@ -172,7 +179,7 @@ export const cards = [
     {
         id      : 'b1da11ed-7896-4826-962d-4b7b718896d4',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '34cbef38-5687-4813-bd66-141a6df6d832',
+        listId  : 'Completed',
         position: 196608,
         title   : 'Collect information about most used admin layouts',
         labels  : [
@@ -183,7 +190,7 @@ export const cards = [
     {
         id      : '3b7f3ceb-107f-42bc-a204-c268c9a56cb4',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '34cbef38-5687-4813-bd66-141a6df6d832',
+        listId  : 'Completed',
         position: 262144,
         title   : 'Do a research about latest UI trends',
         labels  : [
@@ -194,7 +201,7 @@ export const cards = [
     {
         id      : 'cd7f01c5-a941-4076-8cef-37da0354e643',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : '34cbef38-5687-4813-bd66-141a6df6d832',
+        listId  : 'Completed',
         position: 327680,
         title   : 'Learn more about UX',
         labels  : [
@@ -203,33 +210,33 @@ export const cards = [
         dueDate : null
     }
 ];
-export const labels = [
-    {
-        id     : 'e0175175-2784-48f1-a519-a1d2e397c9b3',
-        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        title  : 'Research'
+export const labels = [{
+    id: 'e0175175-2784-48f1-a519-a1d2e397c9b3',
+    boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+    title: 'Quality Issue'
     },
     {
-        id     : '51779701-818a-4a53-bc16-137c3bd7a564',
-        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        title  : 'Wireframing'
+    id: '51779701-818a-4a53-bc16-137c3bd7a564',
+    boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+    title: 'Wrong Ingredient'
     },
     {
-        id     : 'e8364d69-9595-46ce-a0f9-ce428632a0ac',
-        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        title  : 'Design'
+    id: 'e8364d69-9595-46ce-a0f9-ce428632a0ac',
+    boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+    title: 'Damaged Packaging'
     },
     {
-        id     : 'caff9c9b-a198-4564-b1f4-8b3df1d345bb',
-        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        title  : 'Development'
+    id: 'caff9c9b-a198-4564-b1f4-8b3df1d345bb',
+    boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+    title: 'Incorrect Quantity'
     },
     {
-        id     : 'f9eeb436-13a3-4208-a239-0d555960a567',
-        boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        title  : 'Bug'
+    id: 'f9eeb436-13a3-4208-a239-0d555960a567',
+    boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
+    title: 'Expired Product'
     }
-];
+    
+    ];
 export const members = [
     {
         id    : '6f6a1c34-390b-4b2e-97c8-ff0e0d787839',

@@ -20,7 +20,7 @@
 
         <!-- Title -->
         <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-            <mat-label>Title</mat-label>
+            <mat-label>Reclamation Description</mat-label>
             <textarea
                 matInput
                 [formControlName]="'title'"
@@ -32,7 +32,7 @@
 
         <!-- Description -->
         <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-            <mat-label>Description</mat-label>
+            <mat-label>Admin Response</mat-label>
             <textarea
                 matInput
                 [formControlName]="'description'"
@@ -43,45 +43,7 @@
         </mat-form-field>
 
         <!-- Due date -->
-        <div>
-            <div class="font-medium">Due date</div>
-            <div
-                class="relative flex items-center mt-1.5 px-4 leading-9 rounded-full cursor-pointer"
-                [ngClass]="{'text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700': !card.dueDate,
-                                'text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500': card.dueDate && !isOverdue(card.dueDate),
-                                'text-red-800 bg-red-200 dark:text-red-100 dark:bg-red-500': card.dueDate && isOverdue(card.dueDate)}"
-                (click)="dueDatePicker.open()">
-                <mat-icon
-                    class="icon-size-5 text-current"
-                    [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
-                <span class="ml-2 text-md font-medium">
-                    <ng-container *ngIf="card.dueDate">{{card.dueDate | date:'longDate'}}</ng-container>
-                    <ng-container *ngIf="!card.dueDate">Not set</ng-container>
-                </span>
-                <mat-form-field class="fuse-mat-no-subscript fuse-mat-dense invisible absolute inset-0 -mt-2.5 opacity-0 pointer-events-none">
-                    <input
-                        matInput
-                        [formControlName]="'dueDate'"
-                        [matDatepicker]="dueDatePicker">
-                    <mat-datepicker #dueDatePicker>
-                        <mat-datepicker-actions>
-                            <button
-                                mat-button
-                                (click)="cardForm.get('dueDate').setValue(null)"
-                                matDatepickerCancel>
-                                Clear
-                            </button>
-                            <button
-                                mat-flat-button
-                                [color]="'primary'"
-                                matDatepickerApply>
-                                Select
-                            </button>
-                        </mat-datepicker-actions>
-                    </mat-datepicker>
-                </mat-form-field>
-            </div>
-        </div>
+        
 
         <!-- Labels -->
         <div class="w-full">

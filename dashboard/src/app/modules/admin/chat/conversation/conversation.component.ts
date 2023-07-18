@@ -83,6 +83,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
                 }
             });
 
+
         // Chat
         this.loadChatConversation();
 
@@ -242,4 +243,24 @@ export class ConversationComponent implements OnInit, OnDestroy {
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+    @ViewChild('messageInput') messageInputRef: ElementRef;
+
+    resetTextarea() {
+      const textareaElement: HTMLTextAreaElement = this.messageInputRef.nativeElement;
+      const textareaValue = textareaElement.value;
+  
+    
+      const message={
+        message:textareaValue
+      }
+      this.messageService.postMessage(this.router.url.replace('/chat/', ''),message).subscribe(()=>{});
+  
+      // Reset the textarea
+      textareaElement.value = '';
+      this.loadChatConversation();
+      this.loadChatConversation();
+    
+    }
+  
 }

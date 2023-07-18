@@ -29,6 +29,7 @@ export interface IMessageService {
   askchatbot(id: string, messageprompt: string): void;
   reclamtionReplyMessage(message: string, userId: string,reclamationId: string):void;
   allMessagesByUser(userId: string): Promise<IMessage[]>;
+  adminMessage(message: string, userId: string):void;
 }
 
 export class MessageService implements IMessageService {
@@ -257,7 +258,7 @@ export class MessageService implements IMessageService {
       user :user,
       from:"Admin",
       description: messageToSend,
-      date_now: new Date(),
+      date_creation: new Date(),
     });
 
     this.createMessage(nouvelleMessagefromAdmin);
@@ -267,6 +268,8 @@ export class MessageService implements IMessageService {
     
   }
 
+
+
   async allMessagesByUser(userId: string): Promise<IMessage[]> {
     try {
       return await this.messageRepository.byUser(userId);
@@ -275,7 +278,41 @@ export class MessageService implements IMessageService {
     }
   }
 
+
+
+  async adminMessage(message: string, userId: string) {
+    try {
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        throw new Error('User not found');
+      }
+  
+      const nouvelleMessagefromAdmin = new Message({
+        user: user,
+        from: "Admin",
+        description: message,
+        date_creation: new Date(),
+      });
+  
+      await this.createMessage(nouvelleMessagefromAdmin);
+  
+      return "Message created!";
+    } catch (error) {
+      console.error('Error creating message:', error);
+      throw new Error('Failed to create message');
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+
 }
+
 
 
 

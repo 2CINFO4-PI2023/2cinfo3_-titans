@@ -199,7 +199,7 @@ class MessageService {
                 user: user,
                 from: "Admin",
                 description: messageToSend,
-                date_now: new Date(),
+                date_creation: new Date(),
             });
             this.createMessage(nouvelleMessagefromAdmin);
             return "message Created !";
@@ -212,6 +212,28 @@ class MessageService {
             }
             catch (error) {
                 throw error;
+            }
+        });
+    }
+    adminMessage(message, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield user_schema_1.User.findById(userId);
+                if (!user) {
+                    throw new Error('User not found');
+                }
+                const nouvelleMessagefromAdmin = new message_schema_1.Message({
+                    user: user,
+                    from: "Admin",
+                    description: message,
+                    date_creation: new Date(),
+                });
+                yield this.createMessage(nouvelleMessagefromAdmin);
+                return "Message created!";
+            }
+            catch (error) {
+                console.error('Error creating message:', error);
+                throw new Error('Failed to create message');
             }
         });
     }

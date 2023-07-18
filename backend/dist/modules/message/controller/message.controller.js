@@ -73,6 +73,14 @@ class MessageController {
             }
         });
     }
+    adminMessage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const message = req.body.message;
+            const iduser = req.params.idUser;
+            const replay = yield this.messageService.adminMessage(message, iduser);
+            res.json(replay);
+        });
+    }
     reclamtionReplyMessage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

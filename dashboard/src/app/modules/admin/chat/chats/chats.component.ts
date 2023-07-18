@@ -128,7 +128,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
               id: user._id,
               unreadCount: 2, // Set the appropriate value for unreadCount
               muted: false, // Set the appropriate value for muted
-              lastMessage: "See you tomorrow!", // Set the appropriate value for lastMessage
+              lastMessage: user.email, // Set the appropriate value for lastMessage
               lastMessageAt: "26/04/2021", // Set the appropriate value for lastMessageAt
               contact: {
                 id: user.id,
