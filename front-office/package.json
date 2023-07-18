@@ -28,6 +28,7 @@
     "angular-font-awesome": "^3.1.2",
     "core-js": "^3.6.4",
     "font-awesome": "^4.7.0",
+    "jsonwebtoken": "^9.0.1",
     "ngx-image-zoom": "^0.4.1",
     "ngx-img-zoom": "^3.3.3",
     "ngx-pagination": "^4.0.0",

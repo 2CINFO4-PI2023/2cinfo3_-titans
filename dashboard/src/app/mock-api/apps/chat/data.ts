@@ -205,7 +205,7 @@ export const messages = [
 ];
 export const chats = [
     {
-        id           : 'ff6bc7f1-449a-4419-af62-b89ce6cae0aa',
+        id           : '648c66938f0e146262dacfcf',
         contactId    : '9d3f0e7f-dcbd-4e56-a5e8-87b8154e9edf',
         unreadCount  : 2,
         muted        : false,
@@ -213,7 +213,7 @@ export const chats = [
         lastMessageAt: '26/04/2021'
     },
     {
-        id           : '4459a3f0-b65e-4df2-8c37-6ec72fcc4b31',
+        id           : '648c66ac8f0e146262dacfd1',
         contactId    : '16b9e696-ea95-4dd8-86c4-3caf705a1dc6',
         unreadCount  : 0,
         muted        : false,
@@ -326,7 +326,7 @@ export const chats = [
 ];
 export const contacts = [
     {
-        id         : 'cd5fa417-b667-482d-b208-798d9da3213c',
+        id         : '648c66938f0e146262dacfcf',
         avatar     : 'assets/images/avatars/male-01.jpg',
         name       : 'Dejesus Michael',
         about      : 'Hi there! I\'m using FuseChat.',

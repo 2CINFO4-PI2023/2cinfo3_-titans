@@ -30,7 +30,7 @@ export class PlatController implements IPlatController {
     }
     async getAll(req: Request, res: Response) {
         try {
-            const data = await this.platService.getAllPlat();
+            const data = await this.platService.getAllPlatWithIngredients();
             res.status(200).json(data);
         } catch (error: any) {
             res.status(500).send(error);
@@ -38,7 +38,7 @@ export class PlatController implements IPlatController {
     }
     async get(req: Request, res: Response) {
         try {
-            const data = await this.platService.getPlat(req.params.id);
+            const data = await this.platService.getPlatWithIngredients(req.params.id);
             res.status(200).json(data);
         } catch (error: any) {
             if (error instanceof HTTPError) {

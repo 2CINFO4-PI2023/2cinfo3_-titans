@@ -14,9 +14,9 @@ import { SidenavMenu } from "./components/shared/sidebar/sidebar-menu.model";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-  public url: any;
-
-  public sidenavMenuItems: Array<any>;
+  public url : any;
+  
+  public sidenavMenuItems:Array<any>;
 
   public currencies = ["USD", "EUR"];
   public currency: any;
