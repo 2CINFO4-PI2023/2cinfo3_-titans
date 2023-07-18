@@ -95,7 +95,6 @@ export class AuthService implements IAuthService {
   }
   async sendPasswordResetEmail(email: string) {
     try {
-      // TODO set frontend url of reset password page
       const user = await (<IUser>this.userService.findByEmail(email));
       const otp = generateOTP();
       const content = readFileSync(

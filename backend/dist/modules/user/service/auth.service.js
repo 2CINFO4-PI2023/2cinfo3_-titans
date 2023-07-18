@@ -91,7 +91,6 @@ class AuthService {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // TODO set frontend url of reset password page
                 const user = yield this.userService.findByEmail(email);
                 const otp = (0, tokenHelper_1.generateOTP)();
                 const content = (0, fs_1.readFileSync)("dist/reset_password.html", "utf8").toString();

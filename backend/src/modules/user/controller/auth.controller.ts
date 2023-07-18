@@ -68,7 +68,7 @@ export class AuthController implements IAuthController {
     try {
       const token = <string>req.query.token;
       this.authService.activateUser(token);
-      res.redirect("http://localhost:4200/#/pages/my-account")
+      res.redirect("http://localhost:5000/#/pages/my-account")
     } catch (error) {
       if (error instanceof HTTPError) {
         return res

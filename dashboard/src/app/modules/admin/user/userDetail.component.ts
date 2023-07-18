@@ -67,7 +67,7 @@ export class UserDetailComponent implements OnInit {
                     ]),
                     phone: new FormControl('', [
                         Validators.required,
-                        Validators.pattern(/^\d{8}$/),
+                        Validators.pattern(/^\+216(20|21|22|23|24|25|26|27|28|29|50|52|53|54|55|56|58|90|91|92|93|94|95|96|97|98|99)\d{6}$/)
                     ]),
                     address: new FormControl('', Validators.required),
                     role: new FormControl('', Validators.required),
@@ -123,7 +123,11 @@ export class UserDetailComponent implements OnInit {
         if (this.isUpdating) {
             const userId = this.route.snapshot.params['id'];
             this.userService.updateUser(userId, formData).subscribe(
-                () => {
+                (res:any) => {
+                    console.log("this.userService.user: ",this.userService.getLoggedInUser())
+                    if(this.userService.getLoggedInUser()._id == userId){
+                        this.userService.setLoggedInUser(res)
+                    }
                     this.goToUsersList();
                 },
                 (error) => {
@@ -159,7 +163,7 @@ export class UserDetailComponent implements OnInit {
                     if (error.status === 409) {
                         this.alert = {
                             type: 'error',
-                            message: 'Cette adresse e-mail est déjà utilisée ',
+                            message: 'E-mail or phone number already used',
                         };
                     } else if (error.status === 400) {
                         console.log(error);
