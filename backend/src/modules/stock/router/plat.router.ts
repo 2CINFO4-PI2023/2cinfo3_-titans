@@ -13,7 +13,7 @@ export class PlatRouter {
     init() {
         this._platRoutes
             .route("")
-            .post(upload.single("plat"),(req, res) => {
+            .post(upload.single("image"),(req, res) => {
                 this.platController.create(req, res);
             })
             .get((req, res) => {
