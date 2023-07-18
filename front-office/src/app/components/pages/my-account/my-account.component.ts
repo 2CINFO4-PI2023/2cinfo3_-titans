@@ -58,38 +58,46 @@ export class MyAccountComponent implements OnInit {
           this.router.navigate(["/home/products/all"]);
         },
         (error) => {
-          if (error.status == 401) {
-            this.loginErrMsg = "Login ou mot de passe invalide";
+           console.log(error)
+          if (error.status == 409) {
+            this.loginErrMsg = "E-mail or phone is already used";
+          } else if (error.status == 401) {
+            this.loginErrMsg =
+              "Your account is not active please check your email";
           } else {
             this.loginErrMsg =
-              "une erreur technique est survenue. veuillez réessayer dans quelques minutes";
+              "A technical error has occurred. Please try again in a few minutes";
           }
         }
       );
   }
 
   signup(form: any) {
-    this.signupForm.disable()
+    this.signupForm.disable();
     this.authService.signup(this.signupForm.value).subscribe(
       (res) => {
         this.signupErrMsg = "";
         this.signupInfoMsg =
-          "Vous allez recevoir un e-mail pour valider votre compte";
-          this.signupForm.enable()
-          this.signupForm.reset()
+          "You will receive an email to validate your account";
+        this.signupForm.enable();
       },
       (error: any) => {
         this.signupInfoMsg = "";
+        this.signupForm.enable();
         if (error.status == 409) {
-          this.signupForm.enable()
-          this.signupForm.reset()
+          this.signupErrMsg = "E-mail or phone is already used";
+        } else if (error.status == 401) {
           this.signupErrMsg =
-            "l'adresse email ou phone est déjà associée à un utilisateur";
+            "Your account is not active please check your email";
         } else {
           this.signupErrMsg =
-            "une erreur technique est survenue. veuillez réessayer dans quelques minutes";
+            "A technical error has occurred. Please try again in a few minutes";
         }
       }
     );
+  }
+  onForgotPassword() {
+    //this.router.navigateByUrl("/pages/forgot-password");
+    this.router.navigate(["/pages/forgot-password"]);
   }
 }

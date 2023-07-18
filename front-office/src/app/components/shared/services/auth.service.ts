@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { of, throwError } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 
@@ -8,7 +8,12 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class AuthService {
+  static authenticatedSubject: any;
   constructor(private http: HttpClient) {}
+  private authenticatedSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public authenticated$: Observable<boolean> =
+    this.authenticatedSubject.asObservable();
 
   static decodeJwt(token: string): any {
     const base64Url = token.split(".")[1];
@@ -18,13 +23,18 @@ export class AuthService {
     return decodedToken;
   }
   login(body: any) {
+    // return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
+    //   switchMap((response: any) => {
+    //     const { user } = AuthService.decodeJwt(response.accessToken);
+    //     localStorage.setItem("fo_accessToken", response.accessToken);
+    //     return of(user);
+    //   })
+    // );
     return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
       switchMap((response: any) => {
         const { user } = AuthService.decodeJwt(response.accessToken);
-        // if (user.role !== 99) {
-        //     return throwError('User role is not authorized.'); // Throw an error if the user's role is not 99
-        // }
         localStorage.setItem("fo_accessToken", response.accessToken);
+        this.authenticatedSubject.next(true); // Set the authentication state to true
         return of(user);
       })
     );
@@ -32,21 +42,29 @@ export class AuthService {
   signup(body: any) {
     return this.http.post(`${environment.base_url}/auth/signup`, body);
   }
-  updateUser(id:string,body: any) {
+  updateUser(id: string, body: any) {
     return this.http.put(`${environment.base_url}/users/${id}`, body);
   }
   static getUser() {
-    const { user } = AuthService.decodeJwt(localStorage.getItem("fo_accessToken"));
+    const { user } = AuthService.decodeJwt(
+      localStorage.getItem("fo_accessToken")
+    );
     return user;
   }
   static getToken() {
-    return localStorage.getItem("fo_accessToken")
+    return localStorage.getItem("fo_accessToken");
   }
-  static signOut(){
-    return localStorage.removeItem("fo_accessToken")
-
+  static signOut() {
+    localStorage.removeItem("fo_accessToken");
+    this.authenticatedSubject.next(false);
   }
-  static isAuthenticated(): boolean{
-    return localStorage.getItem("fo_accessToken") != null
+  static isAuthenticated(): boolean {
+    return localStorage.getItem("fo_accessToken") != null;
+  }
+  onForgetPassword(email: any) {
+    return this.http.post(
+      `${environment.base_url}/auth/request-reset-password`,
+      { email }
+    );
   }
 }

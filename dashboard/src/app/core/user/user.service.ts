@@ -21,6 +21,7 @@ export class UserService
     }
 
     setLoggedInUser(user: User): void {
+        console.log("user: ",user)
         this._loggedInUser = user;
         this._user.next(user);
     }

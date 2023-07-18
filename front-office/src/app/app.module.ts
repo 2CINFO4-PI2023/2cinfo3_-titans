@@ -16,6 +16,7 @@ import { SharedModule } from "./components/shared/shared.module";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { ColorOptionsComponent } from "./components/color-options/color-options.component";
 import { AuthInterceptor } from "./components/shared/services/auth.interceptor";
+import { ForgetPasswordComponent } from './components/pages/forget-password/forget-password.component';
 
 @NgModule({
   declarations: [AppComponent, MainComponent, ColorOptionsComponent],

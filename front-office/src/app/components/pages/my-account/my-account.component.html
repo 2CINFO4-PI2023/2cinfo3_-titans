@@ -33,6 +33,9 @@
                   <mat-error *ngIf="password.invalid">Ce champ est obligatoire</mat-error>
                 </mat-form-field>
               </div>
+              <div fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+                <a mat-button (click)="onForgotPassword()">Forgot Password?</a>
+              </div>
               <div class="button-wrap" fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
                 <button [disabled]="loginForm.invalid" class="btn-project" mat-raised-button color="accent"
                   type="submit">Login</button>

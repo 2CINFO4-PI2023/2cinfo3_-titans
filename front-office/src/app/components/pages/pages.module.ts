@@ -16,6 +16,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { AgmCoreModule } from '@agm/core';
 import { ProfileComponent } from './profile/profile.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -26,6 +28,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     SharedModule,
     BlogModule,
     MatCheckboxModule,
+    RouterModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDPM6HA96FiWhoVieMmF0T-segiya5Ytf8'
     })
@@ -41,7 +44,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AboutUsComponent,
     ErrorPageComponent,
     ProfileComponent,
-
+    ForgetPasswordComponent
   ]
 })
 export class PagesModule { }
