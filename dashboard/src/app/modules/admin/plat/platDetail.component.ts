@@ -35,6 +35,7 @@ export class PlatDetailComponent implements OnInit {
             name: new FormControl('', Validators.required),
             price: new FormControl('', [
                 Validators.required,
+                Validators.min(1)
             ]),
             ingredients: new FormControl(''),
             image: new FormControl('', Validators.required),
@@ -49,6 +50,7 @@ export class PlatDetailComponent implements OnInit {
                     name: new FormControl('', Validators.required),
                     price: new FormControl('', [
                         Validators.required,
+                        Validators.min(1)
                     ]),
                     image: new FormControl('', Validators.required),
                 });
@@ -67,8 +69,21 @@ export class PlatDetailComponent implements OnInit {
         });
     }
 
+    onAvatarChange(event: Event): void {
+        const inputElement = event.target as HTMLInputElement;
+        if (inputElement?.files && inputElement.files.length > 0) {
+            const file = inputElement.files[0];
+            this.platDetailsForm.patchValue({
+                image: file,
+            });
+        }
+    }
+
     goToPlatsList() {
         this.router.navigateByUrl('/plat');
+    }
+    upload(event: Event) {
+        console.log(event);
     }
     addInput() {
         this.inputFields.push({ key: '', value: '' });
@@ -80,17 +95,22 @@ export class PlatDetailComponent implements OnInit {
     onSubmit(): void {
         this.showAlert = false;
         this.platDetailsForm.disable();
+        const obj = {}
+        this.inputFields.forEach(element => {
+            obj[element.key] = element.value
+        });
+        const jsonIngredients = JSON.stringify(obj);
+        const blobIngredients = new Blob([jsonIngredients], { type: 'application/json' });
+        const formData = new FormData();
+        formData.append('name',this.platDetailsForm.get('name').value);
+        formData.append('price',this.platDetailsForm.get('price').value);
+        formData.append('image', this.platDetailsForm.get('image').value);
+        formData.append('ingredients', blobIngredients);
 
         if (this.isUpdating) {
             const platId = this.route.snapshot.params['id'];
-            const obj = {}
-            this.inputFields.forEach(element => {
-                obj[element.key] = element.value
-            });
-            this.platDetailsForm.value.ingredients = obj;
-            console.log(this.platDetailsForm.value);
             this.platService
-                .updatePlat(platId, this.platDetailsForm.value)
+                .updatePlat(platId, formData)
                 .subscribe(
                     () => {
                         this.goToPlatsList();
@@ -115,13 +135,7 @@ export class PlatDetailComponent implements OnInit {
                 );
         } else {
             // Perform add operation
-            const obj = {}
-            this.inputFields.forEach(element => {
-                obj[element.key] = element.value
-            });
-
-            this.platDetailsForm.value.ingredients = obj;
-            this.platService.createPlat(this.platDetailsForm.value).subscribe(
+            this.platService.createPlat(formData).subscribe(
                 () => {
                     this.goToPlatsList();
                 },
