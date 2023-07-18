@@ -2,7 +2,7 @@
   <div class="header-title" style="background: url(assets/images/background/header.jpg);">
     <div class="container" id="mainDIV">
       <div class="title">
-        <h2 (click)="scrollToEventDetails()">{{ event.name }}</h2>
+        <h2 (click)="scrollToEventDetails()">{{ event?.name }}</h2>
         <p>this is a test.<br>Aenean commodo ligula eget dolor</p>
       </div>
     </div>
@@ -17,20 +17,15 @@
             </div>
             <div class="text-box">
               <h4>
-                <a [routerLink]="['/blog-details', event.id]">{{ event.name }}</a>
+                <a [routerLink]="['/blog/blog-details', event?._id]">{{ event?.name }}</a>
               </h4>
               <ul fxLayout="row">
-                <li><mat-icon color="primary" class="material-icons">access_time</mat-icon>{{ event.date }}</li>
+                <li><mat-icon color="primary" class="material-icons">access_time</mat-icon>{{ event?.date }}</li>
                 <li><mat-icon color="primary" class="mat-icon-lg mat-icon material-icons">person</mat-icon>Marc Kurcek</li>
                 <li><mat-icon color="primary" class="material-icons">sms</mat-icon>05 Comments</li>
               </ul>
-              <p>{{ event.description }}</p>
+              <p>{{ event?.description }}</p>
             </div>
-          </div>
-        </div>
-        <div fxFlex="100" fxFlex.sm="40" fxFlex.gt-sm="30" class="sidebar">
-          <div class="blog-sidebar">
-            <
           </div>
         </div>
       </div>

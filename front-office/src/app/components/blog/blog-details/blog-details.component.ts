@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from './blog-details.service';
 
 @Component({
@@ -14,10 +15,14 @@ export class BlogDetailsComponent implements OnInit {
   email: string;
   content: string;
 
-  constructor(private http: HttpClient, private inscriptionService: InscriptionService) { }
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private inscriptionService: InscriptionService
+  ) { }
 
   ngOnInit() {
-    const eventId = '6496268d43e194ba488d566c';
+    const eventId = this.route.snapshot.paramMap.get('eventid');
     this.inscriptionService.getEvent(eventId)
       .subscribe((response: any) => {
         this.event = response;
@@ -26,8 +31,8 @@ export class BlogDetailsComponent implements OnInit {
 
   submitRegistrationForm() {
     const inscription = {
-      eventId: '6496268d43e194ba488d566c', 
-      userId: '649f43dccd5a374f418af849', 
+      eventId: this.event.id,
+      userId: '649f43dccd5a374f418af849',
       name: this.name,
       email: this.email,
       status: 'confirmed',

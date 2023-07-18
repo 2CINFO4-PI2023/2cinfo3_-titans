@@ -23,6 +23,7 @@ class EventController {
                 res.status(201).json(data);
             }
             catch (error) {
+                console.log("error: ", error);
                 if (error instanceof DuplicatedError_1.DuplicatedError) {
                     return res.status(error.http_code).json({ message: error.message, description: error.description });
                 }

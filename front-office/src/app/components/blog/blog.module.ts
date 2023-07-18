@@ -8,6 +8,7 @@ import { BlogColumnComponent } from './blog-column/blog-column.component';
 import { BlogListComponent } from './blog-list/blog-list.component';
 import { SharedModule } from './../shared/shared.module';
 import { PopupComponent } from './popup/popup.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -17,7 +18,8 @@ import { PopupComponent } from './popup/popup.component';
     FormsModule,
     SharedModule,
     BlogRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   declarations: [
     BlogDetailsComponent,
