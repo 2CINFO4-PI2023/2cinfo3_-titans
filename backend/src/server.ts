@@ -186,9 +186,9 @@ const inscriptionRouter = new InscriptionRouter(inscriptionController);
   ).init();
 
   // Serve Swagger documentation
-  const swaggerDocument = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "swagger.json"), "utf-8")
-  );
+  //const swaggerDocument = JSON.parse(
+   // fs.readFileSync(path.join(__dirname, "swagger.json"), "utf-8")
+ // );
  // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.get("/", (req: Request, res: Response) => {
