@@ -27,7 +27,13 @@ export class PlatController implements IPlatController {
             const jsonIngredients = JSON.parse(plat.ingredients);
             const ingredients = new Map();
             for (const [key, value] of Object.entries(jsonIngredients)) {
-                ingredients.set(key, value);
+                if (ingredients.has(key)) {
+                    const existingValue = ingredients.get(key);
+                    const new_value = existingValue + value
+                    ingredients.set(key, new_value);
+                } else {
+                    ingredients.set(key, value);
+                }
             }
             plat.ingredients = ingredients;
             console.log(plat)
@@ -72,7 +78,13 @@ export class PlatController implements IPlatController {
             const jsonIngredients = JSON.parse(plat.ingredients);
             const ingredients = new Map();
             for (const [key, value] of Object.entries(jsonIngredients)) {
-                ingredients.set(key, value);
+                if (ingredients.has(key)) {
+                    const existingValue = ingredients.get(key);
+                    const new_value = existingValue + value
+                    ingredients.set(key, new_value);
+                } else {
+                    ingredients.set(key, value);
+                  }
             }
             plat.ingredients = ingredients;
             console.log(plat)

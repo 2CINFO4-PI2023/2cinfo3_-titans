@@ -135,7 +135,13 @@ export class PlatDetailComponent implements OnInit {
         const obj = {};
         console.log("this.inputFields: ",this.inputFields)
         this.inputFields.forEach((element) => {
-            obj[element.key] = element.value;
+            if (obj[element.key]) {
+                const existingValue = obj[element.key];
+                const new_value = existingValue + element.value
+                obj[element.key]=  new_value;
+            } else {
+                obj[element.key] = element.value;
+            }
         });
         const jsonIngredients = JSON.stringify(obj);
         const formData = new FormData();
