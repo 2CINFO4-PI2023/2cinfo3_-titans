@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { IIngredientController } from "../controller/ingredient.controller";
-
+import { multerConfig } from "../../../config/multer";
+const upload = multerConfig();
 export class IngredientRouter {
     private _ingredientRoutes: Router = Router();
     constructor(private ingredientController: IIngredientController) {
@@ -12,7 +13,7 @@ export class IngredientRouter {
     init() {
         this._ingredientRoutes
             .route("")
-            .post((req, res) => {
+            .post(upload.single("image"),(req, res) => {
                 this.ingredientController.create(req, res);
             })
             .get((req, res) => {
@@ -36,7 +37,7 @@ export class IngredientRouter {
             .delete((req, res) => {
                 this.ingredientController.delete(req, res);
             })
-            .put((req, res) => {
+            .put(upload.single("image"),(req, res) => {
                 this.ingredientController.update(req, res);
             })
     }

@@ -19,6 +19,12 @@ export class IngredientController implements IIngredientController {
   async create(req: Request, res: Response) {
     try {
       const ingredient = req.body;
+      let imageUrl: string;
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${req.file.filename}`;
+        ingredient.image = imageUrl;
+      }
+      console.log(ingredient);
       const data = await this.ingredientService.createIngredient(ingredient);
       res.status(201).json(data);
     } catch (error) {
@@ -64,7 +70,14 @@ export class IngredientController implements IIngredientController {
   }
   async update(req: Request, res: Response) {
     try {
-      const data = await this.ingredientService.updateIngredient(req.params.id, req.body);
+      const ingredient = req.body;
+      let imageUrl: string;
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${req.file.filename}`;
+        ingredient.image = imageUrl;
+      }
+      console.log(ingredient);
+      const data = await this.ingredientService.updateIngredient(req.params.id, ingredient);
       return res.status(200).send(data);
     } catch (error: any) {
       if (error instanceof HTTPError) {

@@ -26,13 +26,14 @@ export class IngredientDetailComponent implements OnInit {
         private ingredientService: IngredientService,
         private router: Router,
         private route: ActivatedRoute
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.ingredientDetailsForm = new FormGroup({
             name: new FormControl('', Validators.required),
             quantity: new FormControl('', [
                 Validators.required,
+                Validators.min(1)
             ]),
             image: new FormControl('', Validators.required),
         });
@@ -46,6 +47,7 @@ export class IngredientDetailComponent implements OnInit {
                     name: new FormControl('', Validators.required),
                     quantity: new FormControl('', [
                         Validators.required,
+                        Validators.min(1)
                     ]),
                     image: new FormControl('', Validators.required),
                 });
@@ -60,18 +62,34 @@ export class IngredientDetailComponent implements OnInit {
         });
     }
 
+    onAvatarChange(event: Event): void {
+        const inputElement = event.target as HTMLInputElement;
+        if (inputElement?.files && inputElement.files.length > 0) {
+            const file = inputElement.files[0];
+            this.ingredientDetailsForm.patchValue({
+                image: file,
+            });
+        }
+    }
+
     goToIngredientsList() {
         this.router.navigateByUrl('/ingredient');
     }
-
+    upload(event: Event) {
+        console.log(event);
+    }
     onSubmit(): void {
         this.showAlert = false;
         this.ingredientDetailsForm.disable();
-
+        const formData = new FormData();
+        formData.append('name', this.ingredientDetailsForm.get('name').value);
+        formData.append('quantity', this.ingredientDetailsForm.get('quantity').value);
+        formData.append('image', this.ingredientDetailsForm.get('image').value);
         if (this.isUpdating) {
             const ingredientId = this.route.snapshot.params['id'];
+            console.log(formData)
             this.ingredientService
-                .updateIngredient(ingredientId, this.ingredientDetailsForm.value)
+                .updateIngredient(ingredientId, formData)
                 .subscribe(
                     () => {
                         this.goToIngredientsList();
@@ -96,7 +114,7 @@ export class IngredientDetailComponent implements OnInit {
                 );
         } else {
             // Perform add operation
-            this.ingredientService.createIngredient(this.ingredientDetailsForm.value).subscribe(
+            this.ingredientService.createIngredient(formData).subscribe(
                 () => {
                     this.goToIngredientsList();
                 },
