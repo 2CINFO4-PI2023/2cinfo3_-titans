@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { IPlatController } from "../controller/plat.controller";
-
+import { multerConfig } from "../../../config/multer";
+const upload = multerConfig();
 export class PlatRouter {
     private _platRoutes: Router = Router();
     constructor(private platController: IPlatController) {
@@ -12,7 +13,7 @@ export class PlatRouter {
     init() {
         this._platRoutes
             .route("")
-            .post((req, res) => {
+            .post(upload.single("plat"),(req, res) => {
                 this.platController.create(req, res);
             })
             .get((req, res) => {
@@ -31,7 +32,7 @@ export class PlatRouter {
             .delete((req, res) => {
                 this.platController.delete(req, res);
             })
-            .put((req, res) => {
+            .put(upload.single("image"),(req, res) => {
                 this.platController.update(req, res);
             });
         this._platRoutes
