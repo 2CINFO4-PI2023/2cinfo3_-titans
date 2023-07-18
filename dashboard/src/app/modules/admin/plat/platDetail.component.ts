@@ -138,9 +138,6 @@ export class PlatDetailComponent implements OnInit {
             obj[element.key] = element.value;
         });
         const jsonIngredients = JSON.stringify(obj);
-        // const blobIngredients = new Blob([jsonIngredients], {
-        //     type: 'application/json',
-        // });
         const formData = new FormData();
         formData.append('name', this.platDetailsForm.get('name').value);
         formData.append('price', this.platDetailsForm.get('price').value);
