@@ -12,7 +12,7 @@ import { Ingredient } from 'app/core/ingredient/ingredient.types';
 })
 export class IngredientComponent{
     ingredientsDataSource: MatTableDataSource<Ingredient> = new MatTableDataSource();
-    recentTransactionsTableColumns: string[] = ['name', 'quantity','actions'];
+    recentTransactionsTableColumns: string[] = ['name', 'quantity','image','actions'];
     /**
      * Constructor
      */
