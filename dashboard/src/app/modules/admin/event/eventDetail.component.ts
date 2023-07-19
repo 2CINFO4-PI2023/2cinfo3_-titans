@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { EventService } from 'app/core/event/event.service';
+import { EventTypeService } from 'app/core/eventType/eventType.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -12,7 +13,7 @@ import { EventService } from 'app/core/event/event.service';
   animations: fuseAnimations,
 })
 export class EventDetailComponent implements OnInit {
-  eventTypes:any
+  eventTypes: any;
   @ViewChild('eventDetailNgForm') eventDetailNgForm: NgForm;
 
   roles = {
@@ -30,6 +31,7 @@ export class EventDetailComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private eventTypeService: EventTypeService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -43,7 +45,10 @@ export class EventDetailComponent implements OnInit {
       event_capacity: new FormControl('', Validators.required),
       eventType: new FormControl('', Validators.required),
       image: new FormControl('', Validators.required),
-      
+    });
+
+    this.eventTypeService.getEventTypes().subscribe((types: any) => {
+      this.eventTypes = types;
     });
 
     this.route.params.subscribe((params) => {
@@ -59,7 +64,6 @@ export class EventDetailComponent implements OnInit {
             address: event.address,
             event_capacity: event.event_capacity,
             eventType: event.eventType,
-
           });
         });
       }
@@ -69,15 +73,16 @@ export class EventDetailComponent implements OnInit {
   goToEventsList() {
     this.router.navigateByUrl('/events');
   }
+
   onAvatarChange(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement?.files && inputElement.files.length > 0) {
-        const file = inputElement.files[0];
-        this.eventDetailsForm.patchValue({
-            image: file,
-        });
+      const file = inputElement.files[0];
+      this.eventDetailsForm.patchValue({
+        image: file,
+      });
     }
-}
+  }
 
   onSubmit(): void {
     this.showAlert = false;
@@ -96,7 +101,6 @@ export class EventDetailComponent implements OnInit {
       const eventId = this.route.snapshot.params['id'];
       this.eventService.updateEvent(eventId, formData).subscribe(
         (res: any) => {
-          
           this.goToEventsList();
         },
         (error) => {
@@ -128,10 +132,10 @@ export class EventDetailComponent implements OnInit {
           this.goToEventsList();
         },
         (error) => {
-            this.alert = {
-                type: 'error',
-                message: 'An error occurred, please try again later',
-              };
+          this.alert = {
+            type: 'error',
+            message: 'An error occurred, please try again later',
+          };
           this.eventDetailsForm.enable();
           this.showAlert = true;
         }

@@ -79,23 +79,23 @@ export class EventTypeService {
   getEventTypes(
     
   ): Observable<any> {
-   return this._httpClient.get(`${environment.baseUrl}eventTypes`);
+   return this._httpClient.get(`${environment.baseUrl}types`);
   }
 
   deleteEventType(id: string) {
-    return this._httpClient.delete(`${environment.baseUrl}eventTypes/${id}`);
+    return this._httpClient.delete(`${environment.baseUrl}types/${id}`);
   }
 
   getEventType(id: string) {
-    return this._httpClient.get(`${environment.baseUrl}eventTypes/${id}`);
+    return this._httpClient.get(`${environment.baseUrl}types/${id}`);
   }
 
   updateEventType(id: string, data: any) {
-    return this._httpClient.put(`${environment.baseUrl}eventTypes/${id}`, data);
+    return this._httpClient.put(`${environment.baseUrl}types/${id}`, data);
   }
 
   addEventType(data: any) {
-    return this._httpClient.post(`${environment.baseUrl}eventTypes`, data);
+    return this._httpClient.post(`${environment.baseUrl}types`, data);
   }
 
   toggleConfirmation(id: string, confirmed: boolean) {

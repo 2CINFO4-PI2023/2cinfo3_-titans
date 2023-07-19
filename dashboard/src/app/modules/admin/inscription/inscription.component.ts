@@ -4,21 +4,28 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { EventTypeService } from 'app/core/eventType/eventType.service';
+import { EventService } from 'app/core/event/event.service';
 import { ConfirmDialogComponent } from 'app/shared/dialog/confirm-dialog.component';
 
+
+
+
 @Component({
-  selector: 'app-eventType',
-  templateUrl: './eventType.component.html',
+  selector: 'app-event',
+  templateUrl: './event.component.html',
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class EventTypeComponent implements OnInit {
-  eventTypes: any[] = [];
-  eventTypesDataSource: MatTableDataSource<any> = new MatTableDataSource();
-  eventTypeTableColumns: string[] = [
+export class EventComponent implements OnInit {
+  eventTypes :any
+  eventsDataSource: MatTableDataSource<any> = new MatTableDataSource();
+  eventTableColumns: string[] = [
     'name',
-    'description',
+    'date',
+    'address',
+    'event_capacity',
+    'availablePlaces',
+    'eventType',
     'actions'
   ];
   alert: { type: FuseAlertType; message: string } = {
@@ -36,71 +43,71 @@ export class EventTypeComponent implements OnInit {
   currentPage: number = 1;
   totalItems: number = 0;
 
+  ngOnInit(): void {
+    this.getEvents();
+  }
+
   constructor(
-    private eventTypeService: EventTypeService,
+    private eventService: EventService,
     private dialog: MatDialog,
     private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.getEventTypes();
-  }
 
   trackByFn(index: number, item: any): any {
     return item.id || index;
   }
 
-  getEventTypes() {
-    this.eventTypeService.getEventTypes().subscribe(
-      (data: any) => {
-        this.eventTypes = data;
-        this.eventTypesDataSource.data = data;
-        this.totalItems = data.total;
-      },
-      (err) => {
-        console.log('errors: ', err);
-      }
-    );
+  getEvents() {
+    this.eventService
+      .getEvents()
+      .subscribe(
+        (data: any) => {
+          
+          this.eventsDataSource.data = data;
+          this.totalItems = data.total;
+        },
+        (err) => {
+          console.log('errors: ', err);
+        }
+      );
   }
 
   applyFilters() {
     this.currentPage = 1;
-    this.getEventTypes();
+    this.getEvents();
   }
 
   applySort(sort: { active: string; direction: 'asc' | 'desc' }) {
     this.sortField = sort.active;
     this.sortOrder = sort.direction;
-    this.getEventTypes();
+    this.getEvents();
   }
 
-  onPageChange(eventType: any) {
-    this.currentPage = eventType.pageIndex + 1;
-    this.pageSize = eventType.pageSize;
-    this.getEventTypes();
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getEvents();
   }
 
-  goToAddEventType() {
-    this.router.navigateByUrl('/add-eventType');
+  goToAddEvent() {
+    this.router.navigateByUrl('/add-event');
   }
 
-  deleteEvent(eventTypeId: string): void {
+  openConfirmationDialog(eventId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { eventTypeId },
+      data: { eventId },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.showAlert = false;
-        this.eventTypeService.deleteEventType(eventTypeId).subscribe(() => {
-          this.eventTypes = this.eventTypes.filter((e) => e.id !== eventTypeId);
-          this.eventTypesDataSource.data = this.eventTypes;
+        this.eventService.deleteEvent(eventId).subscribe((res) => {
+          this.eventsDataSource.data = this.eventsDataSource.data.filter((e) => {
+            return e.id != eventId;
+          });
         });
       }
     });
-  }
-  deleteEventType(id:any){
-    this.eventTypeService.deleteEventType(id).subscribe(()=>{this.getEventTypes();})
   }
 }

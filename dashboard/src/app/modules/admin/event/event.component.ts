@@ -110,4 +110,7 @@ export class EventComponent implements OnInit {
       }
     });
   }
+  deleteEvent(id:any){
+    this.eventService.deleteEvent(id).subscribe(()=>{this.getEvents();})
+  }
 }

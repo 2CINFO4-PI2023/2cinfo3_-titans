@@ -1,89 +1,88 @@
 <div class="w-full w-10/12">
-    <div>
-      <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
-        [type]="alert.type" [@shake]="alert.type === 'error'">
-        {{ alert.message }}
-      </fuse-alert>
-    </div>
-    <form [formGroup]="eventDetailsForm" (ngSubmit)="onSubmit()" #eventDetailNgForm="ngForm">
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Name</mat-label>
-          <input matInput placeholder="Name" formControlName="name" />
-          <mat-error *ngIf="eventDetailsForm.get('name').invalid && eventDetailsForm.get('name').touched">
-            Name is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Date</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="eventDetailsForm.get('date').invalid && eventDetailsForm.get('date').touched">
-            Date is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Description</mat-label>
-          <textarea matInput placeholder="Description" formControlName="description"></textarea>
-          <mat-error *ngIf="eventDetailsForm.get('description').invalid && eventDetailsForm.get('description').touched">
-            Description is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Address</mat-label>
-          <input matInput placeholder="Address" formControlName="address" />
-          <mat-error *ngIf="eventDetailsForm.get('address').invalid && eventDetailsForm.get('address').touched">
-            Address is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Event Capacity</mat-label>
-          <input matInput type="number" placeholder="Event Capacity" formControlName="event_capacity" />
-          <mat-error *ngIf="eventDetailsForm.get('event_capacity').invalid && eventDetailsForm.get('event_capacity').touched">
-            Event Capacity is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-1/2 mt-4 mx-4">
-          <mat-label>Event Type</mat-label>
-          <mat-select formControlName="eventType">
-            <mat-option [value]="eventType.id" *ngFor="let eventType of eventTypes">{{ eventType.name }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="eventDetailsForm.get('eventType').invalid && eventDetailsForm.get('eventType').touched">
-            Event Type is required
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="sm:col-span-4">
-        <label for="image">Avatar</label>
-        <input formControlName="image" id="image" type="file" accept=".jpg,.jpeg,.png"
-            (change)="onAvatarChange($event)" />
-    </div>
-
-  
-      <!-- Divider -->
-      <div class="mt-4 mb-10 border-t"></div>
-  
-      <!-- Actions -->
-      <div class="flex items-center justify-end mb-10 mx-4">
-
-        <button mat-stroked-button type="button" (click)="goToEventsList()">
-          Cancel
-        </button>
-        <button class="ml-4" mat-flat-button type="submit" [disabled]="eventDetailsForm.invalid" [color]="'primary'">
-          Save
-        </button>
-      </div>
-    </form>
+  <div>
+    <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+      [type]="alert.type" [@shake]="alert.type === 'error'">
+      {{ alert.message }}
+    </fuse-alert>
   </div>
-  
+  <form [formGroup]="eventDetailsForm" (ngSubmit)="onSubmit()" #eventDetailNgForm="ngForm">
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="name" />
+        <mat-error *ngIf="eventDetailsForm.get('name').invalid && eventDetailsForm.get('name').touched">
+          Name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="eventDetailsForm.get('date').invalid && eventDetailsForm.get('date').touched">
+          Date is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        <mat-error *ngIf="eventDetailsForm.get('description').invalid && eventDetailsForm.get('description').touched">
+          Description is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Address</mat-label>
+        <input matInput placeholder="Address" formControlName="address" />
+        <mat-error *ngIf="eventDetailsForm.get('address').invalid && eventDetailsForm.get('address').touched">
+          Address is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Event Capacity</mat-label>
+        <input matInput type="number" placeholder="Event Capacity" formControlName="event_capacity" />
+        <mat-error *ngIf="eventDetailsForm.get('event_capacity').invalid && eventDetailsForm.get('event_capacity').touched">
+          Event Capacity is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Event Type</mat-label>
+        <mat-select formControlName="eventType">
+          <mat-option *ngFor="let eventType of eventTypes" [value]="eventType.id">
+            {{ eventType.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="eventDetailsForm.get('eventType').invalid && eventDetailsForm.get('eventType').touched">
+          Event Type is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="sm:col-span-4">
+      <label for="image">Photo</label>
+      <input formControlName="image" id="image" type="file" accept=".jpg,.jpeg,.png" (change)="onAvatarChange($event)" />
+    </div>
+
+    <!-- Divider -->
+    <div class="mt-4 mb-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end mb-10 mx-4">
+      <button mat-stroked-button type="button" (click)="goToEventsList()">
+        Cancel
+      </button>
+      <button class="ml-4" mat-flat-button type="submit" [disabled]="eventDetailsForm.invalid" [color]="'primary'">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

@@ -25,10 +25,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
     },
     {
         id   : 'events',
-        title: 'Événements',
+        title: 'Events',
         type : 'basic',
         icon : 'heroicons_outline:calendar',
         link : '/events'
+    },
+    {
+        id   : 'types',
+        title: 'EventTypes',
+        type : 'basic',
+        icon : 'heroicons_outline:calendar',
+        link : '/types'
+    },
+    {
+        id   : 'stock',
+        title: 'Stock',
+        type : 'basic',
+        icon : 'heroicons_outline:clipboard-list',
+        link : '/stock'
     },
     {
         id   : 'reclamation',
