@@ -517,6 +517,13 @@ postMessage(idUser:any,idReclamation:any,message:any): Observable<any> {
   
     
   }
+  changeStatut(idReclamation:any,idStatus:any): Observable<any> {
+   
+      
+    return this._httpClient.post<any>(`${environment.baseUrl}reclamations/${idReclamation}/${idStatus}`,{});
+  
+    
+  }
 
   getReclamation(id:any): Observable<any> {
 

@@ -1,4 +1,6 @@
 import { DuplicatedError } from "../../../errors/DuplicatedError";
+import { NotFoundError } from "../../../errors/NotFoundError";
+import { Statut } from "../../statut/model/statut.schema";
 import { IReclamation, Reclamation } from "../model/reclamation.schema";
 
 export interface IReclamationRepository {
@@ -9,6 +11,7 @@ export interface IReclamationRepository {
   update(id: string, reclamation: IReclamation): Promise<void>;
   fetchByStatut(statut: string): Promise<IReclamation[]>;
   groupByStatus(): Promise<{ [status: string]: IReclamation[] }>
+  updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void>
 }
 
 export class ReclamationRepository implements IReclamationRepository {
@@ -48,6 +51,30 @@ export class ReclamationRepository implements IReclamationRepository {
   async delete(id: string): Promise<void> {
     try {
       await Reclamation.findByIdAndDelete(id);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  
+  
+  async updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void> {
+    try {
+      // Check if the type exists in the Statut collection
+      const existingStatus = await Statut.findById(idStatus);
+      if (!existingStatus) {
+        throw new NotFoundError("Invalid status provided.");
+      }
+
+      // Get the existing reclamation
+      const reclamation = await this.get(idReclamation);
+      if (!reclamation) {
+        throw new NotFoundError("Reclamation not found.");
+      }
+
+      // Update the reclamation's status
+      reclamation.statut = existingStatus;
+      await this.update(idReclamation, reclamation);
     } catch (error: any) {
       throw error;
     }

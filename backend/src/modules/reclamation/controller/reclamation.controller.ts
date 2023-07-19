@@ -10,6 +10,7 @@ export interface IReclamationController {
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
   groupByStatus(req: Request, res: Response): void;
+  updateReclamationStatus(req: Request, res: Response): void;
 
 }
 
@@ -88,5 +89,16 @@ export class ReclamationController implements IReclamationController {
     }
   }
 
+  updateReclamationStatus(req: Request, res: Response)
+  {
+    try {
+    const idReclamation = req.params.idReclamation;
+    const idStatut = req.params.idStatut;
+    this.reclamationService.updateReclamationStatus(idReclamation,idStatut);
+    res.json({ message: "Reclamation Updated successfully" });
+  } catch (error: any) {
+    res.status(500).send(error);
+  }
+  }
   
 }

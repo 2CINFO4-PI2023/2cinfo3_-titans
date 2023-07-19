@@ -13,6 +13,7 @@ export interface IReclamationService {
   deleteReclamation(id: string): void;
   updateReclamation(id: string, reclamation: IReclamation): void;
   groupByStatus():Promise<{ [status: string]: IReclamation[] }>;
+  updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void>
 }
 
 export class ReclamationService implements IReclamationService {
@@ -71,6 +72,14 @@ export class ReclamationService implements IReclamationService {
   async updateReclamation(id: string, reclamation: IReclamation): Promise<void> {
     try {
       await this.reclamationRepository.update(id, reclamation);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void> {
+    try {
+      await this.reclamationRepository.updateReclamationStatus(idReclamation,idStatus);
     } catch (error: any) {
       throw error;
     }

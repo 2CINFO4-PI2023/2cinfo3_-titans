@@ -13,6 +13,9 @@ export class ReclamationRouter {
   }
 
   private init() {
+    this._reclamationRoutes.route("/:idReclamation/:idStatut").post((req, res) => {
+      this.reclamationController.updateReclamationStatus(req, res);
+    });
     this._reclamationRoutes.route("/:id").post((req, res) => {
       this.reclamationController.create(req, res);
     });
