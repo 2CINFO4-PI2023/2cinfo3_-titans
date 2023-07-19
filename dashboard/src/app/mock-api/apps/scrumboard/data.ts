@@ -77,7 +77,7 @@ export const lists = [
 ];
 export const cards = [
     {
-        id         : 'e74e66e9-fe0f-441e-a8ce-28ed6eccc48d',
+        id         : '64b73529b7330f0d7ec2b094',
         boardId    : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         listId     : 'new',
         position   : 65536,

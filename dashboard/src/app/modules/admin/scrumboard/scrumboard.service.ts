@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { Board, Card, Label, List } from 'app/modules/admin/scrumboard/scrumboard.models';
+import { environment } from 'environments/environment';
+
 
 @Injectable({
     providedIn: 'root'
@@ -36,6 +38,7 @@ export class ScrumboardService
      */
     get board$(): Observable<Board>
     {
+        console.log(this._board.asObservable())
         return this._board.asObservable();
     }
 
@@ -67,6 +70,7 @@ export class ScrumboardService
         return this._httpClient.get<Board[]>('api/apps/scrumboard/boards').pipe(
             map(response => response.map(item => new Board(item))),
             tap(boards => this._boards.next(boards))
+            
         );
     }
 
@@ -77,10 +81,14 @@ export class ScrumboardService
      */
     getBoard(id: string): Observable<Board>
     {
-        return this._httpClient.get<Board>('api/apps/scrumboard/board', {params: {id}}).pipe(
-            map(response => new Board(response)),
+        var a = this._httpClient.get<Board>('api/apps/scrumboard/board', {params: {id}}).pipe(
+            map(response => new Board(response)
+            
+            ),
             tap(board => this._board.next(board))
         );
+        console.log(a)
+        return a
     }
 
     /**
@@ -494,6 +502,31 @@ export class ScrumboardService
             })
         );*/
     }
+
+    getlistReclamation(): Observable<any> {
+        const list = this._httpClient.get<any>(`${environment.baseUrl}reclamations/fetchByStatut/64b7271fb7330f0d7ec2b086`)
+          .pipe(map((reclamations: any[]) => {
+            return reclamations.map(rec => ({
+              id: rec._id,
+              boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
+              listId: "new",
+              position: 65536,
+              title: rec.description,
+              description: "",
+              labels: [
+                {
+                  id: "e0175175-2784-48f1-a519-a1d2e397c9b3",
+                  boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                  title: "Quality Issue"
+                }
+              ],
+              dueDate: "2023-07-08T22:00:00.000Z"
+            }));
+          }));
+      
+        return list;
+      }
+      
 
     /**
      * Create label

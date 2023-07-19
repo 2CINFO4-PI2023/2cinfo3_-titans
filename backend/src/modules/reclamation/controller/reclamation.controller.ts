@@ -9,6 +9,7 @@ export interface IReclamationController {
   getAll(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
+  fetchByStatut(req: Request, res: Response): void;
 }
 
 export class ReclamationController implements IReclamationController {
@@ -16,17 +17,11 @@ export class ReclamationController implements IReclamationController {
 
   async create(req: Request, res: Response) {
     try {
-
-     
       const id = req.params.id;
-      const user =await User.findById(id);
-     
-
+      const user = await User.findById(id);
       const reclamation = req.body;
-      reclamation.user=user;
-      
+      reclamation.user = user;
       const data = await this.reclamationService.createReclamation(reclamation);
-      
       res.status(201).json(data);
     } catch (error: any) {
       if (error instanceof DuplicatedError) {
@@ -74,6 +69,17 @@ export class ReclamationController implements IReclamationController {
       const id = req.params.id;
       await this.reclamationService.deleteReclamation(id);
       res.json({ message: "Reclamation deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
+  async fetchByStatut(req: Request, res: Response) {
+    try {
+      const statut = req.params.statut ;
+      console.log(statut)
+      const reclamations = await this.reclamationService.fetchByStatut(statut);
+      res.json(reclamations);
     } catch (error: any) {
       res.status(500).send(error);
     }

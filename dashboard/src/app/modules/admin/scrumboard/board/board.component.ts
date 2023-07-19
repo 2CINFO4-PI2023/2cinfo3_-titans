@@ -8,6 +8,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ScrumboardService } from 'app/modules/admin/scrumboard/scrumboard.service';
 import { Board, Card, List } from 'app/modules/admin/scrumboard/scrumboard.models';
 
+
 @Component({
     selector       : 'scrumboard-board',
     templateUrl    : './board.component.html',
@@ -19,6 +20,8 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
 {
     board: Board;
     listTitleForm: FormGroup;
+     statutList:any;
+     
 
     // Private
     private readonly _positionStep: number = 65536;
@@ -47,21 +50,24 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+       
+
+     
         // Initialize the list title form
         this.listTitleForm = this._formBuilder.group({
             title: ['']
         });
 
         // Get the board
-        this._scrumboardService.board$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((board: Board) => {
-                this.board = {...board};
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        
+        
+        this._scrumboardService.getlistReclamation().subscribe(
+            rec =>   this.board =this.getCards(rec)
+        )
+              
     }
+
 
     /**
      * On destroy
@@ -187,6 +193,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
             title   : title
         });
 
+    
         // Save the card
         this._scrumboardService.createCard(card).subscribe();
     }
@@ -317,4 +324,101 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
         // Return currentItem
         return [currentItem];
     }
+
+    
+
+    getCards(rec){
+        const fakeBoardData: Board = {
+        "id": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+        "title": "Admin Dashboard",
+        "description": "Roadmap for the new project",
+        "icon": "heroicons_outline:template",
+        "lastActivity": "2023-07-17T22:00:00.000Z",
+        "lists": [
+            {
+                "id": "new",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "position": 65536,
+                "title": "New Reclamation",
+                "cards": rec
+            },
+            {
+                "id": "In progress",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "position": 131072,
+                "title": "In progress",
+                "cards":[]
+            },
+            {
+                "id": "Completed",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "position": 262144,
+                "title": "Completed",
+                "cards":[]
+            },
+            {
+                "id": "Rejected",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "position": 393216,
+                "title": "Rejected",
+                "cards": []
+            },
+            {
+                "id": "On Hold",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "position": 458752,
+                "title": "On Hold",
+                "cards": []
+            }
+        ],
+        "labels": [
+            {
+                "id": "e0175175-2784-48f1-a519-a1d2e397c9b3",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "title": "Quality Issue"
+            },
+            {
+                "id": "51779701-818a-4a53-bc16-137c3bd7a564",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "title": "Wrong Ingredient"
+            },
+            {
+                "id": "e8364d69-9595-46ce-a0f9-ce428632a0ac",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "title": "Damaged Packaging"
+            },
+            {
+                "id": "caff9c9b-a198-4564-b1f4-8b3df1d345bb",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "title": "Incorrect Quantity"
+            },
+            {
+                "id": "f9eeb436-13a3-4208-a239-0d555960a567",
+                "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                "title": "Expired Product"
+            }
+        ],
+        "members": [
+            {
+                "name":"",
+                "id": null,
+                "avatar": null
+            },
+            {
+                "name":"",
+                "id": null,
+                "avatar": null
+            },
+            {
+                "name":"",
+                "id": null,
+                "avatar": null
+            }
+        ]
+    }
+    return fakeBoardData;
+
+};
+
+  
 }

@@ -7,6 +7,7 @@ export interface IReclamationRepository {
   all(): Promise<IReclamation[]>;
   delete(id: string): Promise<void>;
   update(id: string, reclamation: IReclamation): Promise<void>;
+  fetchByStatut(statut: string): Promise<IReclamation[]>;
 }
 
 export class ReclamationRepository implements IReclamationRepository {
@@ -54,6 +55,16 @@ export class ReclamationRepository implements IReclamationRepository {
   async update(id: string, reclamation: IReclamation): Promise<void> {
     try {
       await Reclamation.findByIdAndUpdate(id, reclamation);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async fetchByStatut(statut: string): Promise<IReclamation[]> {
+    try {
+      const reclamations = await Reclamation.find({ statut: statut });
+      
+      return reclamations;
     } catch (error: any) {
       throw error;
     }
