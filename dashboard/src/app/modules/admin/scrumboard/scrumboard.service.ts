@@ -503,30 +503,28 @@ export class ScrumboardService
         );*/
     }
 
-    getlistReclamation(): Observable<any> {
-        const list = this._httpClient.get<any>(`${environment.baseUrl}reclamations/fetchByStatut/64b7271fb7330f0d7ec2b086`)
-          .pipe(map((reclamations: any[]) => {
-            return reclamations.map(rec => ({
-              id: rec._id,
-              boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
-              listId: "new",
-              position: 65536,
-              title: rec.description,
-              description: "",
-              labels: [
-                {
-                  id: "e0175175-2784-48f1-a519-a1d2e397c9b3",
-                  boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
-                  title: "Quality Issue"
-                }
-              ],
-              dueDate: "2023-07-08T22:00:00.000Z"
-            }));
-          }));
+ getlistReclamation(): Observable<any> {
+  return this._httpClient.get<any>(`${environment.baseUrl}reclamations/recGroupBy`)
+    
+
+ 
+}
+
+postMessage(idUser:any,idReclamation:any,message:any): Observable<any> {
+   
       
-        return list;
-      }
-      
+    return this._httpClient.post<any>(`${environment.baseUrl}message/${idUser}/${idReclamation}`,message);
+  
+    
+  }
+
+  getReclamation(id:any): Observable<any> {
+
+       
+     return this._httpClient.get<any>(`${environment.baseUrl}reclamations/`+id);
+   
+     
+   }
 
     /**
      * Create label

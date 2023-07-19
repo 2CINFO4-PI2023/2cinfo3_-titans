@@ -17,9 +17,14 @@ export class ReclamationRouter {
       this.reclamationController.create(req, res);
     });
 
-    this._reclamationRoutes.route("/fetchByStatut/:statut").get((req, res) => {
-      this.reclamationController.fetchByStatut(req, res);
-    });
+   // this._reclamationRoutes.route("/fetchByStatut/:statut").get((req, res) => {
+   //   this.reclamationController.fetchByStatut(req, res);
+  //  });
+
+  
+  this._reclamationRoutes.route("/recGroupBy").get((req, res) => {
+    this.reclamationController.groupByStatus(req, res);
+  });
 
     this._reclamationRoutes.route("/:id").get((req, res) => {
       this.reclamationController.get(req, res);

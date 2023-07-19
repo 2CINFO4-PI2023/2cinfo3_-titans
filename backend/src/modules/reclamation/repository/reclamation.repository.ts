@@ -8,6 +8,7 @@ export interface IReclamationRepository {
   delete(id: string): Promise<void>;
   update(id: string, reclamation: IReclamation): Promise<void>;
   fetchByStatut(statut: string): Promise<IReclamation[]>;
+  groupByStatus(): Promise<{ [status: string]: IReclamation[] }>
 }
 
 export class ReclamationRepository implements IReclamationRepository {
@@ -69,4 +70,49 @@ export class ReclamationRepository implements IReclamationRepository {
       throw error;
     }
   }
+  async groupByStatus(): Promise<{ [status: string]: IReclamation[] }> {
+    try {
+      // Use MongoDB's aggregation pipeline to group reclamations by status
+      const groupedReclamations = await Reclamation.aggregate([
+        {
+          $group: {
+            _id: "$statut", // Group by the "statut" field directly
+            reclamations: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            status: "$_id", // Rename the "_id" field to "status"
+            reclamations: 1,
+          },
+        },
+      ]);
+  
+      console.log();
+  
+      // Convert the array of groupedReclamations to an object with status as keys
+      const result: { [status: string]: IReclamation[] } = {};
+      groupedReclamations.forEach((group) => {
+        result[group.status] = group.reclamations;
+      });
+  
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
