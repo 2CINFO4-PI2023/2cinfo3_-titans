@@ -16,6 +16,13 @@ export class EventController implements IEventController {
   async create(req: Request, res: Response) {
     try {
       const event = req.body;
+      let imageUrl: string;
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${
+          req.file.filename
+        }`;
+        event.image = imageUrl;
+      }
       const data = await this.eventService.createEvent(event);
       res.status(201).json(data);
     } catch (error: any) {
@@ -50,9 +57,16 @@ export class EventController implements IEventController {
   }
 
   async update(req: Request, res: Response) {
-    try {
+    try { 
       const id = req.params.id;
       const event = req.body;
+      let imageUrl: string;
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get("host")}/assets/${
+          req.file.filename
+        }`;
+        event.image = imageUrl;
+      }
       await this.eventService.updateEvent(id, event);
       res.json({ message: "Event updated successfully" });
     } catch (error: any) {

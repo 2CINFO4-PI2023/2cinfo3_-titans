@@ -79,7 +79,9 @@ export const appRoutes: Route[] = [
             {path: 'ingredient', loadChildren: () => import('app/modules/admin/ingredient/ingredient.module').then(m => m.IngredientModule)},
             {path: 'plat', loadChildren: () => import('app/modules/admin/plat/plat.module').then(m => m.PlatModule)},
             {path: 'commandes', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
-            {path: 'events', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'events', loadChildren: () => import('app/modules/admin/event/event.module').then(m => m.EventModule)},
+            {path: 'types', loadChildren: () => import('app/modules/admin/eventType/eventType.module').then(m => m.EventTypeModule)},
+            // {path: 'inscription', loadChildren: () => import('app/modules/admin/inscription/inscription.module').then(m => m.InscriptionModule)},
             {path: 'reclamation', loadChildren: () => import('app/modules/admin/scrumboard/scrumboard.module').then(m => m.ScrumboardModule)},
             {path: 'chat', loadChildren: () => import('app/modules/admin/chat/chat.module').then(m => m.ChatModule)}
         ]
