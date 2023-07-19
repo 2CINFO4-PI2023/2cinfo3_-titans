@@ -5,6 +5,7 @@ import { IIngredientRepository } from "../repository/ingredient.repository";
 export interface IIngredientService {
     createIngredient(ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     getIngredient(id: string): IIngredient | Promise<IIngredient>;
+    getIngredientByName(name: string): IIngredient | Promise<IIngredient>;
     getAllIngredient(): IIngredient[] | Promise<IIngredient[]>;
     updateIngredient(id: string, ingredient: IIngredient): IIngredient | Promise<IIngredient>;
     deleteIngredient(id: string): void;
@@ -29,6 +30,15 @@ export class IngredientService implements IIngredientService {
         try {
             console.info("IngredientService: getting an ingredient");
             return await this.ingredientRepo.get(id);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    async getIngredientByName(name: string): Promise<IIngredient> {
+        try {
+            console.info("IngredientService: getting an ingredient");
+            return await this.ingredientRepo.getByName(name);
         } catch (error) {
             console.error(error);
             throw error;
