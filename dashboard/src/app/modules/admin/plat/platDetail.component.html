@@ -46,7 +46,7 @@
                     <button class="mt-4 ml-4" mat-stroked-button color="warm" (click)="remove(item)">Remove</button>
                 </div>
             </div>
-            <button class="mt-4 ml-4" mat-flat-button color="primary" type="button" (click)="addInput()">Add
+            <button class="mt-4 ml-4 orangeBtn" mat-flat-button color="primary" type="button" (click)="addInput()">Add
                 Ingredients</button>
         </div>
 
@@ -70,7 +70,7 @@
         <div class="mt-4 mb-10 border-t"></div>
 
         <div class="flex items-center justify-end mb-10 mx-4">
-            <button class="ml-4" mat-flat-button color="primary" type="submit" [disabled]="platDetailsForm.invalid">
+            <button class="ml-4 orangeBtn" mat-flat-button color="primary" type="submit" [disabled]="platDetailsForm.invalid">
                 Save
             </button>
             <button class="mr-4 ml-4" mat-stroked-button type="button" (click)="goToPlatsList()">

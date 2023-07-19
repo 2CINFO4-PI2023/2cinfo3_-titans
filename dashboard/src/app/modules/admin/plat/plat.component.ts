@@ -27,7 +27,7 @@ export class PlatComponent {
         keys.forEach(key => {
             ch += `${key} : ${str[key]},`;
         })
-        return ch;
+        return ch.slice(0, -1);
     }
     trackByFn(index: number, item: any): any {
         return item.id || index;

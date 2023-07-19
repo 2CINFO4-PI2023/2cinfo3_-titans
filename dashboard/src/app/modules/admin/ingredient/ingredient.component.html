@@ -6,7 +6,7 @@
         <!-- CONTENT GOES HERE -->
         <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
             <div class="overflow-x-auto mx-6">
-                <button class="mt-3 mr-3" mat-flat-button [color]="'primary'" [routerLink]="['/ingredient', 'add']">Add new ingredient</button>
+                <button class="mt-3 mr-3 orangeBtn" mat-flat-button [color]="'primary'" [routerLink]="['/ingredient', 'add']">Add new ingredient</button>
             </div>
             <div class="overflow-x-auto mx-6">
                 <table class="w-full bg-transparent" mat-table matSort [dataSource]="ingredientsDataSource" 
@@ -63,29 +63,14 @@
                         <td class="pl-10" *matCellDef="let ingredient">
                             <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
                                 <button class="mr-3" mat-flat-button [color]="'warn'" (click)="deleteIngredient(ingredient._id)">Delete</button>
-                                <button class="mr-3" mat-flat-button [color]="'primary'" [routerLink]="['/ingredient', 'update', ingredient._id]">Update</button>
+                                <button class="mr-3 orangeBtn" mat-flat-button [color]="'primary'" [routerLink]="['/ingredient', 'update', ingredient._id]">Update</button>
                             </mat-button-toggle-group>
                         </td>
                     </ng-container>
 
-                    <!-- Footer -->
-                    <!-- <ng-container matColumnDef="recentOrdersTableFooter">
-                        <td
-                            class="py-6 px-0 border-0"
-                            mat-footer-cell
-                            *matFooterCellDef
-                            colspan="6">
-                            <button mat-stroked-button>See all transactions</button>
-                        </td>
-                    </ng-container> -->
-
                     <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
                     <tr class="order-row h-16" mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;">
                     </tr>
-                    <!-- <tr
-                        class="h-16 border-0"
-                        mat-footer-row
-                        *matFooterRowDef="['recentOrdersTableFooter']"></tr> -->
                 </table>
             </div>
         </div>
