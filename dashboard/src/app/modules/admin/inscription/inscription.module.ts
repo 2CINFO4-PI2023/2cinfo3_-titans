@@ -14,33 +14,33 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseAlertModule } from '@fuse/components/alert';
 
-import { EventComponent } from './inscription.component';
-import { EventDetailComponent } from './inscriptionDetail.component';
+import { InscriptionComponent } from './inscription.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { InscriptionDetailComponent } from './inscriptionDetail.component';
 
 
-const eventRoutes: Routes = [
+const inscriptionRoutes: Routes = [
   {
     path: '',
-    component: EventComponent,
+    component: InscriptionComponent,
   },
   {
-    path: 'add-event',
-    component: EventDetailComponent,
+    path: 'add-inscription',
+    component: InscriptionDetailComponent,
   },
   {
-    path: 'update-event/:id',
-    component: EventDetailComponent,
+    path: 'update-inscription/:id',
+    component: InscriptionDetailComponent,
   },
 ];
 
 @NgModule({
-  declarations: [EventComponent, EventDetailComponent],
+  declarations: [InscriptionComponent, InscriptionDetailComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(eventRoutes),
+    RouterModule.forChild(inscriptionRoutes),
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
@@ -59,4 +59,4 @@ const eventRoutes: Routes = [
     MatMomentDateModule
   ],
 })
-export class EventModule {}
+export class InscriptionModule {}

@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { InscriptionService } from 'app/core/inscription/inscription.service';
-import { Inscription } from 'app/core/inscription/inscription.types';
 
 @Component({
   selector: 'app-inscription-detail',
@@ -13,7 +12,6 @@ import { Inscription } from 'app/core/inscription/inscription.types';
   animations: fuseAnimations,
 })
 export class InscriptionDetailComponent implements OnInit {
-  inscriptionTypes:any
   @ViewChild('inscriptionDetailNgForm') inscriptionDetailNgForm: NgForm;
 
   roles = {
@@ -37,14 +35,11 @@ export class InscriptionDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.inscriptionDetailsForm = new FormGroup({
+      eventId: new FormControl('', Validators.required),
+      userId: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
-      date: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      address: new FormControl('', Validators.required),
-      inscription_capacity: new FormControl('', Validators.required),
-      inscriptionType: new FormControl('', Validators.required),
-      image: new FormControl('', Validators.required),
-      
+      email: new FormControl('', Validators.required),
+      status: new FormControl('', Validators.required),
     });
 
     this.route.params.subscribe((params) => {
@@ -58,7 +53,6 @@ export class InscriptionDetailComponent implements OnInit {
             eventId: inscription.eventId,
             name: inscription.name,
            
-
           });
         });
       }
@@ -68,28 +62,32 @@ export class InscriptionDetailComponent implements OnInit {
   goToInscriptionsList() {
     this.router.navigateByUrl('/inscriptions');
   }
- 
-    
 
+  onAvatarChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement?.files && inputElement.files.length > 0) {
+      const file = inputElement.files[0];
+      this.inscriptionDetailsForm.patchValue({
+        image: file,
+      });
+    }
+  }
 
   onSubmit(): void {
     this.showAlert = false;
     this.inscriptionDetailsForm.disable();
 
     const formData = new FormData();
+    formData.append('eventId', this.inscriptionDetailsForm.get('eventId').value);
+    formData.append('userId', this.inscriptionDetailsForm.get('userId').value);
     formData.append('name', this.inscriptionDetailsForm.get('name').value);
-    formData.append('date', this.inscriptionDetailsForm.get('date').value);
-    formData.append('description', this.inscriptionDetailsForm.get('description').value);
-    formData.append('address', this.inscriptionDetailsForm.get('address').value);
-    formData.append('inscription_capacity', this.inscriptionDetailsForm.get('inscription_capacity').value);
-    formData.append('inscriptionType', this.inscriptionDetailsForm.get('inscriptionType').value);
-    formData.append('image', this.inscriptionDetailsForm.get('image').value);
+    formData.append('email', this.inscriptionDetailsForm.get('email').value);
+    formData.append('status', this.inscriptionDetailsForm.get('status').value);
 
     if (this.isUpdating) {
       const inscriptionId = this.route.snapshot.params['id'];
       this.inscriptionService.updateInscription(inscriptionId, formData).subscribe(
         (res: any) => {
-          
           this.goToInscriptionsList();
         },
         (error) => {
@@ -121,10 +119,10 @@ export class InscriptionDetailComponent implements OnInit {
           this.goToInscriptionsList();
         },
         (error) => {
-            this.alert = {
-                type: 'error',
-                message: 'An error occurred, please try again later',
-              };
+          this.alert = {
+            type: 'error',
+            message: 'An error occurred, please try again later',
+          };
           this.inscriptionDetailsForm.enable();
           this.showAlert = true;
         }

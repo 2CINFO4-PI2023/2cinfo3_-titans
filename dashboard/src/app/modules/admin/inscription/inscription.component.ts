@@ -4,28 +4,23 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { EventService } from 'app/core/event/event.service';
+import { InscriptionService } from 'app/core/inscription/inscription.service';
 import { ConfirmDialogComponent } from 'app/shared/dialog/confirm-dialog.component';
 
-
-
-
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
+  selector: 'app-inscription',
+  templateUrl: './inscription.component.html',
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-})
-export class EventComponent implements OnInit {
-  eventTypes :any
-  eventsDataSource: MatTableDataSource<any> = new MatTableDataSource();
-  eventTableColumns: string[] = [
+}) 
+export class InscriptionComponent implements OnInit {
+  inscriptionTypes: any;
+  inscriptionsDataSource: MatTableDataSource<any> = new MatTableDataSource();
+  inscriptionTableColumns: string[] = [
+    'userId',
     'name',
-    'date',
-    'address',
-    'event_capacity',
-    'availablePlaces',
-    'eventType',
+    'email',
+    'status',
     'actions'
   ];
   alert: { type: FuseAlertType; message: string } = {
@@ -44,11 +39,11 @@ export class EventComponent implements OnInit {
   totalItems: number = 0;
 
   ngOnInit(): void {
-    this.getEvents();
+    this.getInscriptions();
   }
 
   constructor(
-    private eventService: EventService,
+    private inscriptionService: InscriptionService,
     private dialog: MatDialog,
     private router: Router
   ) {}
@@ -57,13 +52,12 @@ export class EventComponent implements OnInit {
     return item.id || index;
   }
 
-  getEvents() {
-    this.eventService
-      .getEvents()
+  getInscriptions() {
+    this.inscriptionService
+      .getInscriptions()
       .subscribe(
         (data: any) => {
-          
-          this.eventsDataSource.data = data;
+          this.inscriptionsDataSource.data = data;
           this.totalItems = data.total;
         },
         (err) => {
@@ -74,37 +68,37 @@ export class EventComponent implements OnInit {
 
   applyFilters() {
     this.currentPage = 1;
-    this.getEvents();
+    this.getInscriptions();
   }
 
   applySort(sort: { active: string; direction: 'asc' | 'desc' }) {
     this.sortField = sort.active;
     this.sortOrder = sort.direction;
-    this.getEvents();
+    this.getInscriptions();
   }
 
-  onPageChange(event: any) {
-    this.currentPage = event.pageIndex + 1;
-    this.pageSize = event.pageSize;
-    this.getEvents();
+  onPageChange(inscription: any) {
+    this.currentPage = inscription.pageIndex + 1;
+    this.pageSize = inscription.pageSize;
+    this.getInscriptions();
   }
 
-  goToAddEvent() {
-    this.router.navigateByUrl('/add-event');
+  goToAddInscription() {
+    this.router.navigateByUrl('/add-inscription');
   }
 
-  openConfirmationDialog(eventId: string): void {
+  openConfirmationDialog(inscriptionId: string): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { eventId },
+      data: { inscriptionId },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
         this.showAlert = false;
-        this.eventService.deleteEvent(eventId).subscribe((res) => {
-          this.eventsDataSource.data = this.eventsDataSource.data.filter((e) => {
-            return e.id != eventId;
+        this.inscriptionService.deleteInscription(inscriptionId).subscribe((res) => {
+          this.inscriptionsDataSource.data = this.inscriptionsDataSource.data.filter((e) => {
+            return e.id != inscriptionId;
           });
         });
       }
