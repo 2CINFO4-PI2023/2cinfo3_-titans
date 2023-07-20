@@ -265,6 +265,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     //this.isAutheticated = AuthService.isAuthenticated();
     this.authService.authenticated$.subscribe((authenticated) => {
+      console.log("authenticated:",authenticated)
       this.isAutheticated = authenticated;
     });
     this.currency = this.currencies[0];

@@ -16,6 +16,7 @@ export interface IAuthController {
   oAuthRedirection(req: Request, res: Response): void;
   createAdmin(req: Request, res: Response): void;
   refreshToken(req: Request, res: Response): void;
+  loginWithToken(req: Request, res: Response): void;
 }
 
 export class AuthController implements IAuthController {
@@ -147,6 +148,24 @@ export class AuthController implements IAuthController {
           .json({ message: error.message, description: error.description });
       }
       console.log(error);
+      res.status(500).send(error);
+    }
+  }
+  async loginWithToken(req: Request, res: Response){
+    try {
+      const {token} = req.body
+    if(token == undefined){
+      throw new InvalidBodyError("Missed field confirmed from the body")
+    }
+    const user = await this.authService.loginWithToken(token)
+    console.log("controller",user)
+    return res.status(200).send(user);
+    } catch (error) {
+      if (error instanceof HTTPError) {
+        return res
+          .status(error.http_code)
+          .json({ message: error.message, description: error.description });
+      }
       res.status(500).send(error);
     }
   }

@@ -8,11 +8,15 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class MessageService {
   private baseUrl = 'http://localhost:9090'; 
-
-  constructor(private http: HttpClient) {}
+private user:any
+  constructor(private http: HttpClient,private authService:AuthService) {
+    this.authService.getUser().subscribe((user)=>{
+      this.user = user
+    })
+  }
 
   getMessages(): Observable<any[]> {
-    const url = `${this.baseUrl}/message/messages/${AuthService.getUser()._id}`;
+    const url = `${this.baseUrl}/message/messages/${this.user._id}`;
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${AuthService.getToken()}`
     });
@@ -21,7 +25,7 @@ export class MessageService {
   }
 
   askChatbot( message: string): Observable<any> {
-    const url = `${this.baseUrl}/message/`+AuthService.getUser()._id;
+    const url = `${this.baseUrl}/message/`+this.user._id;
     const body = { message };
 
     return this.http.post<any>(url, body);
