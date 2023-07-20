@@ -35,7 +35,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Réclamation',
         type : 'basic',
         icon : 'heroicons_outline:mail',
-        link : '/reclamation'
+        link : '/reclamation/2c82225f-2a6c-45d3-b18a-1132712a4234'
     },
     {
         id   : 'plat',

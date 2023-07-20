@@ -139,6 +139,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
        
         const chatId = this.router.url.replace('/chat/', '');
         this.messageService.getMessage(chatId).subscribe((messages) => {
+            console.log("55555"+this.user)
+            console.log(this.user)
             this.chat = {
                 id: "e3127982-9e53-4611-ac27-eb70c84be4aa",
                 contactId: "b62359fd-f2a8-46e6-904e-31052d1cd675",
@@ -148,7 +150,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
                 lastMessageAt: "26/04/2021",
                 contact: {
                     id: "b62359fd-f2a8-46e6-904e-31052d1cd675",
-                    avatar: this.user.avatar,
+                    avatar: this.user.image,
                     name: this.user.name,
                     about: "Hi there! I'm using FuseChat.",
                     details: {
