@@ -5,9 +5,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { assign } from 'lodash-es';
+import { assign, result } from 'lodash-es';
 import { ScrumboardService } from 'app/modules/admin/scrumboard/scrumboard.service';
 import { Board, Card, Label } from 'app/modules/admin/scrumboard/scrumboard.models';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+
+
 
 @Component({
     selector       : 'scrumboard-card-details',
@@ -23,6 +26,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
     cardForm: FormGroup;
     labels: Label[];
     filteredLabels: Label[];
+    reclamation :any;
+
+
 
     // Private
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -34,7 +40,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
         public matDialogRef: MatDialogRef<ScrumboardCardDetailsComponent>,
         private _changeDetectorRef: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
-        private _scrumboardService: ScrumboardService
+        private _scrumboardService: ScrumboardService,
+        private router: Router,
+
     )
     {
     }
@@ -48,6 +56,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+       
+     
         // Get the board
         this._scrumboardService.board$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -77,13 +88,20 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
         });
 
         // Fill the form
-        this.cardForm.setValue({
-            id         : this.card.id,
-            title      : this.card.title,
-            description: this.card.description,
-            labels     : this.card.labels,
-            dueDate    : this.card.dueDate
-        });
+        this._scrumboardService.getReclamation(this.router.url.replace(/.*\/card\/(\w+).*/, "$1")).subscribe
+        ((rec)=>
+        {
+            this.reclamation=rec;
+            console.log(this.reclamation.description)
+            this.cardForm.setValue({
+                id         : this.card.id,
+                title      : this.reclamation.description,
+                description: '',
+                labels     : this.card.labels,
+                dueDate    : this.card.dueDate
+            });
+        })
+        
 
         // Update card when there is a value change on the card form
         this.cardForm.valueChanges
@@ -282,5 +300,24 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
             // Read the file as the
             reader.readAsDataURL(file);
         });
+    }
+
+    onSendClick(){
+        const descriptionValue = this.cardForm.get('description').value;
+        this._scrumboardService.getReclamation(this.router.url.replace(/.*\/card\/(\w+).*/, "$1")).subscribe
+        ((rec)=>
+        {
+            this._scrumboardService.postMessage(rec.user,this.router.url.replace(/.*\/card\/(\w+).*/, "$1"),{message:descriptionValue}).subscribe();
+          // console.log('aaaa'+)
+          //"648c66938f0e146262dacfcf"
+           this.cardForm.get('description').setValue('');
+           
+        }
+        
+        )
+    }
+    replayReclamation()
+    {
+     
     }
 }

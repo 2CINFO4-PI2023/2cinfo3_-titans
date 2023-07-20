@@ -44,32 +44,32 @@ export const boards = [
 ];
 export const lists = [
     {
-        id      : 'new',
+        id      : '64b726b7b7330f0d7ec2b080',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 65536,
         title   : 'New Reclamation'
     },
     {
-        id      : 'In progress',
+        id      : '64b726f0b7330f0d7ec2b082',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 131072,
         title   : 'In progress'
     },
     {
-        id      : 'Completed',
+        id      : '64b72704b7330f0d7ec2b084',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 262144,
         title   : 'Completed'
     },
     
         {
-        id: 'Rejected',
+        id: '64b7271fb7330f0d7ec2b086',
         boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 393216,
         title: 'Rejected'
         },
         {
-        id: 'On Hold',
+        id: '64b7272cb7330f0d7ec2b088',
         boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
         position: 458752,
         title: 'On Hold'
@@ -77,12 +77,12 @@ export const lists = [
 ];
 export const cards = [
     {
-        id         : '64b73529b7330f0d7ec2b094',
+        id         : '64b73507b7330f0d7ec2b08b',
         boardId    : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId     : 'new',
+        listId     : '64b726b7b7330f0d7ec2b080',
         position   : 65536,
         title      : 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards',
-        description: 'Example that showcase all of the available bits on the card with a fairly long title compared to other cards. Example that showcase all of the available bits on the card with a fairly long title compared to other cards.',
+        description: '',
         labels     : [
             'e0175175-2784-48f1-a519-a1d2e397c9b3',
             '51779701-818a-4a53-bc16-137c3bd7a564',
@@ -93,9 +93,9 @@ export const cards = [
         dueDate    : moment().subtract(10, 'days').startOf('day').toISOString()
     },
     {
-        id      : 'ed58add1-45a7-41db-887d-3ca7ee7f2719',
+        id      : '64b7350ab7330f0d7ec2b08e',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'new',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 131072,
         title   : 'Do a research about most needed admin applications',
         labels  : [
@@ -104,9 +104,9 @@ export const cards = [
         dueDate : null
     },
     {
-        id      : 'cd6897cb-acfd-4016-8b53-3f66a5b5fc68',
+        id      : '64b7350eb7330f0d7ec2b091',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'new',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 196608,
         title   : 'Implement the Project dashboard',
         labels  : [
@@ -115,9 +115,9 @@ export const cards = [
         dueDate : moment().startOf('day').toISOString()
     },
     {
-        id      : '6da8747f-b474-4c9a-9eba-5ef212285500',
+        id      : '64b73529b7330f0d7ec2b094',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'new',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 262144,
         title   : 'Implement the Analytics dashboard',
         labels  : [
@@ -126,7 +126,7 @@ export const cards = [
         dueDate : moment().subtract(1, 'day').startOf('day').toISOString()
     },
     {
-        id      : '94fb1dee-dd83-4cca-acdd-02e96d3cc4f1',
+        id      : '64b7352db7330f0d7ec2b097',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         listId  : 'In progress',
         position: 65536,
@@ -137,7 +137,7 @@ export const cards = [
         dueDate : null
     },
     {
-        id      : 'fc16f7d8-957d-43ed-ba85-20f99b5ce011',
+        id      : '64b827094da0f65c781c6dff',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         listId  : 'In progress',
         position: 131072,
@@ -148,7 +148,7 @@ export const cards = [
         dueDate : null
     },
     {
-        id      : 'c0b32f1f-64ec-4f8d-8b11-a8dc809df331',
+        id      : '64b827094da0f65c781c6dff',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
         listId  : 'a85ea483-f8f7-42d9-a314-3fed6aac22ab',
         position: 65536,
@@ -161,7 +161,7 @@ export const cards = [
     {
         id      : '532c2747-be79-464a-9897-6a682bf22b64',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'Completed',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 65536,
         title   : 'Create low fidelity wireframes',
         labels  : [],
@@ -170,16 +170,16 @@ export const cards = [
     {
         id      : '1d908efe-c830-476e-9e87-d06e30d89bc2',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'Completed',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 131072,
         title   : 'Create high fidelity wireframes',
         labels  : [],
         dueDate : moment().subtract(10, 'day').startOf('day').toISOString()
     },
     {
-        id      : 'b1da11ed-7896-4826-962d-4b7b718896d4',
+        id      : '64b7352db7330f0d7ec2b097',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'Completed',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 196608,
         title   : 'Collect information about most used admin layouts',
         labels  : [
@@ -190,7 +190,7 @@ export const cards = [
     {
         id      : '3b7f3ceb-107f-42bc-a204-c268c9a56cb4',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'Completed',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 262144,
         title   : 'Do a research about latest UI trends',
         labels  : [
@@ -201,7 +201,7 @@ export const cards = [
     {
         id      : 'cd7f01c5-a941-4076-8cef-37da0354e643',
         boardId : '2c82225f-2a6c-45d3-b18a-1132712a4234',
-        listId  : 'Completed',
+        listId  : '64b726b7b7330f0d7ec2b080',
         position: 327680,
         title   : 'Learn more about UX',
         labels  : [

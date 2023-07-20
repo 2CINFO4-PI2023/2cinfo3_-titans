@@ -97,4 +97,12 @@ export class MessageService
     
         return this._httpClient.post<any>(`${environment.baseUrl}message/admin/`+id, message);
       }
+
+      getLastMessage(id: any): Observable<any> {
+      
+    
+        
+    
+        return this._httpClient.post<any>(`${environment.baseUrl}message/lastMessage/`+id, {});
+      }
 }
