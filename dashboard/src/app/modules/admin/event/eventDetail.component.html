@@ -53,11 +53,21 @@
         </mat-error>
       </mat-form-field>
     </div>
+    
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Available Places</mat-label>
+        <input matInput type="number" placeholder="Available Places" formControlName="availablePlaces" />
+        <mat-error *ngIf="eventDetailsForm.get('availablePlaces').invalid && eventDetailsForm.get('availablePlaces').touched">
+          Available Places is required
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="sm:col-span-4">
       <mat-form-field class="w-1/2 mt-4 mx-4">
         <mat-label>Event Type</mat-label>
         <mat-select formControlName="eventType">
-          <mat-option *ngFor="let eventType of eventTypes" [value]="eventType.id">
+          <mat-option *ngFor="let eventType of eventTypes" [value]="eventType._id">
             {{ eventType.name }}
           </mat-option>
         </mat-select>
@@ -66,7 +76,7 @@
         </mat-error>
       </mat-form-field>
     </div>
-    
+
     <div class="sm:col-span-4">
       <label for="image">Photo</label>
       <input formControlName="image" id="image" type="file" accept=".jpg,.jpeg,.png" (change)="onAvatarChange($event)" />

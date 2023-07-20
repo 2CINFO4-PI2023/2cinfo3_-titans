@@ -45,6 +45,7 @@ export class EventDetailComponent implements OnInit {
       event_capacity: new FormControl('', Validators.required),
       eventType: new FormControl('', Validators.required),
       image: new FormControl('', Validators.required),
+      availablePlaces: new FormControl(0, Validators.required), // Add availablePlaces field
     });
 
     this.eventTypeService.getEventTypes().subscribe((types: any) => {
@@ -63,7 +64,8 @@ export class EventDetailComponent implements OnInit {
             description: event.description,
             address: event.address,
             event_capacity: event.event_capacity,
-            eventType: event.eventType,
+            eventType: event.eventType._id,
+            availablePlaces: event.availablePlaces, // Set the form control value for availablePlaces
           });
         });
       }
@@ -95,6 +97,7 @@ export class EventDetailComponent implements OnInit {
     formData.append('address', this.eventDetailsForm.get('address').value);
     formData.append('event_capacity', this.eventDetailsForm.get('event_capacity').value);
     formData.append('eventType', this.eventDetailsForm.get('eventType').value);
+    formData.append('availablePlaces', this.eventDetailsForm.get('availablePlaces').value); // Append availablePlaces value
     formData.append('image', this.eventDetailsForm.get('image').value);
 
     if (this.isUpdating) {
