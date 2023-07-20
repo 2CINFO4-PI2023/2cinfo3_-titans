@@ -81,13 +81,14 @@ export class ScrumboardService
      */
     getBoard(id: string): Observable<Board>
     {
+        
+
         var a = this._httpClient.get<Board>('api/apps/scrumboard/board', {params: {id}}).pipe(
             map(response => new Board(response)
             
             ),
             tap(board => this._board.next(board))
         );
-        console.log(a)
         return a
     }
 

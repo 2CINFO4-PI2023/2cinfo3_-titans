@@ -30,6 +30,7 @@ export interface IMessageService {
   reclamtionReplyMessage(message: string, userId: string,reclamationId: string):void;
   allMessagesByUser(userId: string): Promise<IMessage[]>;
   adminMessage(message: string, userId: string):void;
+  getLastMessageByUser(userId: string): Promise<IMessage | null>
 }
 
 export class MessageService implements IMessageService {
@@ -273,6 +274,28 @@ export class MessageService implements IMessageService {
   async allMessagesByUser(userId: string): Promise<IMessage[]> {
     try {
       return await this.messageRepository.byUser(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  async getLastMessageByUser(userId: string): Promise<IMessage | null> {
+    try {
+      const messages = await Message.aggregate([
+        { $sort: { date_creation: -1 } }, // Sort messages by date_creation in descending order
+        { $group: { _id: "$user", message: { $first: "$$ROOT" } } }, // Group by user and get the first message for each user
+        { $replaceWith: "$message" }, // Replace the group result with the original message document
+      ]);
+
+      if (messages.length === 0) {
+        return null; // No messages found
+      }
+
+      const mostRecentMessage = messages.reduce((prev, current) =>
+        prev.date_creation > current.date_creation ? prev : current
+      );
+
+      return mostRecentMessage; // Return the most recent message
     } catch (error) {
       throw error;
     }
