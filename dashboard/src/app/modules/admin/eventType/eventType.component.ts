@@ -6,6 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { EventTypeService } from 'app/core/eventType/eventType.service';
 import { ConfirmDialogComponent } from 'app/shared/dialog/confirm-dialog.component';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-eventType',
@@ -16,11 +17,7 @@ import { ConfirmDialogComponent } from 'app/shared/dialog/confirm-dialog.compone
 export class EventTypeComponent implements OnInit {
   eventTypes: any[] = [];
   eventTypesDataSource: MatTableDataSource<any> = new MatTableDataSource();
-  eventTypeTableColumns: string[] = [
-    'name',
-    'description',
-    'actions'
-  ];
+  eventTypeTableColumns: string[] = ['name', 'description', 'actions'];
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
@@ -35,6 +32,7 @@ export class EventTypeComponent implements OnInit {
   pageSize: number = 10;
   currentPage: number = 1;
   totalItems: number = 0;
+  chartData: any[] = [];
 
   constructor(
     private eventTypeService: EventTypeService,
@@ -56,6 +54,9 @@ export class EventTypeComponent implements OnInit {
         this.eventTypes = data;
         this.eventTypesDataSource.data = data;
         this.totalItems = data.total;
+
+        // After getting the event types, get the counts for each type and create charts
+        this.getEventTypeCounts();
       },
       (err) => {
         console.log('errors: ', err);
@@ -100,7 +101,59 @@ export class EventTypeComponent implements OnInit {
       }
     });
   }
-  deleteEventType(id:any){
-    this.eventTypeService.deleteEventType(id).subscribe(()=>{this.getEventTypes();})
+
+  deleteEventType(id: any) {
+    this.eventTypeService.deleteEventType(id).subscribe(() => {
+      this.getEventTypes();
+    });
+  }
+
+  getEventTypeCounts() {
+    for (const eventType of this.eventTypes) {
+      this.eventTypeService.getEventCountByType(eventType._id).subscribe(
+        (data: any) => {
+          this.chartData.push({ eventType, data });
+          this.createChart(eventType._id);
+        },
+        (err) => {
+          console.log('errors: ', err);
+        }
+      );
+    }
+  }
+
+  createChart(eventTypeId: string) {
+    const eventData = this.chartData.find((item) => item.eventType._id === eventTypeId)?.data;
+    if (!eventData) {
+      return; // Skip chart creation if data is not available
+    }
+
+    const eventTypeNames = eventData.map((eventType: any) => eventType.name);
+    const eventTypeCounts = eventData.map((eventType: any) => eventType.count);
+
+    const ctx = document.getElementById(`eventTypeChart_${eventTypeId}`) as HTMLCanvasElement;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: eventTypeNames,
+        datasets: [
+          {
+            label: `Event Type Count for ${eventTypeId}`,
+            data: eventTypeCounts,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
   }
 }

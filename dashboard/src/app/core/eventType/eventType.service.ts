@@ -76,10 +76,8 @@ export class EventTypeService {
     );
   }
 
-  getEventTypes(
-    
-  ): Observable<any> {
-   return this._httpClient.get(`${environment.baseUrl}types`);
+  getEventTypes(): Observable<any> {
+    return this._httpClient.get(`${environment.baseUrl}types`);
   }
 
   deleteEventType(id: string) {
@@ -100,5 +98,9 @@ export class EventTypeService {
 
   toggleConfirmation(id: string, confirmed: boolean) {
     return this._httpClient.patch(`${environment.baseUrl}eventTypes/${id}/confirmed`, { confirmed });
+  }
+
+  getEventCountByType(id: any): Observable<any> {
+    return this._httpClient.get(`${environment.baseUrl}types/count/${id}`);
   }
 }

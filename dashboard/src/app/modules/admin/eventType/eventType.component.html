@@ -54,6 +54,14 @@
       <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="currentPage - 1"
         [pageSizeOptions]="[5, 10, 20, 50]" (page)="onPageChange($event)">
       </mat-paginator>
+      <!-- Chart -->
+    <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+      <!-- Add a canvas element for each chart -->
+      <canvas *ngFor="let eventType of eventTypes" [id]="'eventTypeChart_' + eventType._id"></canvas>
     </div>
+    </div>
+
+   
+    
   </div>
 </div>
