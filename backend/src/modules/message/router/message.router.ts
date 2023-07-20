@@ -20,6 +20,10 @@ export class MessageRouter {
       this.messageController.adminMessage(req, res);
     });
 
+    this._messageRoutes.route("/lastMessage/:idUser").post((req, res) => {
+      this.messageController.getLastMessageByUser(req, res);
+    });
+
 
     this._messageRoutes.route("/:id").get((req, res) => {
       this.messageController.get(req, res);

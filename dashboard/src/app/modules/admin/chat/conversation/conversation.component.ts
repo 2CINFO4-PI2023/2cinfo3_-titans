@@ -144,11 +144,11 @@ export class ConversationComponent implements OnInit, OnDestroy {
                 contactId: "b62359fd-f2a8-46e6-904e-31052d1cd675",
                 unreadCount: 0,
                 muted: false,
-                lastMessage: "",
+                lastMessage: this.user.email,
                 lastMessageAt: "26/04/2021",
                 contact: {
                     id: "b62359fd-f2a8-46e6-904e-31052d1cd675",
-                    avatar: "assets/images/avatars/male-10.jpg",
+                    avatar: this.user.avatar,
                     name: this.user.name,
                     about: "Hi there! I'm using FuseChat.",
                     details: {
