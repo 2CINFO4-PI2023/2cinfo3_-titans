@@ -4,6 +4,12 @@
 
 export const environment = {
     production: false,
+    PUSHER_APP_ID:"1638031",
+    PUSHER_APP_KEY:"e08b2a9be023e7312590",
+    PUSHER_APP_SECRET:"ffb48712c69c61897ed7",
+    PUSHER_APP_CLUSTER:"eu",
+    PUSHER_EVENT:"outofstock",
+    PUSHER_CHANNEL:"pureplats",
     baseUrl:"http://localhost:9090/"
 };
 
