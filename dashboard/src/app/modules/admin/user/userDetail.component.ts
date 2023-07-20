@@ -26,7 +26,9 @@ export class UserDetailComponent implements OnInit {
     showAlert: boolean = false;
     userDetailsForm: FormGroup;
     isUpdating: boolean = false;
-
+    avatar:any;
+    authentifiedUser:any
+    
     constructor(
         private userService: UserService,
         private router: Router,
@@ -34,6 +36,9 @@ export class UserDetailComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.userService.getLoggedInUser().subscribe((user)=>{
+            this.authentifiedUser = user
+        })
         this.userDetailsForm = new FormGroup({
             name: new FormControl('', Validators.required),
             email: new FormControl('', [
@@ -70,32 +75,51 @@ export class UserDetailComponent implements OnInit {
                         Validators.pattern(/^\+216(20|21|22|23|24|25|26|27|28|29|50|52|53|54|55|56|58|90|91|92|93|94|95|96|97|98|99)\d{6}$/)
                     ]),
                     address: new FormControl('', Validators.required),
-                    role: new FormControl('', Validators.required),
+                    role: new FormControl(this.roles[1], Validators.required),
                     photo: new FormControl(null),
                 });
                 this.userService.getUser(userId).subscribe((user: any) => {
+                    this.avatar = user.image
                     this.userDetailsForm.patchValue({
                         name: user.name,
                         email: user.email,
                         password: '',
                         phone: user.phone,
                         address: user.address,
-                        role: user.role,
+                        role: user.role+ '',
+                        photo:user.image
                     });
                 });
             }
         });
     }
 
+    // onAvatarChange(event: Event): void {
+    //     const inputElement = event.target as HTMLInputElement;
+    //     if (inputElement?.files && inputElement.files.length > 0) {
+    //         const file = inputElement.files[0];
+    //         this.userDetailsForm.patchValue({
+    //             photo: file,
+    //         });
+    //     }
+    // }
+
     onAvatarChange(event: Event): void {
         const inputElement = event.target as HTMLInputElement;
         if (inputElement?.files && inputElement.files.length > 0) {
-            const file = inputElement.files[0];
-            this.userDetailsForm.patchValue({
-                photo: file,
-            });
+          const file = inputElement.files[0];
+      
+          // Create a FileReader to read the selected image and create an Object URL
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.avatar = e.target.result; // Set the Object URL as the image preview
+            this.userDetailsForm.get('photo').setValue(file); // Update the form control value with the selected file
+          };
+          reader.readAsDataURL(file);
         }
-    }
+      }
+      
+      
 
     goToUsersList() {
         this.router.navigateByUrl('/utilisateurs');
@@ -124,10 +148,14 @@ export class UserDetailComponent implements OnInit {
             const userId = this.route.snapshot.params['id'];
             this.userService.updateUser(userId, formData).subscribe(
                 (res:any) => {
-                    console.log("this.userService.user: ",this.userService.getLoggedInUser())
-                    if(this.userService.getLoggedInUser()._id == userId){
-                        this.userService.setLoggedInUser(res)
-                    }
+                    this.userService.getLoggedInUser().subscribe((user)=>{
+                    if(user._id == userId){
+                        this.userService.updateLoggedInUser(res)
+                    }    
+                    })
+                    // if(this.userService.getLoggedInUser()._id == userId){
+                    //     this.userService.setLoggedInUser(res)
+                    // }
                     this.goToUsersList();
                 },
                 (error) => {
