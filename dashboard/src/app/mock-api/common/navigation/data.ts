@@ -31,6 +31,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/events'
     },
     {
+        id   : 'inscription',
+        title: 'Inscription',
+        type : 'basic',
+        icon : 'heroicons_outline:calendar',
+        link : '/inscription'
+    },
+    {
         id   : 'types',
         title: 'EventTypes',
         type : 'basic',

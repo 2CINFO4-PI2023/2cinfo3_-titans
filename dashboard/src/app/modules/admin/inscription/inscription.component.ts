@@ -17,7 +17,7 @@ export class InscriptionComponent implements OnInit {
   inscriptionTypes: any;
   inscriptionsDataSource: MatTableDataSource<any> = new MatTableDataSource();
   inscriptionTableColumns: string[] = [
-    'userId',
+    
     'name',
     'email',
     'status',
@@ -71,11 +71,7 @@ export class InscriptionComponent implements OnInit {
     this.getInscriptions();
   }
 
-  applySort(sort: { active: string; direction: 'asc' | 'desc' }) {
-    this.sortField = sort.active;
-    this.sortOrder = sort.direction;
-    this.getInscriptions();
-  }
+ 
 
   onPageChange(inscription: any) {
     this.currentPage = inscription.pageIndex + 1;

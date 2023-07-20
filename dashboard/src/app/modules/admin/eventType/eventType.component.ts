@@ -55,7 +55,6 @@ export class EventTypeComponent implements OnInit {
         this.eventTypesDataSource.data = data;
         this.totalItems = data.total;
 
-        // After getting the event types, get the counts for each type and create charts
         this.getEventTypeCounts();
       },
       (err) => {
@@ -125,7 +124,7 @@ export class EventTypeComponent implements OnInit {
   createChart(eventTypeId: string) {
     const eventData = this.chartData.find((item) => item.eventType._id === eventTypeId)?.data;
     if (!eventData) {
-      return; // Skip chart creation if data is not available
+      return; 
     }
 
     const eventTypeNames = eventData.map((eventType: any) => eventType.name);

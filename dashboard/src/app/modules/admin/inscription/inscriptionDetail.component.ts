@@ -14,11 +14,6 @@ import { InscriptionService } from 'app/core/inscription/inscription.service';
 export class InscriptionDetailComponent implements OnInit {
   @ViewChild('inscriptionDetailNgForm') inscriptionDetailNgForm: NgForm;
 
-  roles = {
-    1: 'Client',
-    99: 'Admin',
-  };
-
   alert: { type: FuseAlertType; message: string } = {
     type: 'success',
     message: '',
@@ -63,15 +58,7 @@ export class InscriptionDetailComponent implements OnInit {
     this.router.navigateByUrl('/inscriptions');
   }
 
-  onAvatarChange(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement?.files && inputElement.files.length > 0) {
-      const file = inputElement.files[0];
-      this.inscriptionDetailsForm.patchValue({
-        image: file,
-      });
-    }
-  }
+  
 
   onSubmit(): void {
     this.showAlert = false;

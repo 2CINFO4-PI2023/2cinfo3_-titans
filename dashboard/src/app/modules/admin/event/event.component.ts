@@ -20,12 +20,14 @@ export class EventComponent implements OnInit {
   eventTypes :any
   eventsDataSource: MatTableDataSource<any> = new MatTableDataSource();
   eventTableColumns: string[] = [
+    'image',
     'name',
     'date',
     'address',
     'event_capacity',
     'availablePlaces',
     'eventType',
+    
     'actions'
   ];
   alert: { type: FuseAlertType; message: string } = {
