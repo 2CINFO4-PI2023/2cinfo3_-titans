@@ -14,7 +14,7 @@ export class StatutRouter {
 
   private init() {
 
-    this._statutRoutes.route("/new").get((req, res) => {
+    this._statutRoutes.route("/findStatus/:statut").get((req, res) => {
       this.statutController.findOrCreateNewStatus(req, res);
     });
     this._statutRoutes.route("").post((req, res) => {

@@ -5,6 +5,7 @@ import { environment } from 'environments/environment';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Message } from './message.types';
+import { UserService } from '../user/user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -87,5 +88,21 @@ export class MessageService
             return transformedMessages;
           })
         );
+      }
+
+      postMessage(id: any, message: any): Observable<any> {
+      
+    
+        
+    
+        return this._httpClient.post<any>(`${environment.baseUrl}message/admin/`+id, message);
+      }
+
+      getLastMessage(id: any): Observable<any> {
+      
+    
+        
+    
+        return this._httpClient.post<any>(`${environment.baseUrl}message/lastMessage/`+id, {});
       }
 }

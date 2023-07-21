@@ -24,6 +24,7 @@ export interface IAuthService {
   facebookAuth(): any;
   createAdmin(user: IUser): Promise<IUser>
   refreshToken(token:string):string | Promise<string>
+  loginWithToken(token: any): any;
 }
 
 export enum ROLES {
@@ -95,7 +96,6 @@ export class AuthService implements IAuthService {
   }
   async sendPasswordResetEmail(email: string) {
     try {
-      // TODO set frontend url of reset password page
       const user = await (<IUser>this.userService.findByEmail(email));
       const otp = generateOTP();
       const content = readFileSync(
@@ -240,6 +240,17 @@ export class AuthService implements IAuthService {
       const decoded:any = decodeAccessToken(token)
       const accessToken = generateAccessToken({user:<IUser>decoded.user})
       return accessToken
+    } catch (error) {
+      throw error
+    }
+  }
+  async loginWithToken(token: any){
+    try {
+    const decoded:any = decodeAccessToken(token)
+    const user = <IUser>decoded.user
+    console.log("user: ",user)
+    const data = await this.userService.getUser(user._id?.toString() ?? "")
+    return data
     } catch (error) {
       throw error
     }

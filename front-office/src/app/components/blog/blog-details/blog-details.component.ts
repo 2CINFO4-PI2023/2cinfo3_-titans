@@ -1,38 +1,62 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from '../popup/popup.component';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { InscriptionService } from './blog-details.service';
 
 @Component({
   selector: 'app-blog-details',
   templateUrl: './blog-details.component.html',
   styleUrls: ['./blog-details.component.sass']
 })
-export class BlogDetailsComponent implements AfterViewInit {
+export class BlogDetailsComponent implements OnInit {
+  event: any;
+  name: string;
+  lastName: string;
+  email: string;
+  content: string;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private inscriptionService: InscriptionService
+  ) { }
 
   ngOnInit() {
+    const eventId = this.route.snapshot.paramMap.get('eventid');
+    this.inscriptionService.getEvent(eventId)
+      .subscribe((response: any) => {
+        this.event = response;
+      });
   }
 
-  ngAfterViewInit() {
-    // Hack: Scrolls to top of Page after page view initialized
-    let top = document.getElementById('top');
-    if (top !== null) {
-      top.scrollIntoView();
-      top = null;
+  submitRegistrationForm() {
+    const inscription = {
+      eventId: this.event.id,
+      userId: '649f43dccd5a374f418af849',
+      name: this.name,
+      email: this.email,
+      status: 'confirmed',
+      content: this.content
+    };
+
+    this.inscriptionService.createInscription(inscription)
+      .subscribe(
+        (response: any) => {
+          console.log('Inscription created:', response);
+          this.name = '';
+          this.email = '';
+          this.content = '';
+        },
+        (error: any) => {
+          console.error('Error creating inscription:', error);
+        }
+      );
+  }
+
+  scrollToEventDetails() {
+    const element = document.getElementById('eventDetails');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-
-  openPopup(): void {
-    const dialogRef = this.dialog.open(PopupComponent, {
-      data: {
-        title: 'Popup Title',
-        message: 'This is a popup message.'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // Handle popup close event
-    });
   }
 }

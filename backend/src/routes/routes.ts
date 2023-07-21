@@ -49,12 +49,12 @@ export class Routes {
     this.app.use("/statuts", this.statutRouter.statutRoutes);
     this.app.use(
       "/events",
-      validateJwtToken,
+      //validateJwtToken,
       this.eventRouter.eventRoutes
     );
     this.app.use(
       "/inscriptions",
-      validateJwtToken,
+      //validateJwtToken,
       this.inscriptionRouter.inscriptionRoutes
     );
     this.app.use(

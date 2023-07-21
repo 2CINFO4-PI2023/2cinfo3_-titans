@@ -1,12 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
-import { SidenavMenu } from "./components/shared/sidebar/sidebar-menu.model";
-import { Router, NavigationEnd } from "@angular/router";
+import { AuthService } from "./components/shared/services/auth.service";
 import {
   AppSettings,
   Settings,
 } from "./components/shared/services/color-option.service";
-import { AuthService } from "./components/shared/services/auth.service";
+import { SidenavMenu } from "./components/shared/sidebar/sidebar-menu.model";
 
 @Component({
   selector: "app-root",
@@ -36,7 +36,8 @@ export class AppComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     public router: Router,
-    public appSettings: AppSettings
+    public appSettings: AppSettings,
+    private authService:AuthService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -262,7 +263,11 @@ export class AppComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.isAutheticated = AuthService.isAuthenticated();
+    //this.isAutheticated = AuthService.isAuthenticated();
+    this.authService.authenticated$.subscribe((authenticated) => {
+      console.log("authenticated:",authenticated)
+      this.isAutheticated = authenticated;
+    });
     this.currency = this.currencies[0];
     this.flag = this.flags[0];
     /** spinner starts on init */

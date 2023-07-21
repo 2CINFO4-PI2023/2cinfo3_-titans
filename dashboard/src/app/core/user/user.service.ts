@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
 import { environment } from 'environments/environment';
-import { Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -10,8 +10,10 @@ import { map, tap } from 'rxjs/operators';
 })
 export class UserService
 {
+    private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
-    private _loggedInUser: User;
+    private _loggedInUser: Observable<User | null> = this.userSubject.asObservable();
+
 
     /**
      * Constructor
@@ -21,16 +23,17 @@ export class UserService
     }
 
     setLoggedInUser(user: User): void {
-        this._loggedInUser = user;
+        this.userSubject.next(user);
         this._user.next(user);
-    }
-
-    /**
-     * Get the currently logged-in user
-     */
-    getLoggedInUser(): User {
+      }
+    
+      updateLoggedInUser(user: User): void {
+        this.userSubject.next(user);
+      }
+    
+      getLoggedInUser(): Observable<User | null> {
         return this._loggedInUser;
-    }
+      }
 
 
     // -----------------------------------------------------------------------------------------------------

@@ -9,6 +9,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { FaqComponent } from './faq/faq.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 
 
@@ -26,6 +27,8 @@ const routes: Routes = [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'error', component: ErrorPageComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'forgot-password', component: ForgetPasswordComponent },
+     
     ]
   }
 ];

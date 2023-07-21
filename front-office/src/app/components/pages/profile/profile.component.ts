@@ -16,24 +16,26 @@ export class ProfileComponent implements OnInit {
   profileErrMsg:string;
   profileForm: FormGroup;
   updatePassword:boolean;
+  user:any
 
   ngOnInit() {
-    const user = AuthService.getUser()
-     console.log("user: ",user)
-    this.profileForm = new FormGroup({
-      phone: new FormControl(user.phone, [
-        Validators.required,
-        Validators.pattern(
-          /^\+216(20|21|22|23|24|25|26|27|28|29|50|52|53|54|55|56|58|90|91|92|93|94|95|96|97|98|99)\d{6}$/
-        ),
-      ]),
-      email: new FormControl(user.email, [Validators.required, Validators.email]),
-      password: new FormControl("", [
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
-      ]),
-      name: new FormControl(user.name, [Validators.required]),
-    });
+    const user =this.authService.getUser().subscribe((user)=>{
+      this.user = user
+      this.profileForm = new FormGroup({
+        phone: new FormControl(user.phone, [
+          Validators.required,
+          Validators.pattern(
+            /^\+216(20|21|22|23|24|25|26|27|28|29|50|52|53|54|55|56|58|90|91|92|93|94|95|96|97|98|99)\d{6}$/
+          ),
+        ]),
+        email: new FormControl(user.email, [Validators.required, Validators.email]),
+        password: new FormControl("", [
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ]),
+        name: new FormControl(user.name, [Validators.required]),
+      });
+    })
   }
 
   
@@ -59,8 +61,9 @@ export class ProfileComponent implements OnInit {
 
   profile(form: any) {
     this.profileForm.disable()
-    this.authService.updateUser(AuthService.getUser()._id,this.profileForm.value).subscribe(
+    this.authService.updateUser(this.user._id,this.profileForm.value).subscribe(
       (res) => {
+        this.authService.updateAuthentifiedUser(res)
         this.profileErrMsg = "";
           this.profileForm.enable()
       },

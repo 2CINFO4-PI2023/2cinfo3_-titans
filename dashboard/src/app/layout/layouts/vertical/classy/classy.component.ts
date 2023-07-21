@@ -8,6 +8,7 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { Notification } from '../../../common/notifications/notifications.types'
 
 @Component({
     selector     : 'classy-layout',
@@ -18,13 +19,15 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 {
     isScreenSmall: boolean;
     navigation: Navigation;
-    user: User;
+    notification : Notification;
+    user: User | null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
     constructor(
+        // private _notification: Notification,
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _navigationService: NavigationService,
@@ -69,9 +72,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         //     .subscribe((user: User) => {
         //         this.user = user;
         //     });
-
-        this.user = this._userService.getLoggedInUser()
-        console.log("this.user",this.user)
+        this._userService.getLoggedInUser().subscribe((user) => {
+            console.log("user:", user);
+            this.user = user;
+          });
+      
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))

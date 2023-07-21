@@ -114,5 +114,9 @@ export class AuthRouter {
     this.authRoutes.post('/refresh-token',(req,res)=>{
       this.authController.refreshToken(req,res)
     })
+    this.authRoutes.post('/login-token',(req,res)=>{
+      this.authController.loginWithToken(req,res)
+    })
+    
   }
 }

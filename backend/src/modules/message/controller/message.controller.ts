@@ -11,6 +11,8 @@ export interface IMessageController {
   askchatbot(req: Request, res: Response):void;
   reclamtionReplyMessage(req: Request, res: Response):void;
   getbyUserId(req: Request, res: Response) :void;
+  adminMessage(req: Request, res: Response) :void;
+  getLastMessageByUser(req: Request, res: Response):void;
 }
 
 export class MessageController implements IMessageController {
@@ -67,6 +69,31 @@ export class MessageController implements IMessageController {
     }
   }
 
+  async  adminMessage(req: Request, res: Response)
+  {
+    const message = req.body.message;
+    const iduser =req.params.idUser;
+
+    const replay = await this.messageService.adminMessage(message,iduser);
+    res.json(replay);
+    
+  }
+  async getLastMessageByUser(req: Request, res: Response)
+  {
+    try {
+     
+    
+     const idUser =req.params.idUser;
+     const replay = await this.messageService.getLastMessageByUser(idUser);
+
+      res.json(replay);
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+    
+
+
+  }
 
   async reclamtionReplyMessage(req: Request, res: Response) {
     try {

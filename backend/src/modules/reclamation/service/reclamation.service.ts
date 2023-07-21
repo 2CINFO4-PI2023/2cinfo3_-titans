@@ -12,6 +12,8 @@ export interface IReclamationService {
   allReclamations(): Promise<IReclamation[]>;
   deleteReclamation(id: string): void;
   updateReclamation(id: string, reclamation: IReclamation): void;
+  groupByStatus():Promise<{ [status: string]: IReclamation[] }>;
+  updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void>
 }
 
 export class ReclamationService implements IReclamationService {
@@ -75,15 +77,40 @@ export class ReclamationService implements IReclamationService {
     }
   }
 
-
-  async populateType(typeId: string): Promise<IStatut | null> {
+  async updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void> {
     try {
-      const type = await Statut.findById(typeId);
-      return type;
+      await this.reclamationRepository.updateReclamationStatus(idReclamation,idStatus);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+
+  
+  async groupByStatus(): Promise<{ [status: string]: IReclamation[] }>
+  {
+    try {
+    
+    //  console.log(status)
+      const types = await this.reclamationRepository.groupByStatus();
+
+    
+    
+      return types;
     } catch (error) {
       throw error;
     }
   }
+
+   
+  
+  
+   
+ 
+  
+  
+  
+  
   
 }
 

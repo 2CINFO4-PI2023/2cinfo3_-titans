@@ -19,6 +19,7 @@ export class EventController implements IEventController {
       const data = await this.eventService.createEvent(event);
       res.status(201).json(data);
     } catch (error: any) {
+      console.log("error: ",error)
       if (error instanceof DuplicatedError) {
         return res.status(error.http_code).json({ message: error.message, description: error.description });
       }

@@ -54,11 +54,12 @@
 }
 .color-options{
  
-  width: 600px;
+  width: 100%; 
   height: 470px;
   position: fixed;
-  top: 414px;
-  right: 25px;
+  position: fixed;
+  bottom: 2%; /* Use a relative positioning instead of fixed pixel values */
+  right: 2%; /* Use a relative positioning instead of fixed pixel values */
   z-index: 9999;
   .options-icon{
       padding: 0;

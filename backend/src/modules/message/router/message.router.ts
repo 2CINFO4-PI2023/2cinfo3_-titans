@@ -16,10 +16,21 @@ export class MessageRouter {
     this._messageRoutes.route("").post((req, res) => {
       this.messageController.create(req, res);
     });
+     this._messageRoutes.route("/admin/:idUser").post((req, res) => {
+      this.messageController.adminMessage(req, res);
+    });
+
+    this._messageRoutes.route("/lastMessage/:idUser").post((req, res) => {
+      this.messageController.getLastMessageByUser(req, res);
+    });
+
 
     this._messageRoutes.route("/:id").get((req, res) => {
       this.messageController.get(req, res);
     });
+
+   
+
     this._messageRoutes.route("/:idUser/:idReclamation").post((req, res) => {
       this.messageController.reclamtionReplyMessage(req, res);
     });

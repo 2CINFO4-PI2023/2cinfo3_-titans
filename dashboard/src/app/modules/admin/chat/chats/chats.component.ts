@@ -53,6 +53,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
     private messageService: MessageService,
     private userService: UserService,
+    
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -118,6 +119,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     return item.id || index;
   }
 
+  
+
   getUsers(): void {
     this.isLoading = true; // Set isLoading to true when fetching users
     this.userService.getUsers(this.currentPage, this.pageSize, this.filterValues, this.sortField, this.sortOrder)
@@ -128,11 +131,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
               id: user._id,
               unreadCount: 2, // Set the appropriate value for unreadCount
               muted: false, // Set the appropriate value for muted
-              lastMessage: "See you tomorrow!", // Set the appropriate value for lastMessage
-              lastMessageAt: "26/04/2021", // Set the appropriate value for lastMessageAt
+              lastMessage: user.email, // Set the appropriate value for lastMessage
+              lastMessageAt: user.phone?"+216 "+user.phone:"", // Set the appropriate value for lastMessageAt
               contact: {
                 id: user.id,
-                avatar: "assets/images/avatars/male-02.jpg",
+                avatar: user.image,
                 name: user.name,
                 about: "Hi there! I'm using FuseChat.",
                 details: {

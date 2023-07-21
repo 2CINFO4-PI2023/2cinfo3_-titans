@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { UserService } from 'app/core/user/user.service';
+import { user } from 'app/mock-api/common/user/data';
 import { ConfirmDialogComponent } from 'app/shared/dialog/confirm-dialog.component';
 
 @Component({
@@ -43,9 +44,12 @@ export class UserComponent implements OnInit {
     pageSize: number = 10;
     currentPage: number = 1;
     totalItems:number=0
+    authentifiedUser:any
     ngOnInit(): void {
         this.getUsers();
-        console.log("usersDataSource",this.usersDataSource)
+        this.userService.getLoggedInUser().subscribe((user)=>{
+            this.authentifiedUser = user
+        })
     }
     /**
      * Constructor
@@ -106,7 +110,7 @@ export class UserComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result === true) {
                 this.showAlert = false;
-                if (this.userService.getLoggedInUser()._id == userId) {
+                if (this.authentifiedUser._id == userId) {
                     this.alert = {
                         type: 'error',
                         message: "You can't delete your owen account",
@@ -125,7 +129,7 @@ export class UserComponent implements OnInit {
     }
     toggleConfirmation(userId: string, value: any) {
         this.showAlert = false;
-        if (this.userService.getLoggedInUser()._id == userId) {
+        if (this.authentifiedUser._id == userId) {
             value.source.checked = true;
             this.alert = {
                 type: 'error',

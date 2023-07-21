@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { of, throwError } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 
@@ -8,7 +8,28 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class AuthService {
+  // static authenticatedSubject: any;
+  // static userSubject: any;
   constructor(private http: HttpClient) {}
+
+  // private authenticatedSubject: BehaviorSubject<any> =
+  //   new BehaviorSubject<any>(false);
+  // public authenticated$: Observable<any> =
+  //   this.authenticatedSubject.asObservable();
+
+    
+  // private userSubject: BehaviorSubject<any> =
+  // new BehaviorSubject<any>(false);
+  // static user$: Observable<any> =
+  // AuthService.userSubject.asObservable();
+
+  private authenticatedSubject: BehaviorSubject<any> =
+  new BehaviorSubject<any>(false);
+public authenticated$: Observable<any> =
+  this.authenticatedSubject.asObservable();
+
+private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+public user$: Observable<any> = this.userSubject.asObservable();
 
   static decodeJwt(token: string): any {
     const base64Url = token.split(".")[1];
@@ -18,35 +39,73 @@ export class AuthService {
     return decodedToken;
   }
   login(body: any) {
+    // return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
+    //   switchMap((response: any) => {
+    //     const { user } = AuthService.decodeJwt(response.accessToken);
+    //     localStorage.setItem("fo_accessToken", response.accessToken);
+    //     return of(user);
+    //   })
+    // );
+    
     return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
-      switchMap((response: any) => {
-        const { user } = AuthService.decodeJwt(response.accessToken);
-        // if (user.role !== 99) {
-        //     return throwError('User role is not authorized.'); // Throw an error if the user's role is not 99
-        // }
-        localStorage.setItem("fo_accessToken", response.accessToken);
-        return of(user);
-      })
-    );
+        switchMap((response: any) => {
+          const { user } = AuthService.decodeJwt(response.accessToken);
+          localStorage.setItem("fo_accessToken", response.accessToken);
+          this.http
+          .post(`${environment.base_url}/auth/login-token`, {
+            token: response.accessToken,
+          })
+          .subscribe((data) => {
+            console.log("data: ",data)
+            this.userSubject.next(data)
+            return this.authenticatedSubject.next(true);
+          });
+          return of(user);
+        })
+      );
   }
   signup(body: any) {
     return this.http.post(`${environment.base_url}/auth/signup`, body);
   }
-  updateUser(id:string,body: any) {
+  updateUser(id: string, body: any) {
     return this.http.put(`${environment.base_url}/users/${id}`, body);
   }
-  static getUser() {
-    const { user } = AuthService.decodeJwt(localStorage.getItem("fo_accessToken"));
-    return user;
+   getUser() {
+    return this.user$
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
+  }
+  
+  updateAuthentifiedUser(user) {
+    return this.userSubject.next(user)
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
+  }
+   getAuthentified() {
+    return this.user$
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
   }
   static getToken() {
-    return localStorage.getItem("fo_accessToken")
+    return localStorage.getItem("fo_accessToken");
   }
-  static signOut(){
-    return localStorage.removeItem("fo_accessToken")
-
+  signOut() {
+    this.authenticatedSubject.next(false);
+    localStorage.removeItem("fo_accessToken");
   }
-  static isAuthenticated(): boolean{
-    return localStorage.getItem("fo_accessToken") != null
+  static isAuthenticated(): boolean {
+    return localStorage.getItem("fo_accessToken") != null;
+  }
+  onForgetPassword(email: any) {
+    return this.http.post(
+      `${environment.base_url}/auth/request-reset-password`,
+      { email }
+    );
   }
 }
