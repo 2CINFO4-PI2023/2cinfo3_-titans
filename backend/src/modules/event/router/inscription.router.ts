@@ -22,8 +22,11 @@ export class InscriptionRouter {
     this._inscriptionRoutes.route("/:id").delete((req, res) => {
       this.inscriptionController.delete(req, res);
     });
-    this._inscriptionRoutes.route("/:id/user").get((req, res) => { // Add the user route
+    this._inscriptionRoutes.route("/:id/user").get((req, res) => {
       this.inscriptionController.getUser(req, res);
+    });
+    this._inscriptionRoutes.route("/:id").put((req, res) => {
+      this.inscriptionController.updateInscription(req, res);
     });
   }
 }

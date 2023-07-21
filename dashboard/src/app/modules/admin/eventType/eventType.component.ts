@@ -96,6 +96,7 @@ export class EventTypeComponent implements OnInit {
         this.eventTypeService.deleteEventType(eventTypeId).subscribe(() => {
           this.eventTypes = this.eventTypes.filter((e) => e.id !== eventTypeId);
           this.eventTypesDataSource.data = this.eventTypes;
+          this.getEventTypeCounts(); // Update the chart after deletion
         });
       }
     });
@@ -108,43 +109,48 @@ export class EventTypeComponent implements OnInit {
   }
 
   getEventTypeCounts() {
+    this.chartData = []; // Clear the existing chart data
+
     for (const eventType of this.eventTypes) {
       this.eventTypeService.getEventCountByType(eventType._id).subscribe(
         (data: any) => {
           this.chartData.push({ eventType, data });
-          this.createChart(eventType._id);
         },
         (err) => {
           console.log('errors: ', err);
+        },
+        () => {
+          // After fetching all data, create the chart
+          if (this.chartData.length === this.eventTypes.length) {
+            this.createChart();
+          }
         }
       );
     }
   }
 
-  createChart(eventTypeId: string) {
-    const eventData = this.chartData.find((item) => item.eventType._id === eventTypeId)?.data;
-    if (!eventData) {
-      return; 
+  createChart() {
+    const chartDataSets = [];
+
+    for (const eventData of this.chartData) {
+      const eventTypeNames = eventData.data.map((eventType: any) => eventType.name);
+      const eventTypeCounts = eventData.data.map((eventType: any) => eventType.count);
+
+      chartDataSets.push({
+        label: eventData.eventType.name,
+        data: eventTypeCounts,
+        backgroundColor: this.getRandomColor(),
+        borderWidth: 1,
+      });
     }
 
-    const eventTypeNames = eventData.map((eventType: any) => eventType.name);
-    const eventTypeCounts = eventData.map((eventType: any) => eventType.count);
-
-    const ctx = document.getElementById(`eventTypeChart_${eventTypeId}`) as HTMLCanvasElement;
+    const ctx = document.getElementById('eventTypeChart') as HTMLCanvasElement;
 
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: eventTypeNames,
-        datasets: [
-          {
-            label: `Event Type Count for ${eventTypeId}`,
-            data: eventTypeCounts,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1,
-          },
-        ],
+        labels: this.eventTypes.map((eventType: any) => eventType.name),
+        datasets: chartDataSets,
       },
       options: {
         scales: {
@@ -154,5 +160,14 @@ export class EventTypeComponent implements OnInit {
         },
       },
     });
+  }
+
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 }
