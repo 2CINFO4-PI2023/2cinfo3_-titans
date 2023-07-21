@@ -32,7 +32,7 @@
                      <div class="product-details">
                         <h2>{{product.name}}</h2>
                         <h3 class="price" *ngIf="!productsService?.catalogMode">{{product.price | currency:productsService?.currency:'symbol'}}</h3>
-                        <p class="text-muted description">{{product.description}}</p>
+                        <p class="text-muted details">{{product.shortDetails}}</p>
                      </div>
                      <div class="quantity mb-15">
                         <div fxLayout="row" fxLayout.xs="column"  class="text-muted mt-20">
@@ -74,99 +74,7 @@
                </mat-tab>
                <mat-tab label="Details">
                   <div class="full-desc lh text-muted">
-                     <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                     <ul class="px-2 mt-1">
-                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                        <li>Aenean vehicula, tortor gravida elementum tincidunt, justo lorem vestibulum ex, eget egestas arcu tellus in magna. Vivamus gravida, ipsum vel luctus luctus, nisi felis vestibulum est, nec interdum tellus leo quis tellus. Sed sit amet convallis enim, in laoreet orci.</li>
-                        <li>Donec et elit at nulla congue interdum sit amet varius erat.</li>
-                        <li>Nulla sit amet risus pellentesque, dignissim massa ut, dignissim arcu.</li>
-                        <li>Morbi dapibus ligula at faucibus tempus. Aenean vehicula, tortor gravida elementum tincidunt, justo lorem vestibulum ex, eget egestas arcu tellus in magna. Vivamus gravida, ipsum vel luctus luctus, nisi felis vestibulum est, nec interdum tellus leo quis tellus. Sed sit amet convallis enim, in laoreet orci.</li>
-                        <li>Nunc sodales justo ut nisi euismod, quis condimentum leo varius.</li>
-                     </ul>
-                  </div>
-               </mat-tab>
-               <mat-tab label="Reviews">
-                  <div class="full-desc lh">
-                     <mat-list class="reviews">
-                        <mat-list-item class="content">
-                           <img matListAvatar [src]="'assets/images/avatars/avatar-1.png'" alt="image" class="review-author">
-                           <p matLine fxLayoutAlign="start center">
-                              <span class="name">Martina Solsker</span>
-                           </p>
-                           <p matLine class="text-muted"><small>22 Mart, 2018 at 18:44</small></p>
-                           <p matLine class="text">Integer id eros et mi fringilla imperdiet. In dictum turpis eget magna viverra condimentum. Ut malesuada interdum ultrices. Proin tristique sem pellentesque, posuere dui in, maximus magna. Aenean vehicula, tortor gravida elementum tincidunt, justo lorem vestibulum ex, eget egestas arcu tellus in magna.</p>
-                        </mat-list-item>
-                        <mat-list-item class="content">
-                           <img matListAvatar [src]="'assets/images/avatars/avatar-2.png'" alt="image" class="review-author">
-                           <p matLine fxLayoutAlign="start center">
-                              <span class="name">Deni Aniston</span>
-                           </p>
-                           <p matLine class="text-muted"><small>09 Octomber, 2018 at 12:22</small></p>
-                           <p matLine class="text">Nulla accumsan, lacus sed suscipit rutrum, turpis augue accumsan metus, in accumsan urna mi vehicula lorem. Pellentesque semper nibh vitae augue placerat finibus. Nulla sed porttitor nunc, quis tristique sem. Quisque in varius nisl. Integer turpis lorem, ultricies sed sem nec, commodo molestie arcu. Nulla finibus ex tortor, et suscipit magna semper consectetur. Cras sit amet metus dui. Maecenas eget dui at ex varius malesuada vel non felis.</p>
-                        </mat-list-item>
-                        <mat-list-item class="content">
-                           <img matListAvatar [src]="'assets/images/avatars/avatar-3.png'" alt="image" class="review-author">
-                           <p matLine fxLayoutAlign="start center">
-                              <span class="name">Simon Ladger</span>
-                           </p>
-                           <p matLine class="text-muted"><small>14 December, 2018 at 2:10</small></p>
-                           <p matLine class="text">Pellentesque hendrerit vel turpis aliquam placerat. Suspendisse ullamcorper congue feugiat. Etiam gravida metus ac massa posuere venenatis. Pellentesque vehicula lobortis dolor, ac pretium dolor maximus quis. Fusce vitae iaculis mauris, quis posuere ex. Mauris vitae convallis nibh. Etiam eget enim at orci interdum maximus nec in ante.</p>
-                        </mat-list-item>
-                     </mat-list>
-                     <div class="writte-reviews mt-40">
-                        <h3 class="mt-2">LEAVE YOUR REVIEW</h3>
-                        <div class="divider"></div>
-                        <p class="mt-2 text-muted">Your email address will not be published. Required fields are marked *</p>
-                        <div class="rating">
-                            <h3 fxLayoutAlign="start center" class="mt-2">
-                                <span>Your Rating:</span>
-                                <button mat-icon-button matTooltip="Very Dissatisfied" matTooltipPosition="above">
-                                   <mat-icon class="mat-icon-lg">sentiment_very_dissatisfied</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Dissatisfied" matTooltipPosition="above">
-                                   <mat-icon class="mat-icon-lg">sentiment_dissatisfied</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Neutral" matTooltipPosition="above">
-                                   <mat-icon class="mat-icon-lg">sentiment_neutral</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Satisfied" matTooltipPosition="above">
-                                   <mat-icon class="mat-icon-lg">sentiment_satisfied</mat-icon>
-                                </button>
-                                <button mat-icon-button matTooltip="Very Satisfied" matTooltipPosition="above">
-                                   <mat-icon class="mat-icon-lg">sentiment_very_satisfied</mat-icon>
-                                </button>
-                             </h3>
-                        </div>
-
-                        <form fxLayout="row wrap">
-                           <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="mt-20 pr-5" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                              <mat-form-field class="w-100">
-                                 <input matInput placeholder="Your Name (required)" #name="ngModel" ngModel name="name" required>
-                                 <mat-error *ngIf="name.invalid">Please enter a valid message</mat-error>
-                              </mat-form-field>
-                           </div>
-                           <div  fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50" class="pl-5 mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                              <mat-form-field class="w-100">
-                                 <input matInput placeholder="Your Email (required)" #email="ngModel" ngModel name="email" required>
-                                 <mat-error *ngIf="email.invalid">Please enter a valid message</mat-error>
-                              </mat-form-field>
-                           </div>
-                           <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                              <mat-form-field class="w-100">
-                                 <input matInput placeholder="Subject" #subject="ngModel" ngModel name="subject" required>
-                                 <mat-error *ngIf="subject.invalid">Please enter a valid message</mat-error>
-                              </mat-form-field>
-                           </div>
-                           <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
-                              <mat-form-field class="w-100">
-                                 <textarea placeholder="Post content" matInput rows="6" ngModel name="content" required></textarea>
-                              </mat-form-field>
-                           </div>
-                           <div class="button-wrap" fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
-                              <button class="btn-project" mat-raised-button color="accent" type="submit">Submit Review</button>
-                           </div>
-                        </form>
-                     </div>
+                     <p>{{product.shortDetails}}</p>
                   </div>
                </mat-tab>
                </mat-tab-group>
@@ -236,14 +144,14 @@
        </div>
 
     </div>
-    <!-- <div class="products no-bg sec-padding">
+    <div class="products no-bg sec-padding">
         <div class="container">
         <div class="title">
             <h4 class="widget-title">Featured Products</h4>
           </div>
           <app-product-carousel [product]="products | slice:0:6"></app-product-carousel>
           </div>
-     </div> -->
+     </div>
   </div>
 </div>
 

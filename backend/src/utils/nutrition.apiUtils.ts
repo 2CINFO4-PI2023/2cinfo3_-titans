@@ -7,7 +7,7 @@ export async function fetchNutritionData(query: string): Promise<INutritionBody[
             params: { query },
             headers: { 'X-Api-Key': <string>process.env.NUTRITION_API_KEY }
         });
-        return response.data
+        return response.data.items
     } catch (error) {
         console.error('Error fetching nutrition data:',error);
         throw error;

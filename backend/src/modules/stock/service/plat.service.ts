@@ -29,7 +29,11 @@ export class PlatService implements IPlatService {
     constructor(private platRepo: IPlatRepository, private ingredientRepo: IIngredientRepository, private notifier:Notifier,private ingredientService: IIngredientService) { }
     async createPlat(plat: IPlat): Promise<IPlat> {
         try {
+            let nutrition:INutritionBody[]=[]
             console.info("PlatService: creating plat");
+            nutrition = await this.calculeCalories(plat.ingredients);
+            const details = await this.generateDetails(nutrition,plat)
+            plat.shortDetails = details;
             return await this.platRepo.create(plat);
         } catch (error) {
             console.error(error);
@@ -146,6 +150,46 @@ export class PlatService implements IPlatService {
         }
     }
 
+    async calculeCalories(ingredients: Map<string,number>): Promise<INutritionBody[]>{
+        try {
+            console.info("PlatService: calculation calories of a plat");
+            let query: string = "";
+            for (const [key, value] of ingredients) {
+                const ingredient = await this.ingredientRepo.get(key);
+                query += value + ' ' + ingredient.name + ' ';
+            }
+            const nutritionData = await fetchNutritionData(query);
+            console.info("PlatService: plat calories are calculated");
+            return nutritionData;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async generateDetails(nutrition:INutritionBody[],plat: IPlat):Promise<string>{
+        let str = 'This'
+        for (const [key, value] of plat.ingredients) {
+            const ingredient = await this.ingredientRepo.get(key);
+            str += ' '+ ingredient.name + ',';
+        }        
+        str = str.slice(0, -1);
+        str += ' dish contains ';
+        let calories = 0;
+        let protein = 0;
+        let fat = 0;
+        console.log(str)
+        console.log('nutrition: ',nutrition[0])
+        for(var nut of nutrition){
+            console.log('nut: ',nut)
+            calories += nut.calories
+            protein += nut.protein_g
+            fat += nut.fat_total_g
+        }
+        str += `${calories} calories, ${protein} grams of protein and ${fat} grams of total fat`
+        console.log(str)
+        return str;
+    }
     async getlatestPlat(): Promise<IPlat[]> {
         try {
             console.info("PlatService: getting the latest plat");
