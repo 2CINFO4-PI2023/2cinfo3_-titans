@@ -28,7 +28,7 @@ export class FaqComponent {
 
   ngOnInit() {
 
-    this.reclamationService.getNewStatusId().subscribe(
+    this.reclamationService.getNewStatusId("new").subscribe(
       (response) => {
         this.id = response._id;
       },

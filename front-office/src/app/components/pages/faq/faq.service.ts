@@ -21,10 +21,10 @@ export class ReclamationService {
     return this.http.post<any>(this.apiUrl+"/reclamations/"+this.user._id, reclamation, { headers });
   }
 
-  getNewStatusId()
+  getNewStatusId(statut:any)
   {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${AuthService.getToken()}`);
-    return this.http.get<any>(this.apiUrl+"/statuts/new",  { headers });
+    return this.http.get<any>(this.apiUrl+"/statuts/"+statut,  { headers });
 
 
 

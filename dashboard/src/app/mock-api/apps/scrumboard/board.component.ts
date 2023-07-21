@@ -341,7 +341,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
         "lastActivity": "2023-07-17T22:00:00.000Z",
         "lists": [
             {
-                "id": "64b726b7b7330f0d7ec2b080",
+                "id": "64b974abfebc86bb3e952f6b",
                 "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                 "position": 65536,
                 "title": "New Reclamation",

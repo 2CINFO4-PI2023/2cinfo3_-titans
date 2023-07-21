@@ -20,6 +20,13 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
     board: Board;
     listTitleForm: FormGroup;
     statutList: any;
+   
+    newStatus: any;
+    progressStatus: any;
+    completedStatus: any;
+    rejectedStatus: any;
+    holdStatus: any;
+    newStatusStatus: any;
 
 
     // Private
@@ -47,6 +54,42 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+
+        this._scrumboardService.getstatus( "New Raclamation").subscribe(
+            stat => {
+                this.newStatus = stat
+
+            }
+        )
+
+        this._scrumboardService.getstatus( "In progress").subscribe(
+            stat => {
+                this.progressStatus = stat
+
+            }
+        )
+        this._scrumboardService.getstatus( "Rejected").subscribe(
+            stat => {
+                this.rejectedStatus = stat
+
+            }
+        )
+        this._scrumboardService.getstatus( "Completed").subscribe(
+            stat => {
+                this.completedStatus = stat
+
+            }
+        )
+       
+        this._scrumboardService.getstatus( "On Hold").subscribe(
+            stat => {
+                this.holdStatus = stat
+
+            }
+        )
+        
+        
+
 
 
 
@@ -332,6 +375,9 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
     getCards(rec) {
         
         const fakeBoardData: Board = {
+
+            
+
             "id": "2c82225f-2a6c-45d3-b18a-1132712a4234",
             "title": "Admin Dashboard",
             "description": "Roadmap for the new project",
@@ -339,39 +385,39 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
             "lastActivity": "2023-07-17T22:00:00.000Z",
             "lists": [
                 {
-                    "id": "64b726b7b7330f0d7ec2b080",
+                    "id": this.newStatus._id,
                     "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                     "position": 65536,
-                    "title": "New Reclamation",
-                    "cards":  this.getListBoard(rec,"64b726b7b7330f0d7ec2b080")
+                    "title": this.newStatus.statut,
+                    "cards":  this.getListBoard(rec,this.newStatus._id)
                 },
                 {
-                    "id": "64b726f0b7330f0d7ec2b082",
+                    "id": this.progressStatus._id,
                     "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                     "position": 131072,
                     "title": "In progress",
-                    "cards": this.getListBoard(rec,"64b726f0b7330f0d7ec2b082")
+                    "cards": this.getListBoard(rec,this.progressStatus._id)
                 },
                 {
-                    "id": "64b72704b7330f0d7ec2b084",
+                    "id":this.completedStatus._id,
                     "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                     "position": 262144,
                     "title": "Completed",
-                    "cards": this.getListBoard(rec,"64b72704b7330f0d7ec2b084")
+                    "cards": this.getListBoard(rec,this.completedStatus._id)
                 },
                 {
-                    "id": "64b7271fb7330f0d7ec2b086",
+                    "id": this.rejectedStatus._id,
                     "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                     "position": 393216,
                     "title": "Rejected",
-                    "cards": this.getListBoard(rec,"64b7271fb7330f0d7ec2b086")
+                    "cards": this.getListBoard(rec,this.rejectedStatus._id)
                 },
                 {
-                    "id": "64b7272cb7330f0d7ec2b088",
+                    "id": this.holdStatus._id,
                     "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
                     "position": 458752,
                     "title": "On Hold",
-                    "cards": this.getListBoard(rec,"64b7272cb7330f0d7ec2b088")
+                    "cards": this.getListBoard(rec,this.holdStatus._id)
                 }
             ],
             "labels": [

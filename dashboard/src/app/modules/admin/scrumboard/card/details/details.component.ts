@@ -72,10 +72,29 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy
             });
 
         // Get the card details
-        this._scrumboardService.card$
+       
+
+            this._scrumboardService.getCards(this.router.url.replace(/.*\/card\/(\w+).*/, "$1"))
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((card) => {
-                this.card = card;
+                this.card = {
+                    "id": card._id,
+                    "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                    "listId": "64b726b7b7330f0d7ec2b080",
+                    "position": 262144,
+                    "title": "Réclamation concernant la non-réception du box d'ingrédie",
+                    "labels": [
+                        {
+                            "id": "caff9c9b-a198-4564-b1f4-8b3df1d345bb",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Incorrect Quantity"
+                        }
+                    ],
+                    "dueDate": "2023-07-18T22:00:00.000Z",
+                    "description": ""
+                };
+                
+                
             });
 
         // Prepare the card form

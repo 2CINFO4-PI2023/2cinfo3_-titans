@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import { Notification } from 'app/layout/common/notifications/notifications.types';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-
+import Pusher, { Channel } from 'pusher-js';
+import { Ingredient } from "../../../core/ingredient/ingredient.types";
+import { environment } from "environments/environment";
 @Injectable({
     providedIn: 'root'
 })
@@ -17,6 +19,8 @@ export class NotificationsService
     constructor(private _httpClient: HttpClient)
     {
     }
+    private _pusher = new Pusher(environment.PUSHER_APP_KEY, {cluster: environment.PUSHER_APP_CLUSTER});
+    private _channel = this._pusher.subscribe(environment.PUSHER_CHANNEL);
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -37,11 +41,25 @@ export class NotificationsService
     /**
      * Get all notifications
      */
-    getAll(): Observable<Notification[]>
+    getAll(): Observable<Ingredient[]>
     {
-        return this._httpClient.get<Notification[]>('api/common/notifications').pipe(
+        return this._httpClient.get<Ingredient[]>(`${environment.baseUrl}ingredient/outofstock`).pipe(
             tap((notifications) => {
-                this._notifications.next(notifications);
+                console.log(notifications)
+                let notify :Notification[] = []
+                let i =0;
+                for (var key of notifications) {
+                    let notification:Notification = {
+                        id : (i+1).toString(),
+                        title : <string>key.name,
+                        time : new Date().toLocaleString(),
+                        image: <string>key.image,
+                        read : false,
+                        description : `the ${key.name} is nearly out of stock, there are only ${key.quantity} left.`
+                    };
+                    notify.push(notification)
+                }
+                this._notifications.next(notify);
             })
         );
     }

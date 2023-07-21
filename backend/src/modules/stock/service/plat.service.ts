@@ -4,6 +4,8 @@ import { IIngredientRepository } from "../repository/ingredient.repository";
 import { IPlatRepository } from "../repository/plat.repository";
 import { fetchNutritionData } from "../../../utils/nutrition.apiUtils";
 import { INutritionBody } from "../Dto/INutritionBody";
+import { Notifier } from "../../../notifiers/notification.service";
+import { IIngredientService } from "./ingredient.service";
 
 
 
@@ -24,7 +26,7 @@ export class PlatService implements IPlatService {
     /**
      *
      */
-    constructor(private platRepo: IPlatRepository, private ingredientRepo: IIngredientRepository) { }
+    constructor(private platRepo: IPlatRepository, private ingredientRepo: IIngredientRepository, private notifier:Notifier,private ingredientService: IIngredientService) { }
     async createPlat(plat: IPlat): Promise<IPlat> {
         try {
             console.info("PlatService: creating plat");
@@ -113,6 +115,9 @@ export class PlatService implements IPlatService {
             for (const [key, value] of (await plat).ingredients) {
                 const ingredient = await this.ingredientRepo.get(key);
                 ingredient.quantity -= value;
+                const data = this.ingredientService.outOfStock();
+                if(data)
+                this.notifier.push(data);
                 if (ingredient.quantity < 0) throw new InsufficientStockError();
                 await this.ingredientRepo.update(key, ingredient);
             }
