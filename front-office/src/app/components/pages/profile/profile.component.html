@@ -10,6 +10,7 @@
     <div class="container">
       <mat-card fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" class="p-0">
         <div class="my-account-wrap p-0" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start">
+          <form [formGroup]="profileForm" (ngSubmit)="profile()">
           <div class="register-wrapper pr-15" fxFlex="70" fxFlex.gt-md="70" fxFlex.md="70">
             <div class="title">
               <!-- <h3>Register</h3> -->
@@ -18,7 +19,7 @@
             </div>
             <div class="register-body" >
               <!-- <p>Create new account today to reap the benefits of a personalized food experience.</p> -->
-              <form fxLayout="row wrap" [formGroup]="profileForm" (ngSubmit)="profile()">
+              <div fxLayout="row wrap">
 
                 <div fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
                   <mat-form-field class="w-100">
@@ -86,14 +87,16 @@
                   <mat-error ngClass.sm="mt-1" *ngIf="profileErrMsg">{{profileErrMsg}}</mat-error>
                   <mat-hint ngClass.sm="mt-1" *ngIf="profileInfoMsg">{{profileInfoMsg}}</mat-hint>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
           <div class="register-wrapper pr-15" fxFlex="30" fxFlex.gt-md="30" fxFlex.md="30">
-            <div class="title">
-              <h3>Register</h3>
-            </div>
+            <img class="w-100" [src]="avatar ? avatar : 'assets/images/avatars/avatar.png'" alt="User avatar"
+                    (click)="avatarInput.click()" />
+                <input formControlName="photo" id="image" type="file" accept=".jpg,.jpeg,.png"
+                    (change)="onAvatarChange($event)" #avatarInput style="display: none" />
           </div>
+        </form>
         </div>
       </mat-card>
     </div>

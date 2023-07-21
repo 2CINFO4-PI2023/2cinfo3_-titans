@@ -17,10 +17,11 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
   updatePassword:boolean;
   user:any
-
+avatar:any
   ngOnInit() {
     const user =this.authService.getUser().subscribe((user)=>{
       this.user = user
+      this.avatar = user.image
       this.profileForm = new FormGroup({
         phone: new FormControl(user.phone, [
           Validators.required,
@@ -29,11 +30,9 @@ export class ProfileComponent implements OnInit {
           ),
         ]),
         email: new FormControl(user.email, [Validators.required, Validators.email]),
-        password: new FormControl("", [
-          Validators.minLength(8),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
-        ]),
+        password: new FormControl(""),
         name: new FormControl(user.name, [Validators.required]),
+        photo:new FormControl(null)
       });
     })
   }
@@ -79,5 +78,20 @@ export class ProfileComponent implements OnInit {
         }
       }
     );
+  }
+
+  onAvatarChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement?.files && inputElement.files.length > 0) {
+      const file = inputElement.files[0];
+  
+      // Create a FileReader to read the selected image and create an Object URL
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.avatar = e.target.result; // Set the Object URL as the image preview
+        this.profileForm.get('photo').setValue(file); // Update the form control value with the selected file
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }
