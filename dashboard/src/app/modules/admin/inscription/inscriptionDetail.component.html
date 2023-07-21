@@ -1,53 +1,69 @@
-<div class="flex flex-col flex-auto min-w-0">
-  <!-- Main -->
-  <div class="flex-auto p-6 sm:p-10">
-    <!-- CONTENT GOES HERE -->
-    <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
-
-      <form [formGroup]="inscriptionDetailsForm" #inscriptionDetailNgForm="ngForm" (ngSubmit)="onSubmit()">
-        <!-- Event Name -->
-        <mat-form-field class="mb-6">
-          <mat-label>Event Name</mat-label>
-          <input matInput formControlName="eventName" type="text" required>
-        </mat-form-field>
-
-        <!-- User Name -->
-        <mat-form-field class="mb-6">
-          <mat-label>User Name</mat-label>
-          <input matInput formControlName="userName" type="text" required>
-        </mat-form-field>
-
-        <!-- Name -->
-        <mat-form-field class="mb-6">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" type="text" required>
-        </mat-form-field>
-
-        <!-- Email -->
-        <mat-form-field class="mb-6">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email" required>
-        </mat-form-field>
-
-        <!-- Status -->
-        <mat-form-field class="mb-6">
-          <mat-label>Status</mat-label>
-          <input matInput formControlName="status" type="text" required>
-        </mat-form-field>
-
-        <!-- Alert -->
-        <div *ngIf="showAlert" class="mb-6">
-          <fuse-alert [type]="alert.type">{{ alert.message }}</fuse-alert>
-        </div>
-
-        <!-- Actions -->
-        <div class="flex justify-end">
-          <button mat-flat-button type="submit" [color]="'primary'" class="mr-3">Save</button>
-          <button mat-flat-button type="button" [color]="'warn'" (click)="goToInscriptionsList()">Cancel</button>
-        </div>
-
-      </form>
-
-    </div>
+<div class="w-full w-10/12">
+  <div>
+    <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+      [type]="alert.type" [@shake]="alert.type === 'error'">
+      {{ alert.message }}
+    </fuse-alert>
   </div>
+  <form [formGroup]="inscriptionDetailsForm" (ngSubmit)="onSubmit()" #inscriptionDetailNgForm="ngForm">
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>User ID</mat-label>
+        <input matInput placeholder="User ID" formControlName="userId" />
+        <mat-error *ngIf="inscriptionDetailsForm.get('userId').invalid && inscriptionDetailsForm.get('userId').touched">
+          User ID is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="name" />
+        <mat-error *ngIf="inscriptionDetailsForm.get('name').invalid && inscriptionDetailsForm.get('name').touched">
+          Name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" />
+        <mat-error *ngIf="inscriptionDetailsForm.get('email').invalid && inscriptionDetailsForm.get('email').touched">
+          Email is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Status</mat-label>
+        <input matInput placeholder="Status" formControlName="status" />
+        <mat-error *ngIf="inscriptionDetailsForm.get('status').invalid && inscriptionDetailsForm.get('status').touched">
+          Status is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Event ID</mat-label>
+        <input matInput placeholder="Event ID" formControlName="eventId" />
+        <mat-error *ngIf="inscriptionDetailsForm.get('eventId').invalid && inscriptionDetailsForm.get('eventId').touched">
+          Event ID is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <!-- Divider -->
+    <div class="mt-4 mb-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end mb-10 mx-4">
+      <button mat-stroked-button type="button" (click)="goToInscriptionsList()">
+        Cancel
+      </button>
+      <button class="ml-4" mat-flat-button type="submit" [disabled]="inscriptionDetailsForm.invalid" [color]="'primary'">
+        Save
+      </button>
+    </div>
+  </form>
 </div>
+ 

@@ -100,4 +100,9 @@ export class InscriptionComponent implements OnInit {
       }
     });
   }
+  deleteInscription(id: any) {
+    this.inscriptionService.deleteInscription(id).subscribe(() => {
+      this.getInscriptions();
+    });
+  }
 }

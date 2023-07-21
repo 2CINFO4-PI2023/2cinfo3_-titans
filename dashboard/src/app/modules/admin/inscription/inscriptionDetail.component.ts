@@ -5,6 +5,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { InscriptionService } from 'app/core/inscription/inscription.service';
 
+import { Inscription } from 'app/core/inscription/inscription.types';
+
 @Component({
   selector: 'app-inscription-detail',
   templateUrl: './inscriptionDetail.component.html',
@@ -30,7 +32,7 @@ export class InscriptionDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.inscriptionDetailsForm = new FormGroup({
-      eventId: new FormControl('', Validators.required),
+      eventId: new FormControl('', Validators.required), // Change the type here to accept text values
       userId: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
@@ -45,9 +47,10 @@ export class InscriptionDetailComponent implements OnInit {
         this.inscriptionService.getInscription(inscriptionId).subscribe((inscription: any) => {
           this.inscriptionDetailsForm.patchValue({
             userId: inscription.userId,
-            eventId: inscription.eventId,
             name: inscription.name,
-           
+            email: inscription.email,
+            eventId: inscription.eventId,
+            status: inscription.status,
           });
         });
       }
@@ -58,17 +61,15 @@ export class InscriptionDetailComponent implements OnInit {
     this.router.navigateByUrl('/inscriptions');
   }
 
-  
-
   onSubmit(): void {
     this.showAlert = false;
     this.inscriptionDetailsForm.disable();
 
     const formData = new FormData();
-    formData.append('eventId', this.inscriptionDetailsForm.get('eventId').value);
     formData.append('userId', this.inscriptionDetailsForm.get('userId').value);
     formData.append('name', this.inscriptionDetailsForm.get('name').value);
     formData.append('email', this.inscriptionDetailsForm.get('email').value);
+    formData.append('eventId', this.inscriptionDetailsForm.get('eventId').value);
     formData.append('status', this.inscriptionDetailsForm.get('status').value);
 
     if (this.isUpdating) {
