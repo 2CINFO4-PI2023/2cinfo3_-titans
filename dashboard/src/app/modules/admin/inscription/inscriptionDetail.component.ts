@@ -28,7 +28,7 @@ export class InscriptionDetailComponent implements OnInit {
     private inscriptionService: InscriptionService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.inscriptionDetailsForm = new FormGroup({
@@ -58,7 +58,7 @@ export class InscriptionDetailComponent implements OnInit {
   }
 
   goToInscriptionsList() {
-    this.router.navigateByUrl('/inscriptions');
+    this.router.navigateByUrl('/inscription');
   }
 
   onSubmit(): void {
@@ -74,6 +74,7 @@ export class InscriptionDetailComponent implements OnInit {
 
     if (this.isUpdating) {
       const inscriptionId = this.route.snapshot.params['id'];
+
       this.inscriptionService.updateInscription(inscriptionId, formData).subscribe(
         (res: any) => {
           this.goToInscriptionsList();
@@ -102,7 +103,16 @@ export class InscriptionDetailComponent implements OnInit {
       );
     } else {
       // Perform add operation
-      this.inscriptionService.addInscription(formData).subscribe(
+
+      const data = {
+
+        userId: this.inscriptionDetailsForm.get('userId').value,
+        name: this.inscriptionDetailsForm.get('name').value,
+        email: this.inscriptionDetailsForm.get('email').value,
+        eventId: this.inscriptionDetailsForm.get('eventId').value,
+        status: this.inscriptionDetailsForm.get('status').value
+      }
+      this.inscriptionService.addInscription(data).subscribe(
         () => {
           this.goToInscriptionsList();
         },
