@@ -40,12 +40,14 @@ export class CommandeComponent implements OnInit {
     totalItems: number = 0;
     ngOnInit(): void {
         this.getCommandes();
+
     }
     /**
      * Constructor
      */
     constructor(
         private commandeService: CommandeService,
+        private userService: UserService,
         private dialog: MatDialog,
         private router: Router
     ) {}
@@ -66,12 +68,26 @@ export class CommandeComponent implements OnInit {
                 (data: any) => {
                     this.commandesDataSource.data = data;
                     this.totalItems = data.length;
-                    console.log('fff', this.commandesDataSource);
+                    this.commandesDataSource.data.forEach((commande) => {
+                        this.userService.getUser(commande.user).subscribe(
+                            (data: any) => {
+                                commande.userName = data.name;
+                                console.log('user',this.commandesDataSource);
+        
+                            },
+                            (err) => {
+                                console.log('errors: ', err);
+                            }
+                        );
+                    });
                 },
                 (err) => {
                     console.log('errors: ', err);
                 }
             );
+ 
+            console.log('commandesDataSource',this.commandesDataSource);
+
     }
 
     reload() {
@@ -97,7 +113,6 @@ export class CommandeComponent implements OnInit {
         window.location.reload();
     }
     deleteCommande(id: string): void {
-
         const dialogRef = this.dialog.open(ConfirmDialogCommandeComponent, {
             width: '400px',
             data: { id },
@@ -107,15 +122,15 @@ export class CommandeComponent implements OnInit {
             if (result === true) {
                 this.showAlert = false;
 
-        this.commandeService.deleteCommande(id).subscribe(
-            () => {
-                this.reload();
-            },
-            (error) => {
-                console.log(error);
+                this.commandeService.deleteCommande(id).subscribe(
+                    () => {
+                        this.reload();
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
             }
-        );
-
-    }});
+        });
     }
 }
