@@ -3,7 +3,6 @@
           <div class="container" >
           <div class="title">
               <h2>Product details</h2>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. <br>Aenean commodo ligula eget dolor</p>
             </div>
       </div>
       </div>
@@ -22,12 +21,8 @@
                   </mat-card> -->
                   <mat-card class="product-image">
                     <div>
-                       <button mat-icon-button  fxHide="false" fxHide.gt-md>
-                          <mat-icon>fullscreen</mat-icon>
-                       </button>
-                       <img [src]="product.pictures"/>
+                       <img [src]="product.image"/>
                     </div>
-                    <a (click)="openProductDialog(product, bigProductImageIndex)"><mat-icon>zoom_in</mat-icon></a>
                  </mat-card>
 
                </div>
@@ -36,16 +31,8 @@
                   <div class="product-right">
                      <div class="product-details">
                         <h2>{{product.name}}</h2>
-                        <h4 *ngIf="!productsService?.catalogMode"><del>{{product.salePrice | currency:productsService?.currency:'symbol'}}</del><span>{{product.discount}}% off</span></h4>
                         <h3 class="price" *ngIf="!productsService?.catalogMode">{{product.price | currency:productsService?.currency:'symbol'}}</h3>
                         <p class="text-muted description">{{product.description}}</p>
-                     </div>
-                     <div class="py-1 mt-15 mb-15">
-                        <p>
-                           <span class="text-muted fw-500">Avalibility: </span>
-                           <span class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></span>
-                           <span class="avalibility red" *ngIf="counter > product.stock"><span>Out of Stock</span></span>
-                        </p>
                      </div>
                      <div class="quantity mb-15">
                         <div fxLayout="row" fxLayout.xs="column"  class="text-muted mt-20">
@@ -82,7 +69,7 @@
                <mat-tab-group [@.disabled]="true" [selectedIndex]="0">
                <mat-tab label="Description">
                   <div class="full-desc lh">
-                     <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                     <p class="text-muted">{{product.description}}</p>
                   </div>
                </mat-tab>
                <mat-tab label="Details">
@@ -249,14 +236,14 @@
        </div>
 
     </div>
-    <div class="products no-bg sec-padding">
+    <!-- <div class="products no-bg sec-padding">
         <div class="container">
         <div class="title">
             <h4 class="widget-title">Featured Products</h4>
           </div>
           <app-product-carousel [product]="products | slice:0:6"></app-product-carousel>
           </div>
-     </div>
+     </div> -->
   </div>
 </div>
 

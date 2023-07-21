@@ -39,6 +39,7 @@ export class PlatDetailComponent implements OnInit {
             price: ['', [Validators.required, Validators.min(1)]],
             ingredients: this.formBuilder.array([]), // Initialize an empty FormArray
             image: ['', Validators.required],
+            description: ['', Validators.required],
           });
           this.ingredientsArray = this.platDetailsForm.get('ingredients') as FormArray;
     }
@@ -60,6 +61,7 @@ export class PlatDetailComponent implements OnInit {
             ]),
             ingredients: this.formBuilder.array([]),
             image: new FormControl('', Validators.required),
+            description: new FormControl('', Validators.required),
         });
 
         this.route.params.subscribe((params) => {
@@ -74,11 +76,12 @@ export class PlatDetailComponent implements OnInit {
                         Validators.min(1),
                     ]),
                     image: new FormControl('', Validators.required),
+                    description: new FormControl('', Validators.required),
                 });
                 this.platService.getPlat(platId).subscribe((plat: any) => {
                     Object.keys(plat.ingredients).forEach((i) => {
                         this.inputFields.push({
-                            key: i,
+                            key: i+'',
                             value: plat.ingredients[i],
                         });
                     });
@@ -148,6 +151,7 @@ export class PlatDetailComponent implements OnInit {
         formData.append('name', this.platDetailsForm.get('name').value);
         formData.append('price', this.platDetailsForm.get('price').value);
         formData.append('image', this.platDetailsForm.get('image').value);
+        formData.append('description', this.platDetailsForm.get('description').value);
         formData.append('ingredients', jsonIngredients);
 
         if (this.isUpdating) {

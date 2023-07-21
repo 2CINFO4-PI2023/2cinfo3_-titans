@@ -4,6 +4,4 @@ export interface Plat{
     ingredients: { [key: string]: number };
     price: Number;
     image?: String;
-    shortDetails?: string;
-    description?: string;
 }

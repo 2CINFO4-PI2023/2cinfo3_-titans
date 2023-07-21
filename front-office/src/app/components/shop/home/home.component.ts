@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   products: Product[];
   public banners = [];
   public slides = [
-    { title: 'THE BEST CHOICE IS HERE', subtitle: 'Welcome to Sophia, an oasis for all healthy food and organic produce sites, ready to make your online presentation shine.', image: 'assets/images/carousel/banner1.jpg' },
+    { title: 'THE BEST CHOICE IS HERE', subtitle: 'Welcome to PurePlats, an oasis for all healthy food and organic produce sites, ready to make your online presentation shine.', image: 'assets/images/carousel/banner1.jpg' },
     { title: 'Biggest discount', subtitle: 'Welcome to Mildhill, an oasis for all healthy food and organic produce sites, ready to make your online presentation shine.', image: 'assets/images/carousel/banner2.jpg' },
     { title: 'Biggest sale', subtitle: 'Welcome to Mildhill, an oasis for all healthy food and organic produce sites, ready to make your online presentation shine.', image: 'assets/images/carousel/banner3.jpg' },
 
@@ -21,13 +21,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-
- this.productService.getProducts()
- .subscribe(
-   (product: Product[]) => {
-     this.products = product
-   }
- )
+    this.productService.getProducts()
+      .subscribe(
+        (product: Product[]) => {
+          console.log(product)
+          this.products = product
+        }, (err: any) => {
+          console.log("err ",err)
+        }
+      )
 
   }
 

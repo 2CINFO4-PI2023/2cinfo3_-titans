@@ -9,7 +9,7 @@
           <div fxFlex="100" fxFlex.gt-sm="50">
               <div class="swiper-container h-100">
                   <div class="swiper-wrapper">
-                    <img [src]="product.pictures" alt="" class="img-fluid">
+                    <img [src]="product.image" alt="" class="img-fluid">
                   </div>
 
               </div>
@@ -27,7 +27,6 @@
                         <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
                      </div>
                     <div class="prices" fxLayout="row">
-                        <h4 class="mb-10" ><del>{{product.price | currency:productsService?.currency:'symbol'}}</del></h4>
                         <h3 class="price mb-10">{{product.price | currency:productsService?.currency:'symbol' }}</h3>
                     </div>
                   <div class="discription">
