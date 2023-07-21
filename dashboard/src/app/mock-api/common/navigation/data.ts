@@ -45,13 +45,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/types'
     },
     {
-        id   : 'stock',
-        title: 'Stock',
-        type : 'basic',
-        icon : 'heroicons_outline:clipboard-list',
-        link : '/stock'
-    },
-    {
         id   : 'reclamation',
         title: 'Réclamation',
         type : 'basic',
@@ -69,7 +62,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id   : 'ingredient',
         title: 'Ingredient',
         type : 'basic',
-        icon : 'heroicons-outline:clipboard-list',
+        icon : 'heroicons_outline:clipboard-list',
         link : '/ingredient'
     },
     {   

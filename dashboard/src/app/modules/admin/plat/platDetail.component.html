@@ -63,6 +63,18 @@
         </div>
 
         <div class="sm:col-span-4">
+            <mat-form-field class="w-1/2 mt-4 mx-4">
+                <textarea matInput placeholder="description" formControlName="description">
+                </textarea>
+                <mat-error *ngIf="
+                              platDetailsForm.get('description').invalid &&
+                                  platDetailsForm.get('description').touched">
+                    description is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="sm:col-span-4">
             <label for="image" class="w-1/2 mt-4 mx-4">Image</label>
             <input id="image" type="file" accept=".jpg,.jpeg,.png" (change)="onAvatarChange($event)"
                 formControlName="image" />

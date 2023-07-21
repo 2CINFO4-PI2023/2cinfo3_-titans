@@ -14,7 +14,7 @@
           <h3>Our Products</h3>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has<br>been the industry's standard dummy text ever since the 1200s,</p>
         </div>
-        <div class="prod-menu">
+        <!-- <div class="prod-menu">
           <ul fxLayout="row" fxLayoutAlign="space-around center">
             <li fxLayout="column" (click)="filterProducts('all')" >
               <div class="icon" >
@@ -52,23 +52,23 @@
               <div class="text"><p>Milk</p></div>
             </li>
           </ul>
-      </div>
+      </div> -->
         <div class="product-wrapper">
 
             <div class="product-box" *ngFor="let product of products | slice:0:8">
                 <div class="product-item" >
 
     <mat-card fxLayout="column">
-        <div class="product-img" [routerLink]="['/home/product', product.id]">
+        <div class="product-img" [routerLink]="['/home/product', product._id]">
             <a class="product-link" >
-              <img [src]="product.pictures" alt="">
+              <img [src]="product.image" alt="">
            </a>
         </div>
          <div class="product-info-wrapper">
             <span class="category"></span>
             <div class="title-wrap" fxLayout="row" fxLayoutAlign="space-between center">
-               <h4 [routerLink]="['/home/fruit, fruit.id']">{{product.name}}</h4>
-               <p>{{product.price}}$/kg</p>
+               <h4 [routerLink]="['/home/product', product._id]">{{product.name}}</h4>
+               <p>{{product.price}}DT</p>
             </div>
 
                 <div class="stars" fxLayout="row" >

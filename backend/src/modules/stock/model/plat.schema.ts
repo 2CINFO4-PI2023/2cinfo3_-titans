@@ -6,6 +6,8 @@ export interface IPlat extends Document {
     ingredients: Map<IIngredient['_id'], number>;
     price: number;
     image: string;
+    shortDetails?: string;
+    description?: string;
 }
 
 const platSchema = new Schema<IPlat>({
@@ -16,7 +18,9 @@ const platSchema = new Schema<IPlat>({
         required: true,
     },
     price: { type: Number, required: true },
-    image: { type: String, required: true }
+    image: { type: String, required: true },
+    shortDetails : { type: String, required: false },
+    description : { type: String, required: false },
 
 },
 {

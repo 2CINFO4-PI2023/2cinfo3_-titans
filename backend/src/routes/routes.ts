@@ -69,7 +69,6 @@ export class Routes {
     );
     this.app.use(
       "/plats",
-      validateJwtToken,
       this.platRouter.platRoutes
     );
     this.app.use(
