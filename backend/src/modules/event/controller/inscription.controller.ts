@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IInscriptionService } from "../service/inscription.service";
+import { IInscriptionService, IInscription } from "../service/inscription.service";
 import { IUser } from "../../user/model/user.schema";
 
 export interface IInscriptionController {
@@ -7,7 +7,8 @@ export interface IInscriptionController {
   get(req: Request, res: Response): void;
   getAll(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
-  getUser(req: Request, res: Response): void; // Add the getUser method
+  getUser(req: Request, res: Response): void;
+  updateInscription(req: Request, res: Response): void;
 }
 
 export class InscriptionController implements IInscriptionController {
@@ -15,7 +16,7 @@ export class InscriptionController implements IInscriptionController {
 
   async create(req: Request, res: Response) {
     try {
-      const inscription = req.body;
+      const inscription = req.body as IInscription;
       const data = await this.inscriptionService.createInscription(inscription);
       res.status(201).json(data);
     } catch (error: any) {
@@ -50,6 +51,17 @@ export class InscriptionController implements IInscriptionController {
       const id = req.params.id;
       await this.inscriptionService.deleteInscription(id);
       res.json({ message: "Inscription deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
+
+  async updateInscription(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const inscriptionUpdate: Partial<IInscription> = req.body;
+      await this.inscriptionService.updateInscription(id, inscriptionUpdate);
+      res.json({ message: "Inscription updated successfully" });
     } catch (error: any) {
       res.status(500).send(error);
     }

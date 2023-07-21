@@ -40,10 +40,14 @@
                 <button [disabled]="loginForm.invalid" class="btn-project" mat-raised-button color="accent"
                   type="submit">Login</button>
               </div>
-              <div fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+              <div fxFlex="100" fxFlex.gt-sm="100" class="px-1 mb-10" ngClass.sm="mt-1 mb-10" ngClass.xs="mt-1 mb-10">
                 <mat-error *ngIf="loginErrMsg">{{loginErrMsg}}</mat-error>
               </div>
             </form>
+            <button mat-raised-button color="white" type="button" (click)="loginWithGoogle()">
+              <i class="fab fa-google"></i>
+              Sign in with Google
+            </button>
           </div>
           <div class="register-wrapper pr-15" fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50">
             <div class="title">
@@ -110,7 +114,7 @@
                   <button [disabled]="signupForm.invalid" class="btn-project" mat-raised-button
                     [color]="signupForm.invalid ? accent : 'green'" type="submit">Register</button>
                 </div>
-                <div fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="px-1 mb-10" ngClass.sm="mt-1 mb-10" ngClass.xs="mt-1 mb-10">
                   <mat-error ngClass.sm="mt-1" *ngIf="signupErrMsg">{{signupErrMsg}}</mat-error>
                   <mat-hint ngClass.sm="mt-1" *ngIf="signupInfoMsg">{{signupInfoMsg}}</mat-hint>
                 </div>

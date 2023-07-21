@@ -1,11 +1,10 @@
 import { hash } from "bcrypt";
-import { IUser } from "../model/user.schema";
-import { IUserRepository } from "../repository/user.repository";
 import { deleteFile } from "../../../helpers/fs";
-import { ROLES } from "./auth.service";
 import { IPlat } from "../../stock/model/plat.schema";
 import { IPlatRepository } from "../../stock/repository/plat.repository";
-import { use } from "passport";
+import { IUser } from "../model/user.schema";
+import { IUserRepository } from "../repository/user.repository";
+import { ROLES } from "./auth.service";
 
 export interface IUserService {
   createUser(user: IUser): IUser | Promise<IUser>;
@@ -48,6 +47,7 @@ export class UserService implements IUserService {
   }
   async getUser(id: string): Promise<IUser> {
     try {
+      console.log("id: ",id);
       const user = await this.userRepository.get(id);
       return user;
     } catch (error) {

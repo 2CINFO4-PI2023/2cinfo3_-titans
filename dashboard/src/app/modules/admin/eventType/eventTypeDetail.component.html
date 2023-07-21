@@ -1,0 +1,40 @@
+<div class="w-full w-10/12">
+  <div>
+    <fuse-alert class="mx-8 mt-8 mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+      [type]="alert.type" [@shake]="alert.type === 'error'">
+      {{ alert.message }}
+    </fuse-alert>
+  </div>
+  <form [formGroup]="eventTypeDetailsForm" (ngSubmit)="onSubmit()" #eventDetailNgForm="ngForm">
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name" formControlName="name" />
+        <mat-error *ngIf="eventTypeDetailsForm.get('name').invalid && eventTypeDetailsForm.get('name').touched">
+          Name is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="sm:col-span-4">
+      <mat-form-field class="w-1/2 mt-4 mx-4">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        <mat-error *ngIf="eventTypeDetailsForm.get('description').invalid && eventTypeDetailsForm.get('description').touched">
+          Description is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Divider -->
+    <div class="mt-4 mb-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end mb-10 mx-4">
+      <button mat-stroked-button type="button" (click)="goToEventTypesList()">Cancel</button>
+      <button class="ml-4" mat-flat-button type="submit" [disabled]="eventTypeDetailsForm.invalid" [color]="'primary'">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

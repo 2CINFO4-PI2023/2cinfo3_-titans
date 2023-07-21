@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { IEventTypeService } from "../service/eventType.service";
 import { IEventType } from "../model/eventType.schema";
 
-
 export class EventTypeController {
   constructor(private eventTypeService: IEventTypeService) {}
 
@@ -55,6 +54,16 @@ export class EventTypeController {
       const id = req.params.id;
       await this.eventTypeService.deleteEventType(id);
       res.json({ message: "EventType deleted successfully" });
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  };
+
+  getEventCountByType = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const eventTypeId = req.params.eventTypeId;
+      const eventCountByType = await this.eventTypeService.getEventCountByType(eventTypeId);
+      res.json(eventCountByType);
     } catch (error: any) {
       res.status(500).send(error);
     }

@@ -138,10 +138,11 @@ export class AuthService implements IAuthService {
               const user = await self.userService.findByEmail(
                 profile?.emails[0]?.value
               );
-              return cb(null, user);
+              const jwt = generateAccessToken({user});
+              return cb(null, jwt);
             } catch (error) {
               if (error instanceof NotFoundError) {
-                await self.userService.createUser({
+                const user = <IUser>self.userService.createUser({
                   name: profile.displayName,
                   email: profile?.emails[0]?.value,
                   phone: "",
@@ -150,6 +151,9 @@ export class AuthService implements IAuthService {
                   role: ROLES.CLIENT,
                   favoritePlat: []
                 });
+  
+              const jwt = generateAccessToken({user});
+              return cb(null, jwt);
               } else {
                 cb(error);
               }
@@ -248,7 +252,6 @@ export class AuthService implements IAuthService {
     try {
     const decoded:any = decodeAccessToken(token)
     const user = <IUser>decoded.user
-    console.log("user: ",user)
     const data = await this.userService.getUser(user._id?.toString() ?? "")
     return data
     } catch (error) {

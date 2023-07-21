@@ -89,17 +89,23 @@ export class AuthRouter {
       this.authController.oAuthRedirection(req, res);
     });
 
-    this.authRoutes.get(
-      "/google/callback",
-      passport.authenticate("google", {
-        successRedirect: "/auth/oauth-redirection?state=GOOD",
-        failureRedirect: "/auth/oauth-redirection?state=BAD",
-      })
-    );
+    // this.authRoutes.get(
+    //   "/google/callback",
+    //   passport.authenticate("google", {
+    //     successRedirect: "/auth/oauth-redirection?state=GOOD",
+    //     failureRedirect: "/auth/oauth-redirection?state=BAD"
+    //   })
+    // );
+
+    this.authRoutes.get('/google/callback', (req,res)=>{
+      this.authController.handleGoogleCallback(req,res)
+    });
+
 
     this.authRoutes.get(
       "/facebook/callback",
-      passport.authenticate("facebook", { failureRedirect: "/auth/oauth-redirection?state=BAD" }),
+      passport.authenticate("facebook", { failureRedirect: "/auth/oauth-redirection?state=BAD",session: false
+    }),
       function (req, res) {
         res.redirect("/auth/oauth-redirection?state=GOOD");
       }
