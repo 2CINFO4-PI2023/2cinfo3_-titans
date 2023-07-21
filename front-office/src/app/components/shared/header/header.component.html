@@ -4,10 +4,10 @@
 <div class="container">
   <div class="header">
       <div class="header-wrapper"  fxLayout="row" fxLayoutAlign="space-between center">
-          <div class="logo">
+          <div class="logo" [routerLink]="['/home']">
             <img src="./../../../../assets/images/logo-wb2.png" width="200" alt="">
           </div>
-          <div fxLayout="row">
+          <div fxLayout="row" *ngIf="isAutheticated" >
               <app-menu></app-menu>
               <app-shopping-widgets [shoppingCartItems]="shoppingCartItems"></app-shopping-widgets>
           </div>

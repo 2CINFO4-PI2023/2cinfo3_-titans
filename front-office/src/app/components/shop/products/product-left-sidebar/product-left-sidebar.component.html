@@ -13,28 +13,7 @@
                 <div class="sidebar-wrapper" fxLayout='row' fxLayout.lt-md="column" >
         <div fxFlex="25" fxFlex.lt-sm="100" class="filter-sidenav" perfectScrollbar>
             <div class="toggles-wrapper" fxLayout="column" fxLayout.lt-md="column">
-                <div class="toggles" fxFlex.lt-md="100">
-                    <mat-accordion>
-                        <mat-expansion-panel>
-                          <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                <span>Categories</span>
-                            </mat-panel-title>
-                          </mat-expansion-panel-header>
-                      <app-categories></app-categories>
-                        </mat-expansion-panel>
-
-                          <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <span>Price</span>
-                                </mat-panel-title>
-                              </mat-expansion-panel-header>
-
-                              <app-price (priceFilters)="updatePriceFilters($event)"></app-price>
-                            </mat-expansion-panel>
-                      </mat-accordion>
-                </div>
+              
                     <div class="popular-products" fxFlex.lt-md="100">
                       <app-popular-products></app-popular-products>
                     </div>
@@ -47,15 +26,6 @@
                       <mat-icon>more_vert</mat-icon>
                   </button>
                   <div >
-                      <select (change)="onChangeSorting($event.target.value)">
-                          <option value="asc">Sorting items</option>
-                          <option value="asc">Ascending Order</option>
-                          <option value="desc">Descending Order</option>
-                          <option value="a-z">Alphabetically, A-Z</option>
-                          <option value="z-a">Alphabetically, Z-A</option>
-                          <option value="low">Price, low to high</option>
-                          <option value="high">Price, high to low</option>
-                        </select>
 
                   </div>
                   <div>
