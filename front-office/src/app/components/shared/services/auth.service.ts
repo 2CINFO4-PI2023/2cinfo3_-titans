@@ -57,7 +57,6 @@ public user$: Observable<any> = this.userSubject.asObservable();
             token: response.accessToken,
           })
           .subscribe((data) => {
-            console.log("data: ",data)
             this.userSubject.next(data)
             return this.authenticatedSubject.next(true);
           });
