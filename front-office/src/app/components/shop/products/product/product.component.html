@@ -1,16 +1,16 @@
 <div class="product-item" >
 
     <mat-card fxLayout="column">
-        <div class="product-img" [routerLink]="['/home/product', product.id]">
+        <div class="product-img" [routerLink]="['/home/product', product._id]">
             <a class="product-link" >
-              <img [src]="product.pictures" alt="">
+              <img [src]="product.image" alt="" class="mr-10 h-10 w-10">
            </a>
-        </div>
+          </div>
          <div class="product-info-wrapper">
             <span class="category"></span>
             <div class="title-wrap" fxLayout="row" fxLayoutAlign="space-between center">
-               <h4 [routerLink]="['/home/fruit, fruit.id']">{{product.name}}</h4>
-               <p>{{product.price}}$/kg</p>
+               <h4 [routerLink]="['/home/product', product._id]">{{product.name}}</h4>
+               <p>{{product.price}}DT</p>
             </div>
 
                 <div class="stars" fxLayout="row" >

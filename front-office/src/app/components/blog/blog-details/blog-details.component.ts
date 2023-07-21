@@ -31,12 +31,12 @@ export class BlogDetailsComponent implements OnInit {
 
   submitRegistrationForm() {
     const inscription = {
-      eventId: this.event.id,
+      eventId: this.route.snapshot.paramMap.get('eventid'),
       userId: '649f43dccd5a374f418af849',
       name: this.name,
       email: this.email,
       status: 'confirmed',
-      content: this.content
+     
     };
 
     this.inscriptionService.createInscription(inscription)

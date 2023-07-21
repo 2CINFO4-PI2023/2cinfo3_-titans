@@ -35,8 +35,10 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) private document: Document, private route: ActivatedRoute, public productsService: ProductService, public dialog: MatDialog, private router: Router, private cartService: CartService) {
     this.route.params.subscribe(params => {
-      const id = +params['id'];
+      const id = params['id'];
+      console.log(id)
       this.productsService.getProduct(id).subscribe(product => {
+        console.log(product)
         this.product = product
       });
       window.scrollTo(0, 0)

@@ -17,6 +17,7 @@ export class EventTypeRouter {
     this.router.get("/:id", this.eventTypeController.getEventTypeById);
     this.router.put("/:id", this.eventTypeController.updateEventType);
     this.router.delete("/:id", this.eventTypeController.deleteEventType);
+    this.router.get("/count/:eventTypeId", this.eventTypeController.getEventCountByType);
   }
 
   public get eventTypeRoutes(): Router {

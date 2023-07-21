@@ -59,7 +59,7 @@ export class Routes {
     );
     this.app.use(
       "/types",
-      validateJwtToken,
+     // validateJwtToken,
       this.eventTypeRouter.eventTypeRoutes
     );
     this.app.use(
@@ -69,7 +69,6 @@ export class Routes {
     );
     this.app.use(
       "/plats",
-      validateJwtToken,
       this.platRouter.platRoutes
     );
     this.app.use(

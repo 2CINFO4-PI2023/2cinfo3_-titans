@@ -6,15 +6,15 @@
 
               <div *ngFor="let product of product" class="swiper-slide">
           <mat-card fxLayout="column">
-              <div class="product-img" [routerLink]="['/home/product', product.id]">
+              <div class="product-img" [routerLink]="['/home/product', product._id]">
                   <a class="product-link" >
-                    <img [src]="product.pictures" alt="">
+                    <img [src]="product.image" alt="">
                  </a>
               </div>
                <div class="product-info-wrapper">
                   <span class="category"></span>
                   <div class="title-wrap" fxLayout="row" fxLayoutAlign="space-between center">
-                     <h4 [routerLink]="['/home/fruit, fruit.id']">{{product.name}}</h4>
+                     <h4 [routerLink]="['/home/product', product._id]">{{product.name}}</h4>
                      <p>{{product.price}}$/kg</p>
                   </div>
 

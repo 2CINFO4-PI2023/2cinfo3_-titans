@@ -6,10 +6,12 @@ export interface IInscriptionRepository {
   create(inscription: IInscription): Promise<IInscription>;
   get(id: string): Promise<IInscription | null>;
   getAll(): Promise<IInscription[]>;
+  update(id: string, inscription: Partial<IInscription>): Promise<IInscription | null>; // Add the update method
   delete(id: string): Promise<void>;
   getEventById(id: string): Promise<IEvent | null>;
-  getUserById(id: string): Promise<IUser | null>; // Add the getUserById method
+  getUserById(id: string): Promise<IUser | null>;
 }
+
 
 export class InscriptionRepository implements IInscriptionRepository {
   constructor() {}
@@ -36,6 +38,15 @@ export class InscriptionRepository implements IInscriptionRepository {
     try {
       const docs = await Inscription.find();
       return docs;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async update(id: string, inscription: Partial<IInscription>): Promise<IInscription | null> {
+    try {
+      const updatedInscription = await Inscription.findByIdAndUpdate(id, inscription, { new: true });
+      return updatedInscription;
     } catch (error: any) {
       throw error;
     }

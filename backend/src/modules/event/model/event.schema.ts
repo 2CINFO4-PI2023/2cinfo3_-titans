@@ -10,6 +10,7 @@ export interface IEvent extends Document, SchemaTimestampsConfig {
   event_capacity: number; // Total capacity of the event
   availablePlaces: number; // Available places for the event
   eventType: Types.ObjectId; // Add this field
+  image: string;
 }
 
 const eventSchema = new Schema<IEvent>(
@@ -22,6 +23,7 @@ const eventSchema = new Schema<IEvent>(
     event_capacity: { type: Number, required: true },
     availablePlaces: { type: Number, required: true },
     eventType: { type: Schema.Types.ObjectId, ref: "EventType", required: true }, // Add this field
+    image: { type: String }
   },
   { timestamps: true } // Add timestamps option for createdAt and updatedAt fields
 );

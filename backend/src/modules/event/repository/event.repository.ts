@@ -37,7 +37,7 @@ export class EventRepository implements IEventRepository {
 
   async all(): Promise<IEvent[]> {
     try {
-      const docs = await Event.find();
+      const docs = await Event.find().populate('eventType');
       return docs;
     } catch (error: any) {
       throw error;

@@ -73,10 +73,20 @@ export class CommandeController implements ICommandeController {
 
   async update(req: Request, res: Response) {
     try {
+      let shippingInfo:any
       const id = req.params.id;
-      const commande = req.body;
+      if(req.body.address && req.body.country && req.body.phoneNumber &&  req.body.postalCode ) {
+       shippingInfo = {
+        address : req.body.address,
+        country: req.body.country,
+        phoneNumber: req.body.phoneNumber,
+        postalCode: req.body.postalCode,
+      }
+    }
+      let commande = req.body;
+      commande = {...commande,shippingInfo:shippingInfo};
       const response = await this.commandeService.updateCommande(id, commande);
-      res.json({ message: "Commande updated successfully", response });
+      res.json(response);
     } catch (error: any) {
       res.status(500).send(error);
     }

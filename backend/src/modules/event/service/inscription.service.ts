@@ -8,8 +8,9 @@ export interface IInscriptionService {
   createInscription(inscription: IInscription): Promise<IInscription>;
   getInscription(id: string): Promise<IInscription | null>;
   getAllInscriptions(): Promise<IInscription[]>;
+  updateInscription(id: string, inscription: Partial<IInscription>): Promise<void>;
   deleteInscription(id: string): Promise<void>;
-  getUserById(id: string): Promise<IUser | null>; // Add the getUserById method
+  getUserById(id: string): Promise<IUser | null>;
 }
 
 export class InscriptionService implements IInscriptionService {
@@ -20,11 +21,11 @@ export class InscriptionService implements IInscriptionService {
 
   async createInscription(inscription: IInscription): Promise<IInscription> {
     try {
-      const eventId = inscription.eventId.toString(); // Convert eventId to string
-      const userId = inscription.userId.toString(); // Convert userId to string
+      const eventId = inscription.eventId.toString();
+      const userId = inscription.userId.toString();
       const event = await this.inscriptionRepository.getEventById(eventId);
       const user = await this.inscriptionRepository.getUserById(userId);
-      
+
       if (!event) {
         throw new Error("Event not found.");
       }
@@ -38,7 +39,6 @@ export class InscriptionService implements IInscriptionService {
 
       const doc = await this.inscriptionRepository.create(inscription);
       const confirmationContent = readFileSync("dist/event_confirmation.html", "utf8").toString();
-      // Modify the email content as needed
       this.mailNotifier.sendMail(doc.email, confirmationContent, "Inscription Confirmation");
       return doc;
     } catch (error) {
@@ -70,6 +70,14 @@ export class InscriptionService implements IInscriptionService {
     }
   }
 
+  async updateInscription(id: string, inscription: Partial<IInscription>): Promise<void> {
+    try {
+      await this.inscriptionRepository.update(id, inscription);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   async getUserById(id: string): Promise<IUser | null> {
     try {
       return await this.inscriptionRepository.getUserById(id);
@@ -78,3 +86,5 @@ export class InscriptionService implements IInscriptionService {
     }
   }
 }
+export { IInscription };
+
