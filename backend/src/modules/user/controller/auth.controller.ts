@@ -3,8 +3,8 @@ import { HTTPError } from "../../../errors/HTTPError";
 import { InvalidBodyError } from "../../../errors/InvalidBodyError";
 import { IAuthService } from "../service/auth.service";
 import { loginSchema } from "./schema/loginSchema";
-import { signupSchema } from "./schema/signupSchema";
 import { resetPasswordSchema } from "./schema/resetPasswordSchema";
+import { signupSchema } from "./schema/signupSchema";
 const passport = require("passport");
 
 export interface IAuthController {
@@ -17,6 +17,7 @@ export interface IAuthController {
   createAdmin(req: Request, res: Response): void;
   refreshToken(req: Request, res: Response): void;
   loginWithToken(req: Request, res: Response): void;
+  handleGoogleCallback(req: Request, res: Response): void;
 }
 
 export class AuthController implements IAuthController {
@@ -69,7 +70,7 @@ export class AuthController implements IAuthController {
     try {
       const token = <string>req.query.token;
       this.authService.activateUser(token);
-      res.redirect("http://localhost:5000/#/pages/my-account")
+      res.redirect("http://localhost:5000/#/pages/my-account");
     } catch (error) {
       if (error instanceof HTTPError) {
         return res
@@ -115,8 +116,13 @@ export class AuthController implements IAuthController {
   }
 
   oAuthRedirection(req: Request, res: Response) {
-    const status = req.query.state == "GOOD" ? 200 : 401;
-    res.status(status).send({ message: status == 200 ? "OK" : "Login failed" });
+    // const status = req.query.state == "GOOD" ? 200 : 401;
+    // return res
+    //   .status(status)
+    //   .send({ message: status == 200 ? "OK" : "Login failed" });
+    const state = req.query.state === 'GOOD' ? 'GOOD' : 'BAD';
+    const jwt = req.query.jwt || null;
+    return res.redirect(`http://localhost:5000/#/pages/my-account?state=${state}&jwt=${jwt}`);
   }
 
   async createAdmin(req: Request, res: Response) {
@@ -138,8 +144,8 @@ export class AuthController implements IAuthController {
       const refreshToken = req.body.accessToken;
       if (!refreshToken) {
         return res.status(400).json({ error: "Refresh token is required" });
-      }      
-      const accessToken = this.authService.refreshToken(refreshToken);      
+      }
+      const accessToken = this.authService.refreshToken(refreshToken);
       res.status(200).json({ accessToken });
     } catch (error) {
       if (error instanceof HTTPError) {
@@ -151,15 +157,14 @@ export class AuthController implements IAuthController {
       res.status(500).send(error);
     }
   }
-  async loginWithToken(req: Request, res: Response){
+  async loginWithToken(req: Request, res: Response) {
     try {
-      const {token} = req.body
-    if(token == undefined){
-      throw new InvalidBodyError("Missed field confirmed from the body")
-    }
-    const user = await this.authService.loginWithToken(token)
-    console.log("controller",user)
-    return res.status(200).send(user);
+      const { token } = req.body;
+      if (token == undefined) {
+        throw new InvalidBodyError("Missed field confirmed from the body");
+      }
+      const user = await this.authService.loginWithToken(token);
+      return res.status(200).send(user);
     } catch (error) {
       if (error instanceof HTTPError) {
         return res
@@ -168,5 +173,32 @@ export class AuthController implements IAuthController {
       }
       res.status(500).send(error);
     }
+  }
+
+  handleGoogleCallback(req: Request, res: Response) {
+    passport.authenticate('google', async function (err:any, jwtToken:any) {
+      if (err) {
+        return res.redirect('/auth/oauth-redirection?state=BAD');
+      }
+      if (!jwtToken) {
+        return res.redirect('/auth/oauth-redirection?state=BAD');
+      }
+      try {
+        const redirectUrl = `/auth/oauth-redirection?state=GOOD&jwt=${jwtToken}`;
+        return res.send(`
+          <html>
+            <body>
+              <script>
+                window.opener.postMessage("${redirectUrl}", "${process.env.FRONTEND_URL}");
+                window.close();
+              </script>
+            </body>
+          </html>
+        `);
+      } catch (error) {
+        console.error(error);
+        return res.redirect('/auth/oauth-redirection?state=BAD');
+      }
+    })(req, res);
   }
 }
