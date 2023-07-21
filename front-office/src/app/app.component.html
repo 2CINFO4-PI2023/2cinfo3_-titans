@@ -50,7 +50,7 @@
     <ngx-spinner></ngx-spinner>
     <router-outlet></router-outlet>
     <app-footer></app-footer>
-    <app-color-options></app-color-options>
+    <app-color-options *ngIf="isAutheticated"></app-color-options>
 
   </mat-sidenav-container>
 
