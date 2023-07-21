@@ -3,7 +3,7 @@
   <div class="container" id="mainDIV" >
   <div class="title">
       <h2>Checkout</h2>
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. <br>Aenean commodo ligula eget dolor</p>
+      <h4>Place your Order</h4>
     </div>
 </div>
 </div>
@@ -13,7 +13,7 @@
       <div fxLayout="row wrap" class="">
           <div class="billing-details  pr-15" fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50">
             <div class="billing-details-title">
-                <h2>Billing Details</h2>
+                <h2>Order Details</h2>
             </div>
 
               <form fxLayout="row wrap">
@@ -29,11 +29,11 @@
                           <mat-error *ngIf="email.invalid">Please enter a valid message</mat-error>
                         </mat-form-field>
                   </div>
-                  <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
+                  <!-- <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                       <mat-form-field class="w-100">
                           <input matInput placeholder="Company name (optional)" #subject="ngModel" ngModel name="subject">
                         </mat-form-field>
-                  </div>
+                  </div> -->
                   <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                       <mat-form-field class="w-100">
                           <input matInput placeholder="Address" #address="ngModel" ngModel name="address">
@@ -70,19 +70,19 @@
                           <mat-error *ngIf="phone.invalid">Please enter a valid message</mat-error>
                         </mat-form-field>
                   </div>
-                  <div class="add-info">
+                  <!-- <div class="add-info">
                     <h3>Additional information</h3>
                     <p class="text-muted">Order notes (optional)</p>
 
-                  </div>
-                  <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
+                  </div> -->
+                  <!-- <div  fxFlex="100" fxFlex.gt-sm="100" class="mt-20" ngClass.sm="mt-10" ngClass.xs="mt-10">
                       <mat-form-field class="w-100">
                           <textarea placeholder="Post content" matInput rows="4" ngModel name="content"></textarea>
                         </mat-form-field>
                   </div>
                   <div class="button-wrap" fxFlex="100" fxFlex.gt-sm="100" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
                       <button class="btn-project" mat-raised-button color="accent" type="submit">Submit Review</button>
-                    </div>
+                    </div> -->
                   </form>
           </div>
           <div class="mainOrder-wrapper pl-15" fxFlex="100" fxFlex.gt-md="50" fxFlex.md="50">
@@ -107,15 +107,10 @@
                     Subtotal <span class="amount">{{ getTotal() | async | currency:productService?.currency:'symbol'}}</span>
                   </li>
                   <li *ngIf='buyProducts.length'>
-                    Shipping
-                   <div class="shipping">
-                      <div class="shopping-option">
-                        <mat-radio-group>
-                          <mat-radio-button *ngFor="let payment of payments" [value]="payment">{{payment}}</mat-radio-button>
-                        </mat-radio-group>
-                      </div>
-
-                   </div>
+                    Shipping <span class="amount">{{ getTotal()+2 | async | currency:productService?.currency:'symbol'}}</span>
+                  </li>
+                  <li *ngIf='buyProducts.length'>
+                    Tax <span class="amount">{{ getTotal()+1 | async | currency:productService?.currency:'symbol'}}</span>
                   </li>
               </ul>
               <ul class="total">
@@ -127,7 +122,7 @@
               </mat-radio-group>
             </div>
             <div class="order">
-              <button class="btn-project" mat-raised-button color="accent" type="submit">PLACE ORDER</button>
+              <button class="btn-project" mat-raised-button color="accent" type="submit">Place order</button>
             </div>
                </div>
           </div>

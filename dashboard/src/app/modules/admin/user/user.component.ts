@@ -45,6 +45,7 @@ export class UserComponent implements OnInit {
     totalItems:number=0
     ngOnInit(): void {
         this.getUsers();
+        console.log("usersDataSource",this.usersDataSource)
     }
     /**
      * Constructor
