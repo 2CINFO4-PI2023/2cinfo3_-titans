@@ -3,7 +3,7 @@
     <div class="container" id="mainDIV">
       <div class="title">
         <h2 (click)="scrollToEventDetails()">{{ event?.name }}</h2>
-        <p>this is a test.<br>Aenean commodo ligula eget dolor</p>
+        <p>Events<br>All available events in your city</p>
       </div>
     </div>
   </div>
@@ -20,9 +20,9 @@
                 <a [routerLink]="['/blog/blog-details', event?._id]">{{ event?.name }}</a>
               </h4>
               <ul fxLayout="row">
-                <li><mat-icon color="primary" class="material-icons">access_time</mat-icon>{{ event?.date }}</li>
-                <li><mat-icon color="primary" class="mat-icon-lg mat-icon material-icons">person</mat-icon>Marc Kurcek</li>
-                <li><mat-icon color="primary" class="material-icons">sms</mat-icon>05 Comments</li>
+                <li><mat-icon color="primary" class="material-icons">access_time</mat-icon>{{ event?.date | date}}</li>
+                <!-- <li><mat-icon color="primary" class="mat-icon-lg mat-icon material-icons">person</mat-icon>Marc Kurcek</li>
+                <li><mat-icon color="primary" class="material-icons">sms</mat-icon>05 Comments</li> -->
               </ul>
               <p>{{ event?.description }}</p>
             </div>
