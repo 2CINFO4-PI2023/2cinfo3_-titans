@@ -5,12 +5,12 @@
     </div>
       <mat-list class="reviews">
          <mat-list-item class="content"  *ngFor="let product of products | slice:0:3">
-          <div class="media">  <a [routerLink]="['/home/left-sidebar/product', product.id]">
-              <img class="img-fluid" [src]="product.pictures" alt="">
+          <div class="media">  <a [routerLink]="['/home/left-sidebar/product', product._id]">
+              <img class="img-fluid" [src]="product.image" alt="">
             </a>
           </div>
              <div class="info align-self-center">
-               <a [routerLink]="['/home/left-sidebar/product', product.id]"><h5>{{product.name}}</h5></a>
+               <a [routerLink]="['/home/left-sidebar/product', product._id]"><h5>{{product.name}}</h5></a>
                <div class="stars">
                   <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>
                   <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>

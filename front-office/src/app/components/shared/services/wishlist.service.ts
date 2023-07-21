@@ -30,7 +30,7 @@ export class WishlistService {
 
    // If item is aleready added In wishlist
  public hasProduct(product: Product): boolean {
-  const item = products.find(item => item.id === product.id);
+  const item = products.find(item => item.id === product._id);
   return item !== undefined;
 }
 
@@ -39,7 +39,7 @@ export class WishlistService {
     let message, status;
     var item: Product | boolean = false;
     if (this.hasProduct(product)) {
-      item = products.filter(item => item.id === product.id)[0];
+      item = products.filter(item => item.id === product._id)[0];
       const index = products.indexOf(item);
     } else {
       products.push(product);

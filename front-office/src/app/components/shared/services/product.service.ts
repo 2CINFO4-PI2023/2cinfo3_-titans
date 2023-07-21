@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Product } from 'src/app/modals/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -27,7 +28,7 @@ export class ProductService {
   }
 
   private products(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>('assets/data/products2.json');
+    return this.httpClient.get<Product[]>(`${environment.base_url}/plats`)
   }
 
 
@@ -42,10 +43,10 @@ export class ProductService {
 
 
       // Get Products By Id
-  public getProduct(id: number): Observable<Product> {
+  public getProduct(id: string): Observable<Product> {
     return this.products().pipe(map(items => {
       return items.find((item: Product) =>
-        { return item.id === id; });
+        { return item._id === id; });
       }));
     // return this.products.find(product=> product.id === id);
 
@@ -70,7 +71,7 @@ public getComapreProducts(): Observable<Product[]> {
 
 // If item is aleready added In compare
 public hasProduct(product: Product): boolean {
-  const item = products.find(item => item.id === product.id);
+  const item = products.find(item => item.id === product._id);
   return item !== undefined;
 }
 
@@ -79,7 +80,7 @@ public hasProduct(product: Product): boolean {
   let message, status;
   var item: Product | boolean = false;
   if (this.hasProduct(product)) {
-    item = products.filter(item => item.id === product.id)[0];
+    item = products.filter(item => item.id === product._id)[0];
     const index = products.indexOf(item);
     this.snackBar.open('The product  ' + product.name + ' already added to comparison list.', '×', { panelClass: 'error', verticalPosition: 'top', duration: 3000 });
 

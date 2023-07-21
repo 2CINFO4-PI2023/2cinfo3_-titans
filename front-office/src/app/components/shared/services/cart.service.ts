@@ -38,7 +38,7 @@ public observer   :  Subscriber<{}>;
      var item: CartItem | boolean = false;
      // If Products exist
      let hasItem = products.find((items, index) => {
-       if(items.product.id == product.id) {
+       if(items.product.id == product._id) {
          let qty = products[index].quantity + quantity;
          let stock = this.calculateStockCounts(products[index], quantity);
          if(qty != 0 && stock) {
@@ -102,7 +102,7 @@ public getTotalAmount(): Observable<number> {
 // Update Cart Value
 public updateCartQuantity(product: Product, quantity: number): CartItem | boolean {
   return products.find((items, index) => {
-    if(items.product.id == product.id) {
+    if(items.product.id == product._id) {
       let qty = products[index].quantity + quantity;
       let stock = this.calculateStockCounts(products[index], quantity);
       if (qty != 0 && stock)
