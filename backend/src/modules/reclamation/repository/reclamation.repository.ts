@@ -1,4 +1,6 @@
 import { DuplicatedError } from "../../../errors/DuplicatedError";
+import { NotFoundError } from "../../../errors/NotFoundError";
+import { Statut } from "../../statut/model/statut.schema";
 import { IReclamation, Reclamation } from "../model/reclamation.schema";
 
 export interface IReclamationRepository {
@@ -8,6 +10,8 @@ export interface IReclamationRepository {
   delete(id: string): Promise<void>;
   update(id: string, reclamation: IReclamation): Promise<void>;
   fetchByStatut(statut: string): Promise<IReclamation[]>;
+  groupByStatus(): Promise<{ [status: string]: IReclamation[] }>
+  updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void>
 }
 
 export class ReclamationRepository implements IReclamationRepository {
@@ -52,6 +56,30 @@ export class ReclamationRepository implements IReclamationRepository {
     }
   }
 
+  
+  
+  async updateReclamationStatus(idReclamation: string, idStatus: string): Promise<void> {
+    try {
+      // Check if the type exists in the Statut collection
+      const existingStatus = await Statut.findById(idStatus);
+      if (!existingStatus) {
+        throw new NotFoundError("Invalid status provided.");
+      }
+
+      // Get the existing reclamation
+      const reclamation = await this.get(idReclamation);
+      if (!reclamation) {
+        throw new NotFoundError("Reclamation not found.");
+      }
+
+      // Update the reclamation's status
+      reclamation.statut = existingStatus;
+      await this.update(idReclamation, reclamation);
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   async update(id: string, reclamation: IReclamation): Promise<void> {
     try {
       await Reclamation.findByIdAndUpdate(id, reclamation);
@@ -69,4 +97,49 @@ export class ReclamationRepository implements IReclamationRepository {
       throw error;
     }
   }
+  async groupByStatus(): Promise<{ [status: string]: IReclamation[] }> {
+    try {
+      // Use MongoDB's aggregation pipeline to group reclamations by status
+      const groupedReclamations = await Reclamation.aggregate([
+        {
+          $group: {
+            _id: "$statut", // Group by the "statut" field directly
+            reclamations: { $push: "$$ROOT" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            status: "$_id", // Rename the "_id" field to "status"
+            reclamations: 1,
+          },
+        },
+      ]);
+  
+      console.log();
+  
+      // Convert the array of groupedReclamations to an object with status as keys
+      const result: { [status: string]: IReclamation[] } = {};
+      groupedReclamations.forEach((group) => {
+        result[group.status] = group.reclamations;
+      });
+  
+      return result;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

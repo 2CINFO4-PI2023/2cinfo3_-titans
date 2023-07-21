@@ -8,18 +8,23 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class ReclamationService {
   private apiUrl = 'http://localhost:9090';
+  user: any;
  
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private authService:AuthService) { 
+    this.authService.getUser().subscribe((user)=>{
+      this.user = user
+    })
+  }
 
   createReclamation(reclamation: any) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${AuthService.getToken()}`);
-    return this.http.post<any>(this.apiUrl+"/reclamations/"+AuthService.getUser()._id, reclamation, { headers });
+    return this.http.post<any>(this.apiUrl+"/reclamations/"+this.user._id, reclamation, { headers });
   }
 
-  getNewStatusId()
+  getNewStatusId(statut:any)
   {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${AuthService.getToken()}`);
-    return this.http.get<any>(this.apiUrl+"/statuts/new",  { headers });
+    return this.http.get<any>(this.apiUrl+"/statuts/"+statut,  { headers });
 
 
 

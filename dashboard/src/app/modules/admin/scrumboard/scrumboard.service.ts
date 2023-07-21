@@ -81,13 +81,14 @@ export class ScrumboardService
      */
     getBoard(id: string): Observable<Board>
     {
+        
+
         var a = this._httpClient.get<Board>('api/apps/scrumboard/board', {params: {id}}).pipe(
             map(response => new Board(response)
             
             ),
             tap(board => this._board.next(board))
         );
-        console.log(a)
         return a
     }
 
@@ -305,8 +306,43 @@ export class ScrumboardService
             map((board) => {
 
                 // Find the card
-                const card = board.lists.find(list => list.cards.some(item => item.id === id))
-                                  .cards.find(item => item.id === id);
+                const card = {
+                    "id": id,
+                    "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                    "listId": "64b726b7b7330f0d7ec2b080",
+                    "position": 65536,
+                    "title": "Example that showcase all of the available bits on the card with a fairly long title compared to other cards",
+                    "description": null,
+                    "labels": [
+                        {
+                            "id": "e0175175-2784-48f1-a519-a1d2e397c9b3",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Quality Issue"
+                        },
+                        {
+                            "id": "51779701-818a-4a53-bc16-137c3bd7a564",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Wrong Ingredient"
+                        },
+                        {
+                            "id": "e8364d69-9595-46ce-a0f9-ce428632a0ac",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Damaged Packaging"
+                        },
+                        {
+                            "id": "caff9c9b-a198-4564-b1f4-8b3df1d345bb",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Incorrect Quantity"
+                        },
+                        {
+                            "id": "f9eeb436-13a3-4208-a239-0d555960a567",
+                            "boardId": "2c82225f-2a6c-45d3-b18a-1132712a4234",
+                            "title": "Expired Product"
+                        }
+                    ],
+                    "dueDate": "2023-07-10T22:00:00.000Z"
+                }
+                
 
                 // Update the card
                 this._card.next(card);
@@ -503,30 +539,47 @@ export class ScrumboardService
         );*/
     }
 
-    getlistReclamation(): Observable<any> {
-        const list = this._httpClient.get<any>(`${environment.baseUrl}reclamations/fetchByStatut/64b7271fb7330f0d7ec2b086`)
-          .pipe(map((reclamations: any[]) => {
-            return reclamations.map(rec => ({
-              id: rec._id,
-              boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
-              listId: "new",
-              position: 65536,
-              title: rec.description,
-              description: "",
-              labels: [
-                {
-                  id: "e0175175-2784-48f1-a519-a1d2e397c9b3",
-                  boardId: "2c82225f-2a6c-45d3-b18a-1132712a4234",
-                  title: "Quality Issue"
-                }
-              ],
-              dueDate: "2023-07-08T22:00:00.000Z"
-            }));
-          }));
+ getlistReclamation(): Observable<any> {
+  return this._httpClient.get<any>(`${environment.baseUrl}reclamations/recGroupBy`)
+    
+
+ 
+}
+
+getCards(id:any): Observable<any> {
+    return this._httpClient.get<any>(`${environment.baseUrl}reclamations/`+id)
       
-        return list;
-      }
+  }
+
+getstatus(status:any): Observable<any> {
+    return this._httpClient.get<any>(`${environment.baseUrl}statuts/findStatus/`+status)
       
+  
+   
+  }
+
+postMessage(idUser:any,idReclamation:any,message:any): Observable<any> {
+   
+      
+    return this._httpClient.post<any>(`${environment.baseUrl}message/${idUser}/${idReclamation}`,message);
+  
+    
+  }
+  changeStatut(idReclamation:any,idStatus:any): Observable<any> {
+   
+      
+    return this._httpClient.post<any>(`${environment.baseUrl}reclamations/${idReclamation}/${idStatus}`,{});
+  
+    
+  }
+
+  getReclamation(id:any): Observable<any> {
+
+       
+     return this._httpClient.get<any>(`${environment.baseUrl}reclamations/`+id);
+   
+     
+   }
 
     /**
      * Create label

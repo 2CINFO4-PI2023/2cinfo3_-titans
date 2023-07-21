@@ -19,8 +19,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
 {
     isScreenSmall: boolean;
     navigation: Navigation;
-    user: User;
     notification : Notification;
+    user: User | null;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -72,9 +72,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
         //     .subscribe((user: User) => {
         //         this.user = user;
         //     });
-
-        this.user = this._userService.getLoggedInUser()
-        console.log("this.user",this.user)
+        this._userService.getLoggedInUser().subscribe((user) => {
+            console.log("user:", user);
+            this.user = user;
+          });
+      
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))

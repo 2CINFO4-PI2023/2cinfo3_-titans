@@ -73,7 +73,8 @@ export class StatutController implements IStatutController {
   
   async findOrCreateNewStatus(req: Request, res: Response) {
     try {
-      const newStatus = await this.statutService.findOrCreateNewStatus();
+     const statut =req.params.statut
+      const newStatus = await this.statutService.findOrCreateNewStatus(statut);
       res.json(newStatus);
     } catch (error: any) {
       res.status(500).send(error);

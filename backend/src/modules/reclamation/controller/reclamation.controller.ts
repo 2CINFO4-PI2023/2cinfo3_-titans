@@ -9,7 +9,9 @@ export interface IReclamationController {
   getAll(req: Request, res: Response): void;
   update(req: Request, res: Response): void;
   delete(req: Request, res: Response): void;
-  fetchByStatut(req: Request, res: Response): void;
+  groupByStatus(req: Request, res: Response): void;
+  updateReclamationStatus(req: Request, res: Response): void;
+
 }
 
 export class ReclamationController implements IReclamationController {
@@ -44,6 +46,19 @@ export class ReclamationController implements IReclamationController {
     }
   }
 
+  async groupByStatus(req: Request, res: Response)
+  {
+    try {
+   
+      const reclamation = await this.reclamationService.groupByStatus();
+      if (!reclamation) {
+        return res.status(404).json({ message: "Reclamation not found" });
+      }
+      res.json(reclamation);
+    } catch (error: any) {
+      res.status(500).send(error);
+    }
+  }
   async getAll(req: Request, res: Response) {
     try {
       const reclamations = await this.reclamationService.allReclamations();
@@ -74,14 +89,16 @@ export class ReclamationController implements IReclamationController {
     }
   }
 
-  async fetchByStatut(req: Request, res: Response) {
+  updateReclamationStatus(req: Request, res: Response)
+  {
     try {
-      const statut = req.params.statut ;
-      console.log(statut)
-      const reclamations = await this.reclamationService.fetchByStatut(statut);
-      res.json(reclamations);
-    } catch (error: any) {
-      res.status(500).send(error);
-    }
+    const idReclamation = req.params.idReclamation;
+    const idStatut = req.params.idStatut;
+    this.reclamationService.updateReclamationStatus(idReclamation,idStatut);
+    res.json({ message: "Reclamation Updated successfully" });
+  } catch (error: any) {
+    res.status(500).send(error);
   }
+  }
+  
 }
