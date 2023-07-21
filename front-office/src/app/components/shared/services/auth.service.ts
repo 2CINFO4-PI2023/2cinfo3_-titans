@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
@@ -10,7 +11,7 @@ import { environment } from "src/environments/environment";
 export class AuthService {
   // static authenticatedSubject: any;
   // static userSubject: any;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   // private authenticatedSubject: BehaviorSubject<any> =
   //   new BehaviorSubject<any>(false);
@@ -107,5 +108,28 @@ public user$: Observable<any> = this.userSubject.asObservable();
       `${environment.base_url}/auth/request-reset-password`,
       { email }
     );
+  }
+  loginWithGoogle() {
+    const authUrl = `${environment.base_url}/auth/login/google`;
+    const popup = window.open(authUrl, '_blank', 'width=500,height=600');
+   
+    window.addEventListener('message', (event) => {
+      const urlParams = new URLSearchParams(event.data);
+      const jwt = urlParams.get('jwt');
+        if (jwt) {
+          localStorage.setItem("fo_accessToken", jwt);
+          this.http
+          .post(`${environment.base_url}/auth/login-token`, {
+            token: jwt,
+          })
+          .subscribe((data) => {
+            this.userSubject.next(data)
+            this.authenticatedSubject.next(true);
+            this.router.navigate(['/home/products/all']);
+          });
+        } else {
+          console.log("else")
+        }
+    });
   }
 }

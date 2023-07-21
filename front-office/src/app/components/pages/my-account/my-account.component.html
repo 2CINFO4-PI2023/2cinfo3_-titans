@@ -115,6 +115,11 @@
                   <mat-hint ngClass.sm="mt-1" *ngIf="signupInfoMsg">{{signupInfoMsg}}</mat-hint>
                 </div>
               </form>
+              
+              <button mat-raised-button color="white" type="button" (click)="loginWithGoogle()">
+                <mat-icon>google</mat-icon>
+                Sign in with Google
+              </button>
             </div>
           </div>
         </div>

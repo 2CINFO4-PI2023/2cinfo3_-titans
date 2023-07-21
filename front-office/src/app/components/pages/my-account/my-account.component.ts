@@ -58,7 +58,7 @@ export class MyAccountComponent implements OnInit {
           this.router.navigate(["/home/products/all"]);
         },
         (error) => {
-           console.log(error)
+          console.log(error);
           if (error.status == 409) {
             this.loginErrMsg = "E-mail or phone is already used";
           } else if (error.status == 401) {
@@ -99,5 +99,8 @@ export class MyAccountComponent implements OnInit {
   onForgotPassword() {
     //this.router.navigateByUrl("/pages/forgot-password");
     this.router.navigate(["/pages/forgot-password"]);
+  }
+  loginWithGoogle() {
+    this.authService.loginWithGoogle()
   }
 }
