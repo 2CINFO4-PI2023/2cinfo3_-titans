@@ -36,8 +36,8 @@
             </div>
           </div>
           <div *ngFor="let item of wishlistItems"  class="mat-row">
-            <div class="mat-cell"><img [src]="item.pictures"></div>
-            <div class="mat-cell"><a [routerLink]="['/home/product', item.id]"  class="product-name">{{item.name}}</a></div>
+            <div class="mat-cell"><img [src]="item.image"></div>
+            <div class="mat-cell"><a [routerLink]="['/home/product', item._id]"  class="product-name">{{item.name}}</a></div>
             <div class="mat-cell price">{{item.price | number : '1.2-2'}}</div>
 
             <div class="mat-cell text-center">
