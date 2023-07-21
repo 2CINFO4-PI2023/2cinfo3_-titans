@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from './blog-details.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-blog-details',
@@ -14,11 +15,13 @@ export class BlogDetailsComponent implements OnInit {
   lastName: string;
   email: string;
   content: string;
+user:any
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private inscriptionService: InscriptionService
+    private inscriptionService: InscriptionService,
+    private authService:AuthService
   ) { }
 
   ngOnInit() {
@@ -27,16 +30,18 @@ export class BlogDetailsComponent implements OnInit {
       .subscribe((response: any) => {
         this.event = response;
       });
+      this.authService.getAuthentified().subscribe((user)=>{
+        this.user = user
+      })
   }
 
   submitRegistrationForm() {
     const inscription = {
       eventId: this.route.snapshot.paramMap.get('eventid'),
-      userId: '649f43dccd5a374f418af849',
-      name: this.name,
-      email: this.email,
+      userId: this.user._id,
+      email:this.user.email,
+      name:this.user.name,
       status: 'confirmed',
-     
     };
 
     this.inscriptionService.createInscription(inscription)

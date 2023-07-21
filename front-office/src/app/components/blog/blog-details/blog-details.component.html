@@ -24,7 +24,7 @@
               <p>{{ event?.description }}</p>
             </div>
             <div>
-              <button class="btn-project" mat-raised-button type="button">Inscription</button>
+              <button class="btn-project" mat-raised-button type="button" [color]="accent" (click)="submitRegistrationForm()">Inscription</button>
             </div>
           </div>
         </div>
