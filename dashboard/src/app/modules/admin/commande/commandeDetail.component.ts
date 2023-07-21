@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { CommandeService } from 'app/core/commande/commande.service';
+import { PlatService } from 'app/core/plat/plat.service';
 
 @Component({
     selector: 'app-commande-detail',
@@ -23,11 +24,12 @@ export class CommandeDetailComponent implements OnInit {
     showAlert: boolean = false;
     commandeDetailsForm: FormGroup;
     isUpdating: boolean = false;
-    items: any;
-    orderItems: FormArray;
+    orderItems: any;
+    orderItemsArray: FormArray;
 
     constructor(
         private commandeService: CommandeService,
+        private platService: PlatService,
         private router: Router,
         private route: ActivatedRoute,
         private formBuilder: FormBuilder
@@ -52,14 +54,14 @@ export class CommandeDetailComponent implements OnInit {
 
 
           });
-          this.orderItems = this.commandeDetailsForm.get('orderItems') as FormArray;
+          this.orderItemsArray = this.commandeDetailsForm.get('orderItems') as FormArray;
     }
 
 
     ngOnInit(): void {
         this.commandeService.getCommandes().subscribe(
             (data) => {
-                this.orderItems = data.orderItems;
+                this.orderItems = data;
 
             },
             (err) => {
@@ -104,21 +106,30 @@ export class CommandeDetailComponent implements OnInit {
                     orderStatus: new FormControl('', Validators.required),
                 });
                 this.commandeService.getCommande(commandeId).subscribe((commande: any) => {
-                    commande.orderItems.forEach((i) => {
-                        this.inputFields.push(
-                           i
-                        );
+                    commande.orderItems.forEach((item) => {
+                        Object.keys(commande.orderItems).forEach((i) => {
+                            this.platService.getPlat(commande.orderItems[i].plat).subscribe((plat: any) => {
+                             const newValue =   {...commande.orderItems[i],name:plat.name,price: plat.price, image:plat.image};
+                            this.inputFields.push({
+                                key: i,
+                                value: newValue,
+                            });
+                        });
+                        });
+                        console.log("item",commande.orderItems);
+                        console.log("inputfields",this.inputFields);
+
                     });
                     this.commandeDetailsForm.patchValue({
                     user: commande.user ,
-                    address: commande.address ,
-                    city: commande.city  ,
-                    phoneNumber: commande.phoneNumber,
-                    postalCode: commande.postalCode,
-                    orderItems: commande.orderItems,
+                    address: commande.shippingInfo.address ,
+                    city: commande.shippingInfo.city  ,
+                    phoneNumber: commande.shippingInfo.phoneNumber,
+                    postalCode: commande.shippingInfo.postalCode,
+                    orderItems: this.inputFields,
                     taxPrice: commande.taxPrice,
                     shippingPrice: commande.shippingPrice,
-                    country: commande.country,
+                    country: commande.shippingInfo.country,
                     totalPrice: commande.totalPrice,
                     itemsPrice: commande.itemsPrice,
                     orderStatus: commande.orderStatus,
@@ -129,21 +140,22 @@ export class CommandeDetailComponent implements OnInit {
 
             }
         });
+        console.log("inputfielss",this.inputFields);
 
-        console.log("orderItems5646464",this.orderItems);
 
     }
 
-    addOrderItemsToForm(item: any) {
-        this.orderItems.push(
-          this.formBuilder.group(
-             ['', [Validators.required]],
-          )
+    addIngredientToForm(plat: any) {
+        this.orderItemsArray.push(
+          this.formBuilder.group({
+            key: [plat._id],
+            value: ['', [Validators.required, Validators.min(1)]],
+          })
         );
       }
 
       removeOrderItems(index: number) {
-        this.orderItems.removeAt(index);
+        this.orderItemsArray.removeAt(index);
       }
 
 
@@ -164,19 +176,22 @@ export class CommandeDetailComponent implements OnInit {
     onSubmit(): void {
         this.showAlert = false;
         this.commandeDetailsForm.disable();
-        const obj = this.inputFields;
+        let obj = {};
+        const commandeOrderItems = [];
         console.log("this.inputFields: ",this.inputFields)
-        // this.inputFields.forEach((element) => {
-        //     if (obj[element.key]) {
-        //         const existingValue = obj[element.key];
-        //         const new_value = existingValue + element.value
-        //         obj[element.key]=  new_value;
-        //     } else {
-        //         obj[element.key] = element.value;
-        //     }
-        // });
-        const json = JSON.stringify(obj);
+        this.inputFields.forEach((element) => {
+            if (obj[element.key]) {
+                const existingValue = obj[element.key];
+                const new_value = existingValue + element.value
+                obj[element.key]=  new_value;
+            } else {
+                obj[element.key] = element.value;
+            }
+        });
+        // commandeOrderItems.push(Object.values(obj));
+        const json =JSON.stringify( Object.values(obj));
         const formData = new FormData();
+
         formData.append('user', this.commandeDetailsForm.get('user').value);
         formData.append('address', this.commandeDetailsForm.get('address').value);
         formData.append('phoneNumber', this.commandeDetailsForm.get('phoneNumber').value);
@@ -187,13 +202,18 @@ export class CommandeDetailComponent implements OnInit {
         formData.append('totalPrice', this.commandeDetailsForm.get('totalPrice').value);
         formData.append('itemsPrice', this.commandeDetailsForm.get('itemsPrice').value);
         formData.append('orderStatus', this.commandeDetailsForm.get('orderStatus').value);
-        formData.append('orderItems', json);
-
+        // formData.append('orderItems', json);
+        console.log("json",commandeOrderItems,json);
+        console.log("commandeDetailsForm",this.commandeDetailsForm);
+        let object = {};
+formData.forEach((value, key) => object[key] = value);
+var finaljson = object;
         if (this.isUpdating) {
             const commandeId = this.route.snapshot.params['id'];
-            this.commandeService.updateCommande(commandeId, formData).subscribe(
-                () => {
-                    this.goToCommandesList();
+            this.commandeService.updateCommande(commandeId, finaljson).subscribe(
+                (res) => {
+                    console.log("res",res);
+                   this.goToCommandesList();
                 },
                 (error) => {
                     if (error.status === 400) {

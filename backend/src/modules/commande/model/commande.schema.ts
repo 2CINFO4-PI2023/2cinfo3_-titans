@@ -24,7 +24,7 @@ const commandeSchema = new Schema<ICommande>({
     },
     city: {
       type: String,
-      required: true,
+      required: false,
     },
     phoneNumber: {
       type: String,
