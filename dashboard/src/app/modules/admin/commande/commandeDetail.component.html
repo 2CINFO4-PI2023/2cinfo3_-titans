@@ -1,0 +1,166 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start flex-auto min-w-0">
+    <div
+        class="md:flex md:items-center md:justify-start w-full sm:w-auto md:h-full md:w-full py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <!-- Section -->
+            <div class="w-full md: p-2">
+                <div class="text-xl">commande Details</div>
+            </div>
+            <div>
+                <fuse-alert class="mt-8 -mb-4" *ngIf="showAlert" [appearance]="'outline'" [showIcon]="false"
+                    [type]="alert.type" [@shake]="alert.type === 'error'">
+                    {{ alert.message }}
+                </fuse-alert>
+            </div>
+            <form [formGroup]="commandeDetailsForm" (ngSubmit)="onSubmit()" #commandeDetailNgForm="ngForm">
+  
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput placeholder="user" formControlName="user" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('user').invalid &&
+                              commandeDetailsForm.get('user').touched">
+                              user is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput placeholder="address" formControlName="address" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('address').invalid &&
+                              commandeDetailsForm.get('address').touched">
+                              address is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput placeholder="phoneNumber" formControlName="phoneNumber" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('phoneNumber').invalid &&
+                              commandeDetailsForm.get('phoneNumber').touched">
+                              phoneNumber is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput placeholder="postalCode" formControlName="postalCode" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('postalCode').invalid &&
+                              commandeDetailsForm.get('postalCode').touched">
+                              postalCode is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput placeholder="country" formControlName="country" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('country').invalid &&
+                              commandeDetailsForm.get('country').touched">
+                              country is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <div *ngFor="let item of orderItems">
+
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="w-1/2 mt-4 mx-4">
+                                <input matInput type="text" [(ngModel)]="item.plat" [ngModelOptions]="{standalone: true}"
+                                    placeholder="plat" required #plat="ngModel">
+                            </mat-form-field>
+
+                            <mat-error *ngIf="plat.invalid && plat.touched">
+                                plat is required.
+                            </mat-error>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <mat-form-field class="w-1/2 mt-4 mx-4">
+                                <input matInput type="number" [(ngModel)]="item.qty"
+                                    [ngModelOptions]="{standalone: true}" placeholder="qty" required #qty="ngModel">
+                            </mat-form-field>
+                            <mat-error *ngIf="qty.invalid && qty.touched">
+                                qty is required.
+                            </mat-error>
+                        </div>
+                        <div class="sm:col-span-4">
+                            <button class="mt-4 ml-4" mat-stroked-button color="warm" type="button" (click)="remove(item)">Remove</button>
+                        </div>
+                    </div>
+                    <button class="mt-4 ml-4" mat-flat-button color="primary" type="button" (click)="addInput()">Add plats</button>
+                </div>
+
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput type="number" placeholder="taxPrice" formControlName="taxPrice" />
+                        <mat-error *ngIf="
+                              commandeDetailsForm.get('taxPrice').invalid &&
+                                  commandeDetailsForm.get('taxPrice').touched">
+                                  taxPrice is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput type="number" placeholder="shippingPrice" formControlName="shippingPrice" />
+                        <mat-error *ngIf="
+                            commandeDetailsForm.get('shippingPrice').invalid &&
+                                commandeDetailsForm.get('shippingPrice').touched">
+                                shippingPrice is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput type="number" placeholder="itemsPrice" formControlName="itemsPrice" />
+                        <mat-error *ngIf="
+                            commandeDetailsForm.get('itemsPrice').invalid &&
+                                commandeDetailsForm.get('itemsPrice').touched">
+                                itemsPrice is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput type="number" placeholder="totalPrice" formControlName="totalPrice" />
+                        <mat-error *ngIf="
+                            commandeDetailsForm.get('totalPrice').invalid &&
+                                commandeDetailsForm.get('totalPrice').touched">
+                                totalPrice is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="sm:col-span-4">
+                    <mat-form-field class="w-1/2 mt-4 mx-4">
+                        <input matInput type="text" placeholder="orderStatus" formControlName="orderStatus" />
+                        <mat-error *ngIf="
+                            commandeDetailsForm.get('orderStatus').invalid &&
+                                commandeDetailsForm.get('orderStatus').touched">
+                                orderStatus is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="mt-4 mb-10 border-t"></div>
+
+                <div class="flex items-center justify-start mb-10 mx-4">
+                <button class="ml-4" mat-flat-button color="primary" type="submit" [disabled]="commandeDetailsForm.invalid">
+                    Save
+                </button>
+                <button class="mr-4 ml-4" mat-stroked-button type="button" (click)="goToCommandesList()">
+                    Cancel
+                </button>    
+                </div>  
+            </form>
+        </div>
+    </div>
