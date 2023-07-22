@@ -11,7 +11,6 @@ import { BlogModule } from '../blog/blog.module';
 import { SharedModule } from '../shared/shared.module';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { MyAccountComponent } from './my-account/my-account.component';
-import { PagesRoutingModule } from './pages-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { UpdateForgetPasswordComponent } from './forget-password/update-forget-password.component';
 import { AuthRoutingModule } from './auth-routing.module';
