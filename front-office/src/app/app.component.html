@@ -1,0 +1,58 @@
+<div id="mainDIV" class="sophia-app app" [ngClass]="settings.theme" style="height: 100vh;overflow: auto;">
+
+
+  <mat-sidenav-container fullscreen>
+
+    <mat-sidenav [opened]="false" mode="over" #start class="sidenav">
+      <button mat-icon-button color="warn" class="close" (click)="start.close()">
+        <mat-icon color="warn">close</mat-icon>
+      </button>
+      <div class="divider"></div>
+      <div class="sidebar-items" fxLayout="column">
+        <app-sidebar *ngFor="let item of navItems" [item]="item"></app-sidebar>
+      </div>
+    </mat-sidenav>
+
+
+    <mat-toolbar class="main-topbar" color="primary" [ngClass]="{topbar_four: url == '/home/four'}">
+      <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center" class="top-bar container">
+        <span fxHide="false" fxHide.gt-sm>
+          <button mat-icon-button (click)="start.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </span>
+        <div class="widgets-left" fxLayout="row">
+
+          <div class="widget-text" *ngIf="isAutheticated">
+            <a fxShow="false" fxShow.gt-xs [routerLink]="['/pages/wishlist']"
+              routerLinkActive="router-link-active"><mat-icon
+                class="mat-icon-lg mat-icon material-icons mr-10">favorite_border</mat-icon> WISHLIST</a>
+          </div>
+          <!-- <div class="widget-text">
+                      <a fxShow="false" fxShow.gt-xs [routerLink]="['/pages/compare']" routerLinkActive="router-link-active" ><mat-icon>cached</mat-icon>COMPARE</a>
+                    </div> -->
+          <div class="widget-text" >
+            <a fxShow="false" fxShow.gt-xs [routerLink]="[isAutheticated ? '/auth/profile':'/auth']"
+              routerLinkActive="router-link-active"><mat-icon>person</mat-icon>{{isAutheticated ? "My Profile":"Sign up/Login"}}</a>
+          </div>
+          <div class="widget-text" *ngIf="isAutheticated">
+            <a fxShow="false" style="cursor: pointer !important" (click)="logout()" fxShow.gt-xs>
+              <mat-icon>exit_to_app</mat-icon>Logout
+            </a>
+          </div>
+        </div>
+
+      </mat-toolbar-row>
+
+    </mat-toolbar>
+    <app-header></app-header>
+
+    <ngx-spinner></ngx-spinner>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+    <app-color-options *ngIf="isAutheticated"></app-color-options>
+
+  </mat-sidenav-container>
+
+
+</div>
