@@ -57,6 +57,8 @@ public user$: Observable<any> = this.userSubject.asObservable();
             token: response.accessToken,
           })
           .subscribe((data) => {
+            localStorage.setItem("userData", user);
+            localStorage.setItem("userInfo", JSON.stringify(data));
             this.userSubject.next(data)
             return this.authenticatedSubject.next(true);
           });

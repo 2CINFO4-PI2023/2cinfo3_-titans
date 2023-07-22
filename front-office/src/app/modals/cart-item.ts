@@ -4,4 +4,6 @@ import { Product } from './product.model';
 export interface CartItem {
   product: Product;
   quantity: number;
+  qty: any;
+  plat: any;
 }

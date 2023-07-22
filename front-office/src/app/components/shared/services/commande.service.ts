@@ -1,118 +1,137 @@
-import { HttpClient,HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import {  ReplaySubject } from 'rxjs';
 import { switchMap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { map, tap } from 'rxjs/operators';
-import { Commande } from "./commande.types";
-
-
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
-export class CommandeService
-{
-    private _commande: ReplaySubject<Commande> = new ReplaySubject<Commande>(1);
+export class CommandeService {
+  // static authenticatedSubject: any;
+  // static userSubject: any;
+  constructor(private http: HttpClient, private router: Router) {}
 
-    /**
-     * Constructor
-     */
-    constructor(private _httpClient: HttpClient)
-    {
-    }
+  // private authenticatedSubject: BehaviorSubject<any> =
+  //   new BehaviorSubject<any>(false);
+  // public authenticated$: Observable<any> =
+  //   this.authenticatedSubject.asObservable();
 
-
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Setter & getter for user
-     *
-     * @param value
-     */
-    set commande(value: Commande)
-    {
-        // Store the value
-        this._commande.next(value);
-    }
-
-    get commande$(): Observable<Commande>
-    {
-        return this._commande.asObservable();
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Get the current logged in user data
-     */
-    get(): Observable<Commande>
-    {
-        return this._httpClient.get<Commande>('api/common/commande').pipe(
-            tap((commande) => {
-                this._commande.next(commande);
-            })
-        );
-    }
-
-    /**
-     * Update the user
-     *
-     * @param user
-     */
-    update(commande: Commande): Observable<any>
-    {
-        return this._httpClient.patch<Commande>('api/common/commande', {commande}).pipe(
-            map((response) => {
-                this._commande.next(response);
-            })
-        );
-    }
-    getCommandes(
-        page: number = 1,
-        pageSize: number = 10,
-        filters: { [key: string]: string } = {},
-        sortField: string = '',
-        sortOrder: 'asc' | 'desc' = 'asc'
-      ): Observable<any> {
-        let params = new HttpParams();
     
-        params = params.append('page', page.toString());
-        params = params.append('pageSize', pageSize.toString());
+  // private userSubject: BehaviorSubject<any> =
+  // new BehaviorSubject<any>(false);
+  // static user$: Observable<any> =
+  // AuthService.userSubject.asObservable();
+
+  private authenticatedSubject: BehaviorSubject<any> =
+  new BehaviorSubject<any>(false);
+public authenticated$: Observable<any> =
+  this.authenticatedSubject.asObservable();
+
+private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+public user$: Observable<any> = this.userSubject.asObservable();
+
+  static decodeJwt(token: string): any {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const decodedData = atob(base64);
+    const decodedToken = JSON.parse(decodedData);
+    return decodedToken;
+  }
+  login(body: any) {
+    // return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
+    //   switchMap((response: any) => {
+    //     const { user } = AuthService.decodeJwt(response.accessToken);
+    //     localStorage.setItem("fo_accessToken", response.accessToken);
+    //     return of(user);
+    //   })
+    // );
     
-        Object.keys(filters).forEach((key) => {
-          if (filters[key] !== '') {
-            params = params.append(key, filters[key]);
-          }
-        });
-    
-        if (sortField !== '' && (sortOrder === 'asc' || sortOrder === 'desc')) {
-          params = params.append('sortField', sortField);
-          params = params.append('sortOrder', sortOrder);
+    return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
+        switchMap((response: any) => {
+          const { user } = CommandeService.decodeJwt(response.accessToken);
+          localStorage.setItem("fo_accessToken", response.accessToken);
+          this.http
+          .post(`${environment.base_url}/auth/login-token`, {
+            token: response.accessToken,
+          })
+          .subscribe((data) => {
+            localStorage.setItem("userData", user);
+            localStorage.setItem("userInfo", JSON.stringify(data));
+            this.userSubject.next(data)
+            return this.authenticatedSubject.next(true);
+          });
+          return of(user);
+        })
+      );
+  }
+  signup(body: any) {
+    return this.http.post(`${environment.base_url}/auth/signup`, body);
+  }
+  updateUser(id: string, body: any) {
+    return this.http.put(`${environment.base_url}/users/${id}`, body);
+  }
+   getUser() {
+    return this.user$
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
+  }
+  
+  updateAuthentifiedUser(user) {
+    return this.userSubject.next(user)
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
+  }
+   getAuthentified() {
+    return this.user$
+    // const { user } = AuthService.decodeJwt(
+    //   localStorage.getItem("fo_accessToken")
+    // );
+    // return user;
+  }
+  static getToken() {
+    return localStorage.getItem("fo_accessToken");
+  }
+  signOut() {
+    this.authenticatedSubject.next(false);
+    localStorage.removeItem("fo_accessToken");
+  }
+  static isAuthenticated(): boolean {
+    return localStorage.getItem("fo_accessToken") != null;
+  }
+  addCommande (body: any) {
+    return this.http.post(`${environment.base_url}/commandes`, body);
+  }
+  payCommande (body: any) {
+    return this.http.post(`${environment.base_url}/commandes/payment`, body);
+  }
+  loginWithGoogle() {
+    const authUrl = `${environment.base_url}/auth/login/google`;
+    const popup = window.open(authUrl, '_blank', 'width=500,height=600');
+   
+    window.addEventListener('message', (event) => {
+      const urlParams = new URLSearchParams(event.data);
+      const jwt = urlParams.get('jwt');
+        if (jwt) {
+          localStorage.setItem("fo_accessToken", jwt);
+          this.http
+          .post(`${environment.base_url}/auth/login-token`, {
+            token: jwt,
+          })
+          .subscribe((data) => {
+            this.userSubject.next(data)
+            this.authenticatedSubject.next(true);
+            this.router.navigate(['/home/products/all']);
+          });
+        } else {
+          console.log("else")
         }
-    
-        return this._httpClient.get(`${environment.base_url}commandes`, { params });
-      }
-    deleteCommande(id:string){
-        return this._httpClient.delete(`${environment.base_url}commandes/${id}`)
-    }
-    getCommande(id:string){
-        return this._httpClient.get(`${environment.base_url}commandes/${id}`)
-    }
-    updateCommande(id:string,data:any){
-        return this._httpClient.put(`${environment.base_url}commandes/${id}`,data)
-    }
-    addCommande(data:any){
-        return this._httpClient.post(`${environment.base_url}commandes`,data)
-    }
-    toggleConfirmation(id:string,confirmed:boolean){
-        return this._httpClient.patch(`${environment.base_url}commandes/${id}/confirmed`,{confirmed})
-    }
+    });
+  }
 }
+

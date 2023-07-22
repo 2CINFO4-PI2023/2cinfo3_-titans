@@ -10,6 +10,7 @@ import { FaqComponent } from './faq/faq.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { ConfirmationPageComponent } from './confirmation-page/confirmation-page.component';
 
 
 
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'wishlist', component: WishlistComponent },
       { path: 'my-account', component: MyAccountComponent },
       { path: 'error', component: ErrorPageComponent },
+      { path: 'success', component: ConfirmationPageComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'forgot-password', component: ForgetPasswordComponent },
      

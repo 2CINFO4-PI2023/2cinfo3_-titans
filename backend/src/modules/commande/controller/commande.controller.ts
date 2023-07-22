@@ -104,24 +104,25 @@ export class CommandeController implements ICommandeController {
 
   async payCommande(req: Request, res: Response) {
     try {
+      console.log(req.body);
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
             price_data: {
-              currency: "EUR",
-              unit_amount: 2000,
+              currency: "USD",
+              unit_amount: req.body.amount,
               product_data: {
-                name: "T-shirt",
-                description: "Comfortable cotton t-shirt",
-                images: ["https://example.com/t-shirt.png"],
+                name: "Order price",
+                description: "Pureplates",
+                images: ["https://example.com/pureplates.png"],
               },
             },
             quantity: 1,
           },
         ],
         mode: "payment",
-        success_url: "https://someurl",
-        cancel_url: "https://someurl",
+        success_url: "http://localhost:4200/#/pages/success",
+        cancel_url: "http://localhost:4200/#/pages/error",
       });
 
       res.status(200).json({
