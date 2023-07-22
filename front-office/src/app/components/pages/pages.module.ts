@@ -44,13 +44,9 @@ import { AuthRoutingModule } from './auth-routing.module';
     ContactComponent,
     WishlistComponent,
     CheckoutComponent,
-    MyAccountComponent,
     FaqComponent,
     AboutUsComponent,
     ErrorPageComponent,
-    ProfileComponent,
-    ForgetPasswordComponent,
-    UpdateForgetPasswordComponent
   ]
 })
 export class PagesModule { }
