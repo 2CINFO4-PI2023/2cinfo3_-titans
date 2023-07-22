@@ -131,4 +131,10 @@ public user$: Observable<any> = this.userSubject.asObservable();
         }
     });
   }
+  updateForgetPassword(data: any) {
+    return this.http.post(
+      `${environment.base_url}/auth/reset-password`,
+      data
+    );
+  }
 }
