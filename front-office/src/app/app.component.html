@@ -36,7 +36,7 @@
               routerLinkActive="router-link-active"><mat-icon>person</mat-icon>{{isAutheticated ? "My Profile":"Sign up/Login"}}</a>
           </div>
           <div class="widget-text" *ngIf="isAutheticated">
-            <a fxShow="false" (click)="logout()" fxShow.gt-xs>
+            <a fxShow="false" style="cursor: pointer !important" (click)="logout()" fxShow.gt-xs>
               <mat-icon>exit_to_app</mat-icon>Logout
             </a>
           </div>

@@ -97,7 +97,6 @@ export class MyAccountComponent implements OnInit {
     );
   }
   onForgotPassword() {
-    //this.router.navigateByUrl("/pages/forgot-password");
     this.router.navigate(["/pages/forgot-password"]);
   }
   loginWithGoogle() {

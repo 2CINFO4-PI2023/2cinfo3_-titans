@@ -10,6 +10,7 @@ import { FaqComponent } from './faq/faq.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { UpdateForgetPasswordComponent } from './forget-password/update-forget-password.component';
 
 
 
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'error', component: ErrorPageComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'forgot-password', component: ForgetPasswordComponent },
+      { path: 'reset-password', component: UpdateForgetPasswordComponent },
      
     ]
   }

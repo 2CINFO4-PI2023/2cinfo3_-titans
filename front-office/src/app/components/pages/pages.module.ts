@@ -20,6 +20,7 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
+import { UpdateForgetPasswordComponent } from './forget-password/update-forget-password.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { WishlistComponent } from './wishlist/wishlist.component';
     AboutUsComponent,
     ErrorPageComponent,
     ProfileComponent,
-    ForgetPasswordComponent
+    ForgetPasswordComponent,
+    UpdateForgetPasswordComponent
   ]
 })
 export class PagesModule { }
