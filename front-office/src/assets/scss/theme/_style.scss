@@ -52,16 +52,21 @@
       -webkit-transform: rotate(359deg);
   }
 }
+
+
+
 .color-options{
  
-  width: 600px;
-  height: 470px;
-  position: fixed;
+  width: 40px;
+  height: 40px;
   position: fixed;
   bottom: 2%; /* Use a relative positioning instead of fixed pixel values */
   right: 2%; /* Use a relative positioning instead of fixed pixel values */
   z-index: 9999;
+
+
   .options-icon{
+    
       padding: 0;
       position: absolute;
       top: 12px;
@@ -85,6 +90,8 @@
   }
   &.show{
     
+    width: 400px;
+    height: 470px;
       right: 25px;
       -webkit-transition: max-height 0.25s ease-in;
       -moz-transition: max-height 0.25s ease-in;

@@ -11,6 +11,7 @@ export class ColorOptionsComponent implements AfterViewInit {
   public showOptions: boolean = true;
   public settings: Settings;
   private running: boolean = false;
+  isExpanded = false;
 
   constructor(public appSettings: AppSettings, private messageService: MessageService) {
     this.settings = this.appSettings.settings;
@@ -86,6 +87,8 @@ export class ColorOptionsComponent implements AfterViewInit {
   }
 
   public toggleChatbot(): void {
+    this.isExpanded = !this.isExpanded;
+
     const chatbot = document.getElementById("chatbot") as HTMLDivElement;
     if (chatbot.classList.contains("collapsed")) {
       chatbot.classList.remove("collapsed");
@@ -112,6 +115,7 @@ export class ColorOptionsComponent implements AfterViewInit {
       }
     );
   }
+
 
   private processMessages(messages: any[]): void {
     messages.sort((a, b) => new Date(a.date_creation).getTime() - new Date(b.date_creation).getTime());
