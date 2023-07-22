@@ -19,7 +19,7 @@ export class ForgetPasswordComponent implements OnInit {
   }
   onSubmit(value:any){
     this._authService.onForgetPassword(this.formData.email).subscribe(()=>{
-      this.router.navigate(["/pages/reset-password"]);
+      this.router.navigate(["/auth/reset-password"]);
     },(err)=>{
       this.errMsg = "A technical error has occurred. Please try again in a few minutes";
     })

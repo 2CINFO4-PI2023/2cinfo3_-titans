@@ -8,13 +8,20 @@
   <form [formGroup]="inscriptionDetailsForm" (ngSubmit)="onSubmit()" #inscriptionDetailNgForm="ngForm">
     <div class="sm:col-span-4">
       <mat-form-field class="w-1/2 mt-4 mx-4">
-        <mat-label>User ID</mat-label>
-        <input matInput placeholder="User ID" formControlName="userId" />
+        <mat-label>User </mat-label>
+        <mat-select formControlName="userId">
+          <mat-option *ngFor="let user of users" [value]="user._id">
+            {{ user.name }}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="inscriptionDetailsForm.get('userId').invalid && inscriptionDetailsForm.get('userId').touched">
-          User ID is required
+          User  is required
         </mat-error>
       </mat-form-field>
     </div>
+    
+    
+    
     <div class="sm:col-span-4">
       <mat-form-field class="w-1/2 mt-4 mx-4">
         <mat-label>Name</mat-label>
@@ -44,13 +51,19 @@
     </div>
     <div class="sm:col-span-4">
       <mat-form-field class="w-1/2 mt-4 mx-4">
-        <mat-label>Event ID</mat-label>
-        <input matInput placeholder="Event ID" formControlName="eventId" />
+        <mat-label>Event </mat-label>
+        <mat-select formControlName="eventId">
+          <mat-option *ngFor="let event of events" [value]="event._id">
+            {{ event.name }}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="inscriptionDetailsForm.get('eventId').invalid && inscriptionDetailsForm.get('eventId').touched">
-          Event ID is required
+          Event  is required
         </mat-error>
       </mat-form-field>
     </div>
+
+  
     
     <!-- Divider -->
     <div class="mt-4 mb-10 border-t"></div>
