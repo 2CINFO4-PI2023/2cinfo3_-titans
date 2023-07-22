@@ -82,10 +82,10 @@ export class ProfileComponent implements OnInit {
           if (error.status == 409) {
             this.profileForm.enable();
             this.profileErrMsg =
-              "l'adresse email ou phone est déjà associée à un utilisateur";
+              "E-mail or phone is already used";
           } else {
             this.profileErrMsg =
-              "une erreur technique est survenue. veuillez réessayer dans quelques minutes";
+              "A technical error has occurred. Please try again in a few minutes";
           }
         }
       );
