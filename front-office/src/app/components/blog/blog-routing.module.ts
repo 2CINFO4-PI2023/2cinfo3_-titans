@@ -12,8 +12,8 @@ const routes: Routes = [
     path: '',
     children: [
       { path: '', component: BlogColumnComponent},
+      { path: ':eventid', component: BlogDetailsComponent},
       { path: 'blog-list', component: BlogListComponent},
-      { path: 'blog-details/:eventid', component: BlogDetailsComponent},
       { path: 'popup', component: PopupComponent}
 
     ]
