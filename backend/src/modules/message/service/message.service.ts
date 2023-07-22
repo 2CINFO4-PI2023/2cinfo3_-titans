@@ -251,7 +251,7 @@ export class MessageService implements IMessageService {
     const user =await User.findById(userId);
     const reclamation =await Reclamation.findById(reclamationId);
     const messageToSend = "Salut " + user?.name + ", suite à votre réclamation numéro " + reclamation?.numero + " qui concerne : " + reclamation?.description + ", voici la réponse de l'administrateur : " + message;
-    const phone = "+216"+user?.phone || '';
+    const phone = user?.phone || '';
     this.createMessageTwilio(messageToSend,phone);
 
 

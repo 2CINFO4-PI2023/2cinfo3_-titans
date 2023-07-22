@@ -105,7 +105,7 @@ export class InscriptionDetailComponent implements OnInit {
           } else {
             this.alert = {
               type: 'error',
-              message: 'An error occurred, please try again later',
+              message: 'no available places',
             };
           }
           this.inscriptionDetailsForm.enable();
@@ -130,7 +130,7 @@ export class InscriptionDetailComponent implements OnInit {
         (error) => {
           this.alert = {
             type: 'error',
-            message: 'An error occurred, please try again later',
+            message: 'User already registred for the event',
           };
           this.inscriptionDetailsForm.enable();
           this.showAlert = true;
