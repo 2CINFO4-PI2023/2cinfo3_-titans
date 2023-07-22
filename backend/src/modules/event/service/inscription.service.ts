@@ -35,7 +35,7 @@ export class InscriptionService implements IInscriptionService {
       }
 
       if (event.availablePlaces <= 0) {
-        const apologyContent = readFileSync("assets/apology.html", "utf8").toString();
+        const apologyContent = readFileSync("assets/fullEmail.html", "utf8").toString();
         this.mailNotifier.sendMail(inscription.email, apologyContent, "Apology for Event Full");
 
         throw new Error("Event is already full. Apology email sent.");
