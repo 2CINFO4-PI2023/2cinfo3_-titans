@@ -137,6 +137,13 @@ export const appRoutes: Route[] = [
                     ).then((m) => m.IngredientModule),
             },
             {
+                path: 'livraison',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/livraison/livraison.module'
+                    ).then((m) => m.LivraisonModule),
+            },
+            {
                 path: 'plat',
                 loadChildren: () =>
                     import('app/modules/admin/plat/plat.module').then(
