@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from './blog-details.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-blog-details',
@@ -18,6 +20,7 @@ export class BlogDetailsComponent implements OnInit {
 user:any
 
   constructor(
+    private snackBar: MatSnackBar,
     private http: HttpClient,
     private route: ActivatedRoute,
     private inscriptionService: InscriptionService,
@@ -51,9 +54,11 @@ user:any
           this.name = '';
           this.email = '';
           this.content = '';
+          this.showNotification('Your registration is submitted with success!') ;
         },
         (error: any) => {
           console.error('Error creating inscription:', error);
+          this.showNotification('You are already registred for '+this.event.name +'!') ;
         }
       );
   }
@@ -63,5 +68,12 @@ user:any
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+  showNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds (3 seconds in this example)
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
   }
 }
