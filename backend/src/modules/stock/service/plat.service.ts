@@ -186,6 +186,12 @@ export class PlatService implements IPlatService {
             protein += nut.protein_g
             fat += nut.fat_total_g
         }
+        const stringCalories = calories.toString();
+        const stringProtein = protein.toString();
+        const stringFat = fat.toString();
+        calories = parseInt(stringCalories, 10) + 0.00;
+        protein = parseInt(stringProtein, 10) + 0.00;
+        fat = parseInt(stringFat, 10) + 0.00;
         str += `${calories} calories, ${protein} grams of protein and ${fat} grams of total fat`
         console.log(str)
         return str;

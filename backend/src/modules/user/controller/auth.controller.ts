@@ -66,11 +66,11 @@ export class AuthController implements IAuthController {
       res.status(500).send(error);
     }
   }
-  activateAccount(req: Request, res: Response) {
+ async activateAccount(req: Request, res: Response) {
     try {
       const token = <string>req.query.token;
-      this.authService.activateUser(token);
-      res.redirect("http://localhost:5000/#/pages/my-account");
+      await this.authService.activateUser(token);
+      res.redirect("http://localhost:5000/#/auth");
     } catch (error) {
       if (error instanceof HTTPError) {
         return res

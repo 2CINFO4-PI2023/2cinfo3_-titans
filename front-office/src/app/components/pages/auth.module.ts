@@ -9,26 +9,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { BlogModule } from '../blog/blog.module';
 import { SharedModule } from '../shared/shared.module';
-import { AboutUsComponent } from './about-us/about-us.component';
-import { CartComponent } from './cart/cart.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { ContactComponent } from './contact/contact.component';
-import { ErrorPageComponent } from './error-page/error-page.component';
-import { FaqComponent } from './faq/faq.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { MyAccountComponent } from './my-account/my-account.component';
-import { PagesRoutingModule } from './pages-routing.module';
 import { ProfileComponent } from './profile/profile.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
-import { ConfirmationPageComponent } from './confirmation-page/confirmation-page.component';
-
+import { UpdateForgetPasswordComponent } from './forget-password/update-forget-password.component';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PagesRoutingModule,
+    AuthRoutingModule,
     SharedModule,
     BlogModule,
     MatCheckboxModule,
@@ -40,15 +32,10 @@ import { ConfirmationPageComponent } from './confirmation-page/confirmation-page
     MatButtonModule
   ],
   declarations: [
-    CartComponent,
-    ContactComponent,
-    WishlistComponent,
-    CheckoutComponent,
-    FaqComponent,
-    AboutUsComponent,
-    ErrorPageComponent,
-    ConfirmationPageComponent,
-
+    MyAccountComponent,
+    ProfileComponent,
+    ForgetPasswordComponent,
+    UpdateForgetPasswordComponent
   ]
 })
-export class PagesModule { }
+export class AuthModule { }

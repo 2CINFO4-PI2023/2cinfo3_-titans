@@ -31,7 +31,7 @@
                   <div class="product-right">
                      <div class="product-details">
                         <h2>{{product.name}}</h2>
-                        <h3 class="price" *ngIf="!productsService?.catalogMode">{{product.price | currency:productsService?.currency:'symbol'}}</h3>
+                        <h3 class="price" *ngIf="!productsService?.catalogMode">{{product.price+" TND"}}</h3>
                         <p class="text-muted details">{{product.shortDetails}}</p>
                      </div>
                      <div class="quantity mb-15">
@@ -64,7 +64,7 @@
                </div>
           </div>
 
-          <div class="review-wrapper" fxFlex="100"  fxFlex.md="75">
+          <div class="review-wrapper" fxFlex="100"  fxFlex.md="100">
 
                <mat-tab-group [@.disabled]="true" [selectedIndex]="0">
                <mat-tab label="Description">

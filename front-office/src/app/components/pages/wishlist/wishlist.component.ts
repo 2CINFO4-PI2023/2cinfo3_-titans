@@ -12,26 +12,55 @@ import { Router } from '@angular/router';
 })
 export class WishlistComponent implements OnInit {
 
-  public product        :   Observable<Product[]> = of([]);
-  wishlistItems  :   Product[] = [];
+  public product: Product[] = [];
+  wishlistItems: Product[] = [];
 
   constructor(private router: Router, private cartService: CartService, private wishlistService: WishlistService) {
-    this.product = this.wishlistService.getProducts();
-    this.product.subscribe(products => this.wishlistItems = products);
+    // this.product.subscribe(products => this.wishlistItems = products);
   }
 
   ngOnInit() {
+   this.fetchFavorites()
   }
 
-     // Add to cart
-     public addToCart(product: Product,  quantity: number = 1) {
-      this.cartService.addToCart(product,quantity);
-      console.log(product, quantity);
-    }
+  fetchFavorites(){
+    this.wishlistService.getProducts().subscribe((data) => {
+      console.log("wishlistItems data:",data)
+      this.wishlistItems = data
+    });
+  }
+  // Add to cart
+  public addToCart(product: Product, quantity: number = 1) {
+    this.cartService.addToCart(product, quantity);
+    console.log(product, quantity);
+  }
+  reload() {
+    this.reloadComponent(false, '/pages/wishlist');
+  }
 
-// Remove from wishlist
-public removeItem(product: Product) {
- this.wishlistService.removeFromWishlist(product);
-}
+  reloadCurrent() {
+    this.reloadComponent(true);
+  }
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    //skipLocationChange:true means dont update the url to / when navigating
+    console.log("Current route I am on:", this.router.url);
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
+
+  reloadPage() {
+    window.location.reload()
+  }
+  // Remove from wishlist
+  public removeItem(product: Product) {
+    this.wishlistService.removeFromWishlist(product).subscribe((data => {
+      this.fetchFavorites()
+    }));
+    //this.reload();
+  }
 
 }

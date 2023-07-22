@@ -20,7 +20,15 @@ export class InscriptionController implements IInscriptionController {
       const data = await this.inscriptionService.createInscription(inscription);
       res.status(201).json(data);
     } catch (error: any) {
-      res.status(500).send(error);
+      if (error.message.includes("User is already registered for the event.")) {
+        res.status(409).json({ message: "User is already registered for the event" });
+      } else if (error.message.includes("Event is already full. Apology email sent.")) {
+        res.status(403).json({ message: "Event is already full. Apology email sent." });
+      } else if (error.message.includes("Event not found.") || error.message.includes("User not found.")) {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).send(error);
+      }
     }
   }
 

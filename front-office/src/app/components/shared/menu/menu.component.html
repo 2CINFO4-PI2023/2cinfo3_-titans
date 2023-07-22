@@ -1,59 +1,17 @@
 <mat-toolbar-row fxHide fxShow.gt-sm class="container" fxLayout="row"  fxLayout.xs="row" fxLayoutAlign="space-between center">
   <div class="main-menu" fxLayout="row" fxHide fxShow.gt-sm>
-      <a  mat-button class="mat-button"  [routerLink]="['/home/one']">Home</a>
-      <a [routerLink]="['/home/products/all']" routerLinkActive="router-link-active"  mat-button class="mat-button">Products</a>
-      <a  mat-button [matMenuTriggerFor]="shop" class="mat-button" (click)="openMegaMenu()">Shop<mat-icon class="caret">arrow_drop_down</mat-icon></a>
-      <mat-menu #shop="matMenu" [overlapTrigger]="false" class="app-dropdown mega-menu">
-        <div fxLayout="row wrap">
-            <div fxFlex="20" fxLayout="column" class="p-1">
-                <a mat-menu-item routerLink="/"><b>Butter & Eggs</b></a>
-                <mat-divider></mat-divider>
-                <a mat-menu-item routerLink="/">Butter Pelegrino</a>
-                <a mat-menu-item routerLink="/">Eggs</a>
-            </div>
-            <div fxFlex="20" class="p-1">
-                <a mat-menu-item routerLink="/"><b>Fruits</b></a>
-                <mat-divider></mat-divider>
-                <button mat-menu-item>Grapes</button>
-                <button mat-menu-item>Bananas</button>
-                <button mat-menu-item>Apples</button>
-                <button mat-menu-item>Peach</button>
-            </div>
-            <div fxFlex="20" class="p-1">
-                <a mat-menu-item routerLink="/"><b>Cheese</b></a>
-                <mat-divider></mat-divider>
-                <button mat-menu-item>Gauda</button>
-                <button mat-menu-item>Radovo</button>
-     
-            </div>
-            <div fxFlex="20" class="p-1">
-                <a mat-menu-item routerLink="/"><b>Vegetables</b></a>
-                <mat-divider></mat-divider>
-                <button mat-menu-item>Cabbage</button>
-                <button mat-menu-item>Broccoli</button>
-                <button mat-menu-item>Radish</button>
-                <button mat-menu-item>Beet</button>
-                <button mat-menu-item>Carrots</button>
-            </div>
-            <div fxFlex="20" class="p-1">
-              <a mat-menu-item routerLink="/"><b>Milk</b></a>
-              <mat-divider></mat-divider>
-              <button mat-menu-item>Alpsko</button>
-              <button mat-menu-item>Berane</button>
+       <a  mat-menu-item [routerLink]="['/home/one']">Home</a> 
+      <a mat-menu-item [routerLink]="['/home/products/all']" routerLinkActive="router-link-active">Products</a>
+      <a mat-menu-item [routerLink]="['/events']">Events</a>
+      <a mat-menu-item [routerLink]="['/pages/faq']" >FAQ</a>
 
-          </div>
-
-        </div>
-
-    </mat-menu>
-      <a  mat-button mat-button [matMenuTriggerFor]="blog" class="mat-button">Blog<mat-icon class="caret">arrow_drop_down</mat-icon></a>
+      <!-- <a  mat-button mat-button [matMenuTriggerFor]="blog" class="mat-button">Blog<mat-icon class="caret">arrow_drop_down</mat-icon></a>
       <mat-menu #blog="matMenu" [overlapTrigger]="false" class="app-dropdown">
           <a mat-menu-item [routerLink]="['/blog/blog-list']">Events</a>
-          <a mat-menu-item [routerLink]="['/blog/blog-column']">Blog Columns</a>
           <a mat-menu-item [routerLink]="['/blog/blog-details']">Blog Details</a>
 
-      </mat-menu>
-      <a  mat-button [matMenuTriggerFor]="pages" class="mat-button">Pages<mat-icon class="caret">arrow_drop_down</mat-icon></a>
+      </mat-menu> -->
+      <!-- <a  mat-button [matMenuTriggerFor]="pages" class="mat-button">Pages<mat-icon class="caret">arrow_drop_down</mat-icon></a>
       <mat-menu #pages="matMenu" [overlapTrigger]="false" class="app-dropdown">
         <a [routerLink]="['/pages/about']" mat-menu-item>About Us</a>
         <a mat-menu-item [routerLink]="['/pages/faq']" >FAQ</a>
@@ -63,8 +21,8 @@
         <a mat-menu-item [routerLink]="['/pages/cart']">Cart</a>
         <a mat-menu-item [routerLink]="['/pages/my-account']">My Account</a>
         <a mat-menu-item [routerLink]="['/pages/error']">404</a>
-    </mat-menu>
-      <a [routerLink]="['/pages/contact']" routerLinkActive="router-link-active"   mat-button class="mat-button">Contact</a>
+    </mat-menu> -->
+      <!-- <a [routerLink]="['/pages/contact']" routerLinkActive="router-link-active"   mat-button class="mat-button">Contact</a> -->
     </div>
     <!-- <app-shopping-widgets *ngIf="url == '/home/one'" [shoppingCartItems]="shoppingCartItems"></app-shopping-widgets> -->
     <!-- <div class="main-menu-wrapper" fxLayout="row" fxLayoutAlign="space-between center" >

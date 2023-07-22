@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { InscriptionService } from './blog-details.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-blog-details',
@@ -14,11 +17,14 @@ export class BlogDetailsComponent implements OnInit {
   lastName: string;
   email: string;
   content: string;
+user:any
 
   constructor(
+    private snackBar: MatSnackBar,
     private http: HttpClient,
     private route: ActivatedRoute,
-    private inscriptionService: InscriptionService
+    private inscriptionService: InscriptionService,
+    private authService:AuthService
   ) { }
 
   ngOnInit() {
@@ -27,18 +33,22 @@ export class BlogDetailsComponent implements OnInit {
       .subscribe((response: any) => {
         this.event = response;
       });
+      this.authService.getAuthentified().subscribe((user)=>{
+        this.user = user
+      })
   }
 
   submitRegistrationForm() {
     const inscription = {
       eventId: this.route.snapshot.paramMap.get('eventid'),
-      userId: '649f43dccd5a374f418af849',
-      name: this.name,
-      email: this.email,
+      userId: this.user._id,
+      email:this.user.email,
+      name:this.user.name,
       status: 'confirmed',
-     
     };
-
+    if(this.event.availablePlaces==0)
+    this.showNotification('Full event '+this.event.name +'!') ;
+else 
     this.inscriptionService.createInscription(inscription)
       .subscribe(
         (response: any) => {
@@ -46,9 +56,11 @@ export class BlogDetailsComponent implements OnInit {
           this.name = '';
           this.email = '';
           this.content = '';
+          this.showNotification('Your registration is submitted with success!') ;
         },
         (error: any) => {
           console.error('Error creating inscription:', error);
+          this.showNotification('You are already registred for '+this.event.name +'!') ;
         }
       );
   }
@@ -58,5 +70,12 @@ export class BlogDetailsComponent implements OnInit {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+  showNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds (3 seconds in this example)
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
   }
 }

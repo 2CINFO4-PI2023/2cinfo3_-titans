@@ -20,42 +20,42 @@ export class PopularRecipesComponent implements OnInit {
 
   // Blog
   public blog = [{
-    image: 'assets/images/galery/gal-1.jpg',
+    image: 'assets/images/galery/gal-1.jpeg',
     date: '25 January 2018',
     title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
     by: 'John Dio'
   }, {
-    image: 'assets/images/galery/gal-2.jpg',
+    image: 'assets/images/galery/gal-2.jpeg',
     date: '26 January 2018',
     title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
     by: 'John Dio'
   }, {
-    image: 'assets/images/galery/gal-3.jpg',
+    image: 'assets/images/galery/gal-3.jpeg',
     date: '27 January 2018',
     title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
     by: 'John Dio'
   }, {
-    image: 'assets/images/galery/gal-5.jpg',
+    image: 'assets/images/galery/gal-5.jpeg',
     date: '28 January 2018',
     title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
     by: 'John Dio'
 }, {
-  image: 'assets/images/galery/gal-6.jpg',
+  image: 'assets/images/galery/gal-6.jpeg',
   date: '28 January 2018',
   title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
   by: 'John Dio'
 }, {
-  image: 'assets/images/galery/gal-7.jpg',
+  image: 'assets/images/galery/gal-7.jpeg',
   date: '28 January 2018',
   title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
   by: 'John Dio'
 }, {
-  image: 'assets/images/galery/gal-8.jpg',
+  image: 'assets/images/galery/gal-8.jpeg',
   date: '28 January 2018',
   title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
   by: 'John Dio'
 }, {
-  image: 'assets/images/galery/gal-9.jpg',
+  image: 'assets/images/galery/gal-9.jpeg',
   date: '28 January 2018',
   title: 'Lorem ipsum dolor sit consectetur adipiscing elit,',
   by: 'John Dio'

@@ -24,7 +24,7 @@ export class ReclamationService {
   getNewStatusId(statut:any)
   {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${AuthService.getToken()}`);
-    return this.http.get<any>(this.apiUrl+"/statuts/"+statut,  { headers });
+    return this.http.get<any>(this.apiUrl+"/statuts/findStatus/"+statut,  { headers });
 
 
 
