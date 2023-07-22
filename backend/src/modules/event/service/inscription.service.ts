@@ -30,15 +30,25 @@ export class InscriptionService implements IInscriptionService {
         throw new Error("Event not found.");
       }
 
+      if (!user) {
+        throw new Error("User not found.");
+      }
+
       if (event.availablePlaces <= 0) {
-        const apologyContent = readFileSync("dist/apology.html", "utf8").toString();
+        const apologyContent = readFileSync("assets/apology.html", "utf8").toString();
         this.mailNotifier.sendMail(inscription.email, apologyContent, "Apology for Event Full");
 
         throw new Error("Event is already full. Apology email sent.");
       }
 
+      // Check if the user is already registered for the event
+      const existingInscription = await this.inscriptionRepository.findInscriptionByUserId(userId);
+      if (existingInscription) {
+        throw new Error("User is already registered for the event.");
+      }
+
       const doc = await this.inscriptionRepository.create(inscription);
-      const confirmationContent = readFileSync("dist/event_confirmation.html", "utf8").toString();
+      const confirmationContent = readFileSync("assets/event_confirmation.html", "utf8").toString();
       this.mailNotifier.sendMail(doc.email, confirmationContent, "Inscription Confirmation");
       return doc;
     } catch (error) {
@@ -87,4 +97,3 @@ export class InscriptionService implements IInscriptionService {
   }
 }
 export { IInscription };
-
