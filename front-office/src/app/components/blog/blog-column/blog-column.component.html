@@ -17,7 +17,7 @@
             </div>
             <div class="text-box">
               <h4>
-                <a [routerLink]="['/blog/blog-details', event?._id]">{{ event?.name }}</a>
+                <a [routerLink]="['/events', event?._id]">{{ event?.name }}</a>
               </h4>
               <ul fxLayout="row">
                 <li><mat-icon color="primary" class="material-icons">access_time</mat-icon>{{ event?.date | date}}</li>

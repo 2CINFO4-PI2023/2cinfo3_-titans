@@ -46,7 +46,9 @@ user:any
       name:this.user.name,
       status: 'confirmed',
     };
-
+    if(this.event.availablePlaces==0)
+    this.showNotification('Full event '+this.event.name +'!') ;
+else 
     this.inscriptionService.createInscription(inscription)
       .subscribe(
         (response: any) => {

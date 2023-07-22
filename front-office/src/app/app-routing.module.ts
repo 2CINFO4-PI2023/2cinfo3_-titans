@@ -21,7 +21,7 @@ const appRoutes: Routes = [
       },
       {
         path: 'events',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         loadChildren: () => import('./components/blog/blog.module').then(m => m.BlogModule)
 
       },
