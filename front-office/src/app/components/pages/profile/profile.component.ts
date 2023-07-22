@@ -36,6 +36,7 @@ export class ProfileComponent implements OnInit {
         password: new FormControl(""),
         name: new FormControl(user.name, [Validators.required]),
         photo: new FormControl(null),
+        updatePassword: new FormControl(null)
       });
     });
   }
