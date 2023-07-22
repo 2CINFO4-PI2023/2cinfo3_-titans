@@ -6,10 +6,11 @@ export interface IInscriptionRepository {
   create(inscription: IInscription): Promise<IInscription>;
   get(id: string): Promise<IInscription | null>;
   getAll(): Promise<IInscription[]>;
-  update(id: string, inscription: Partial<IInscription>): Promise<IInscription | null>; // Add the update method
+  update(id: string, inscription: Partial<IInscription>): Promise<IInscription | null>;
   delete(id: string): Promise<void>;
   getEventById(id: string): Promise<IEvent | null>;
   getUserById(id: string): Promise<IUser | null>;
+  findInscriptionByUserId(userId: string): Promise<IInscription | null>; // Add the findInscriptionByUserId method
 }
 
 
@@ -73,6 +74,15 @@ export class InscriptionRepository implements IInscriptionRepository {
     try {
       const user = await User.findById(id);
       return user;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async findInscriptionByUserId(userId: string): Promise<IInscription | null> {
+    try {
+      const inscription = await Inscription.findOne({ userId });
+      return inscription;
     } catch (error: any) {
       throw error;
     }

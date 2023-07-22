@@ -142,7 +142,7 @@ export class AuthService implements IAuthService {
               return cb(null, jwt);
             } catch (error) {
               if (error instanceof NotFoundError) {
-                const user = <IUser>self.userService.createUser({
+                const user = await <IUser>self.userService.createUser({
                   name: profile.displayName,
                   email: profile?.emails[0]?.value,
                   phone: "",
@@ -151,7 +151,7 @@ export class AuthService implements IAuthService {
                   role: ROLES.CLIENT,
                   favoritePlat: []
                 });
-  
+  console.log("new user: ",user)
               const jwt = generateAccessToken({user});
               return cb(null, jwt);
               } else {
