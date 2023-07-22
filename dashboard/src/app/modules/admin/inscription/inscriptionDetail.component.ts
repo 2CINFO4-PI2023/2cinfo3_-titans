@@ -3,9 +3,11 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
+import { EventService } from 'app/core/event/event.service';
 import { InscriptionService } from 'app/core/inscription/inscription.service';
 
 import { Inscription } from 'app/core/inscription/inscription.types';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'app-inscription-detail',
@@ -20,17 +22,26 @@ export class InscriptionDetailComponent implements OnInit {
     type: 'success',
     message: '',
   };
+  events:any;
+  users :any;
   showAlert: boolean = false;
   inscriptionDetailsForm: FormGroup;
   isUpdating: boolean = false;
+  
 
   constructor(
     private inscriptionService: InscriptionService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private eventService: EventService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
+    this.userService.getUsers().subscribe(users=>{
+      this.users=users.users
+    })
+    this.eventService.getEvents().subscribe(event=>{this.events=event})
     this.inscriptionDetailsForm = new FormGroup({
       eventId: new FormControl('', Validators.required), // Change the type here to accept text values
       userId: new FormControl('', Validators.required),
