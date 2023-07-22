@@ -28,10 +28,31 @@ export class WishlistComponent implements OnInit {
       this.cartService.addToCart(product,quantity);
       console.log(product, quantity);
     }
+    reload() {
+      this.reloadComponent(false, '/pages/wishlist');
+  }
 
+  reloadCurrent() {
+      this.reloadComponent(true);
+  }
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+      //skipLocationChange:true means dont update the url to / when navigating
+      console.log("Current route I am on:", this.router.url);
+      const url = self ? this.router.url : urlToNavigateTo;
+      this.router.navigateByUrl('/home', { skipLocationChange: false }).then(() => {
+          this.router.navigate([`/${url}`]).then(() => {
+              console.log(`After navigation I am on:${this.router.url}`)
+          })
+      })
+  }
+
+  reloadPage() {
+      window.location.reload()
+  }
 // Remove from wishlist
 public removeItem(product: Product) {
  this.wishlistService.removeFromWishlist(product);
+ this.reload();
 }
 
 }
