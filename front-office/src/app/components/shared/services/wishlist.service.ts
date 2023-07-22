@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 
 // Get product from Localstorage
-let products = JSON.parse(localStorage.getItem("wishlistItem")) || [];
+let products =  [];
 
 @Injectable({
   providedIn: 'root'
@@ -62,26 +62,17 @@ export class WishlistService {
     message = 'The product ' + product.name + ' has been added to wishlist.';
             status = 'success';
             this.snackBar.open(message, '×', { panelClass: [status], verticalPosition: 'top', duration: 3000 });
-      localStorage.setItem("wishlistItem", JSON.stringify(products));
+      //localStorage.setItem("wishlistItem", JSON.stringify(products));
       return item;
   }
 
 
   // Removed Product
   public removeFromWishlist(product: Product) {
+    console.log("product",product)
     if (product === undefined) { return; }
-    const index = products.indexOf(product);
-    console.log("before splice",products)
-    products.splice(index, 1);
-    console.log("after splice",products)
-    localStorage.setItem("wishlistItem", JSON.stringify(products));
-    this.httpClient.put(`${environment.base_url}/users/favoriteplate/${this.userid}/${product._id}`,product).subscribe(
-      response => {
-        console.log(response);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    console.log("before")
+    //localStorage.setItem("wishlistItem", JSON.stringify(products));
+    return this.httpClient.put(`${environment.base_url}/users/favoriteplate/${this.userid}/${product._id}`,product)
   }
 }
