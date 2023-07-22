@@ -265,7 +265,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     //this.isAutheticated = AuthService.isAuthenticated();
     this.authService.authenticated$.subscribe((authenticated) => {
-      console.log("authenticated:",authenticated)
       this.isAutheticated = authenticated;
     });
     this.currency = this.currencies[0];
@@ -282,7 +281,7 @@ export class AppComponent implements OnInit {
     // this.scrollElem.scrollIntoView();
   }
 logout(){
-  localStorage.removeItem("fo_accessToken")
+  this.authService.signOut()
   this.router.navigate(["/"])
 }
   public changeCurrency(currency) {

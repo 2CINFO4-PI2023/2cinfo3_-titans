@@ -32,7 +32,7 @@
                       <a fxShow="false" fxShow.gt-xs [routerLink]="['/pages/compare']" routerLinkActive="router-link-active" ><mat-icon>cached</mat-icon>COMPARE</a>
                     </div> -->
           <div class="widget-text" >
-            <a fxShow="false" fxShow.gt-xs [routerLink]="[isAutheticated ? '/pages/profile':'/pages/my-account']"
+            <a fxShow="false" fxShow.gt-xs [routerLink]="[isAutheticated ? '/auth/profile':'/auth']"
               routerLinkActive="router-link-active"><mat-icon>person</mat-icon>{{isAutheticated ? "My Profile":"Sign up/Login"}}</a>
           </div>
           <div class="widget-text" *ngIf="isAutheticated">
