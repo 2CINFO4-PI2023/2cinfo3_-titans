@@ -13,6 +13,7 @@ export class Product {
   name?: string;
   price?: number;
   salePrice?: number = 2;
+  plat?: any;
   discount?: number = 20;
   pictures?: Array<any>;
   small?: Array<string>;

@@ -35,7 +35,7 @@ public observer   :  Subscriber<{}>;
    // Add to cart
    public addToCart(product: Product, quantity: number) {
     let message, status;
-     var item: CartItem | boolean = false;
+     var item: CartItem | any = false;
      // If Products exist
      let hasItem = products.find((items, index) => {
        if(items.product.id == product._id) {

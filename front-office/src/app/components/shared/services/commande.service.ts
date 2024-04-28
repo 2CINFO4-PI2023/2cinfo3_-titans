@@ -8,24 +8,29 @@ import { environment } from "src/environments/environment";
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {
-    const userData = JSON.parse(localStorage.getItem("fo_userData"));
-    console.log("userData:",userData)
-    if (userData) {
-      this.userSubject.next(userData.user);
-      this.authenticatedSubject.next(true);
-    }
-  }
+export class CommandeService {
+  // static authenticatedSubject: any;
+  // static userSubject: any;
+  constructor(private http: HttpClient, private router: Router) {}
 
-  private authenticatedSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    false
-  );
-  public authenticated$: Observable<any> =
-    this.authenticatedSubject.asObservable();
+  // private authenticatedSubject: BehaviorSubject<any> =
+  //   new BehaviorSubject<any>(false);
+  // public authenticated$: Observable<any> =
+  //   this.authenticatedSubject.asObservable();
 
-  private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public user$: Observable<any> = this.userSubject.asObservable();
+    
+  // private userSubject: BehaviorSubject<any> =
+  // new BehaviorSubject<any>(false);
+  // static user$: Observable<any> =
+  // AuthService.userSubject.asObservable();
+
+  private authenticatedSubject: BehaviorSubject<any> =
+  new BehaviorSubject<any>(false);
+public authenticated$: Observable<any> =
+  this.authenticatedSubject.asObservable();
+
+private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+public user$: Observable<any> = this.userSubject.asObservable();
 
   static decodeJwt(token: string): any {
     const base64Url = token.split(".")[1];
@@ -35,24 +40,31 @@ export class AuthService {
     return decodedToken;
   }
   login(body: any) {
+    // return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
+    //   switchMap((response: any) => {
+    //     const { user } = AuthService.decodeJwt(response.accessToken);
+    //     localStorage.setItem("fo_accessToken", response.accessToken);
+    //     return of(user);
+    //   })
+    // );
+    
     return this.http.post(`${environment.base_url}/auth/login`, body).pipe(
-      switchMap((response: any) => {
-        const { user } = AuthService.decodeJwt(response.accessToken);
-        localStorage.setItem("fo_accessToken", response.accessToken);
-        this.http
+        switchMap((response: any) => {
+          const { user } = CommandeService.decodeJwt(response.accessToken);
+          localStorage.setItem("fo_accessToken", response.accessToken);
+          this.http
           .post(`${environment.base_url}/auth/login-token`, {
             token: response.accessToken,
           })
           .subscribe((data) => {
             localStorage.setItem("userData", user);
             localStorage.setItem("userInfo", JSON.stringify(data));
-            localStorage.setItem("fo_userData", JSON.stringify({ user: data }));
-            this.userSubject.next(data);
+            this.userSubject.next(data)
             return this.authenticatedSubject.next(true);
           });
-        return of(user);
-      })
-    );
+          return of(user);
+        })
+      );
   }
   signup(body: any) {
     return this.http.post(`${environment.base_url}/auth/signup`, body);
@@ -60,24 +72,23 @@ export class AuthService {
   updateUser(id: string, body: any) {
     return this.http.put(`${environment.base_url}/users/${id}`, body);
   }
-  getUser() {
-    return this.user$;
+   getUser() {
+    return this.user$
     // const { user } = AuthService.decodeJwt(
     //   localStorage.getItem("fo_accessToken")
     // );
     // return user;
   }
-
+  
   updateAuthentifiedUser(user) {
-    localStorage.setItem("fo_userData", JSON.stringify({ user }));
-    return this.userSubject.next(user);
+    return this.userSubject.next(user)
     // const { user } = AuthService.decodeJwt(
     //   localStorage.getItem("fo_accessToken")
     // );
     // return user;
   }
-  getAuthentified() {
-    return this.user$;
+   getAuthentified() {
+    return this.user$
     // const { user } = AuthService.decodeJwt(
     //   localStorage.getItem("fo_accessToken")
     // );
@@ -88,43 +99,39 @@ export class AuthService {
   }
   signOut() {
     this.authenticatedSubject.next(false);
-    localStorage.removeItem("fo_userData");
     localStorage.removeItem("fo_accessToken");
   }
   static isAuthenticated(): boolean {
     return localStorage.getItem("fo_accessToken") != null;
   }
-  onForgetPassword(email: any) {
-    return this.http.post(
-      `${environment.base_url}/auth/request-reset-password`,
-      { email }
-    );
+  addCommande (body: any) {
+    return this.http.post(`${environment.base_url}/commandes`, body);
+  }
+  payCommande (body: any) {
+    return this.http.post(`${environment.base_url}/commandes/payment`, body);
   }
   loginWithGoogle() {
     const authUrl = `${environment.base_url}/auth/login/google`;
-    const popup = window.open(authUrl, "_blank", "width=500,height=600");
-
-    window.addEventListener("message", (event) => {
+    const popup = window.open(authUrl, '_blank', 'width=500,height=600');
+   
+    window.addEventListener('message', (event) => {
       const urlParams = new URLSearchParams(event.data);
-      const jwt = urlParams.get("jwt");
-      if (jwt) {
-        localStorage.setItem("fo_accessToken", jwt);
-        this.http
+      const jwt = urlParams.get('jwt');
+        if (jwt) {
+          localStorage.setItem("fo_accessToken", jwt);
+          this.http
           .post(`${environment.base_url}/auth/login-token`, {
             token: jwt,
           })
           .subscribe((data) => {
-            localStorage.setItem("fo_userData", JSON.stringify({ user: data }));
-            this.userSubject.next(data);
+            this.userSubject.next(data)
             this.authenticatedSubject.next(true);
-            this.router.navigate(["/home/products/all"]);
+            this.router.navigate(['/home/products/all']);
           });
-      } else {
-        console.log("else");
-      }
+        } else {
+          console.log("else")
+        }
     });
   }
-  updateForgetPassword(data: any) {
-    return this.http.post(`${environment.base_url}/auth/reset-password`, data);
-  }
 }
+

@@ -146,8 +146,8 @@ export const appRoutes: Route[] = [
             {
                 path: 'commandes',
                 loadChildren: () =>
-                    import('app/modules/admin/example/example.module').then(
-                        (m) => m.ExampleModule
+                    import('app/modules/admin/commande/commande.module').then(
+                        (m) => m.CommandeModule
                     ),
             },
             {

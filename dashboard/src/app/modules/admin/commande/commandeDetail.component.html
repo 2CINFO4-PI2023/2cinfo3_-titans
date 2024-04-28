@@ -79,8 +79,8 @@
                             <mat-form-field class="w-full mt-4 mx-4">
                                 <mat-label>Plat</mat-label>
                                 <mat-select #key="ngModel" [(ngModel)]="item.key" [ngModelOptions]="{standalone: true}" required>
-                                    <mat-option *ngFor="let plat of orderItems"
-                                        [value]="item.value.name">{{item.value.name}}</mat-option>
+                                    <mat-option 
+                                     [value]="item.value.name">{{item.value.name}}</mat-option>
                                         
                                 </mat-select>
                             </mat-form-field>
@@ -184,7 +184,7 @@
                 <div class="mt-4 mb-10 border-t"></div>
 
                 <div class="flex items-center justify-start mb-10 mx-4">
-                <button class="ml-4" mat-flat-button color="primary" type="submit" >
+                <button class="ml-4 orangeBtn" mat-flat-button type="submit" >
                     Save
                 </button>
                 <button class="mr-4 ml-4" mat-stroked-button type="button" (click)="goToCommandesList()">
